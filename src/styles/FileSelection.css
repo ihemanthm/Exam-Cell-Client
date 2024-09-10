@@ -1,0 +1,129 @@
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.file-select-box {
+    height: 20rem;
+    width: 75vw;
+    border: 2px dashed rgb(87, 86, 86);
+    background-color: aliceblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.input-text {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.files-select
+{
+    width: 15vw;
+    height: 40px;
+    border-radius: 0.3rem;
+    margin: 10px;
+    border: 0;
+    padding: 3px 24px;
+    color: #222222;
+    background: transparent;
+    font-size: 1.1rem;
+    outline: none;
+    transition: all 0.01s ease-in;
+    border: 0.1px solid rgb(182, 178, 178);
+}
+
+/* HomePDF.tsx styles */
+.home-pdf-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-direction: column;
+    padding: 3rem;
+}
+
+.search-form {
+    width: 70vw;
+    display: flex;
+    flex-direction: row;
+}
+
+.input-box>input {
+    width: 45vw;
+    height: 40px;
+    border-radius: 0.3rem;
+    margin: 10px;
+    border: 0;
+    padding: 3px 24px;
+    color: #222222;
+    background: #f2f2f2;
+    font-size: 1.1rem;
+    outline: none;
+    transition: all 0.01s ease-in;
+    border: 0.1px solid rgb(182, 178, 178);
+}
+.field
+{
+    width: 30vw !important;
+    height: 40px;
+    border-radius: 0.3rem;
+    margin: 10px;
+    border: 0;
+    padding: 3px 24px;
+    color: #222222;
+    background: #f2f2f2;
+    font-size: 1.1rem;
+    outline: none;
+    transition: all 0.01s ease-in;
+    border: 0.1px solid rgb(182, 178, 178);
+}
+.range
+{
+    width: 12vw;
+    height: 40px;
+    border-radius: 0.3rem;
+    margin: 10px;
+    border: 0;
+    padding: 3px 24px;
+    color: #222222;
+    background: #f2f2f2;
+    font-size: 1.1rem;
+    outline: none;
+    transition: all 0.01s ease-in;
+    border: 0.1px solid rgb(182, 178, 178);
+}
+.submit-btn
+{
+    width: 7rem;
+    background-color: black;
+    color: white;
+    height: 2.5rem;
+    font-size: 1.1rem;
+    border: none;
+    outline: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-right:1rem;
+    transition: all 0.5s ease-in;
+}
+.submit-btn:disabled
+{
+    background-color: #f2f2f2;
+    color: black;
+}
+.submit-btn:disabled:hover,.range:disabled:hover,.field:disabled:hover
+{
+    cursor: not-allowed;
+}
+.submit-btn:hover
+{
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
