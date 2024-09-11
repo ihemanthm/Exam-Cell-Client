@@ -134,7 +134,7 @@ export default function DrawerAppBar(props: Props) {
               selected={selectedIndex === 3}
               onClick={(event) => handleListItemClick(event, 3)}
             >
-              <ListItemText primary="PUC Details" />
+              <ListItemText primary="PUC Details " />
             </ListItemButton>
             <ListItemButton
               sx={{ pl: 6 }}
