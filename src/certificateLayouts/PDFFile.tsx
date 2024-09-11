@@ -3,6 +3,7 @@ import MerriweatherRegular from "../fonts/Merriweather-Regular.ttf";
 import MerriweatherLight from "../fonts/Merriweather-Light.ttf";
 import MerriweatherBold from "../fonts/Merriweather-Bold.ttf";
 import MerriweatherBlack from "../fonts/Merriweather-Black.ttf";
+import { format } from "date-fns"; 
 
 import {
   Page,
@@ -35,7 +36,7 @@ export default function PDFFile({ student }: any) {
   });
   const styles = StyleSheet.create({
     page: {
-      marginTop:50,
+      marginTop:60,
       paddingBottom: 30,
       paddingLeft: 50,
       paddingRight: 50,
@@ -207,9 +208,21 @@ export default function PDFFile({ student }: any) {
       fontFamily: "MerriweatherBold",
     },
   });
-  let cumulativeTGRP = 0; // cumulative total grade points for CGPA
+  let cumulativeTGRP = 0;// cumulative total grade points for CGPA
+  let cumulativeCR = 0; 
   let CGPA = 0;
   let sCount = 0;
+  const recentCCMY = student.PUC_RECORDS.reduce((latest: Date | null, sem: any) => {
+    sem.SUBJECTS.forEach((subject: any) => {
+      const subjectDate = new Date(subject.CCMY);
+      if (!latest || subjectDate > latest) {
+        latest = subjectDate;
+      }
+    });
+    return latest;
+  }, null);
+  const formattedCCMY = recentCCMY ? format(recentCCMY, "MMM, yyyy") : "N/A"; // e.g., "Nov, 2018"
+
   return (
     <>
       <Document>
@@ -229,7 +242,7 @@ export default function PDFFile({ student }: any) {
               , as a part of the 6-year Integrated B.Tech programme, at the
               Examination held in{" "}
             </Text>
-            <Text style={styles.highlight}> Jul, 2024 </Text>
+            <Text style={styles.highlight}> {formattedCCMY} </Text>
             <Text style={styles.section1}> with ID No: </Text>
             <Text style={styles.highlight}> {student.ID} </Text>
             <Text style={styles.section1}> in </Text>
@@ -274,6 +287,7 @@ export default function PDFFile({ student }: any) {
                 const SGPA = semCR > 0 ? (semTGRP / semCR).toFixed(2) : "N/A";
 
                 cumulativeTGRP += semTGRP;
+                cumulativeCR += semCR;
                 CGPA = CGPA + parseFloat(SGPA);
                 sCount = parseFloat(sem.SEM_NO);
                 return (
@@ -326,7 +340,7 @@ export default function PDFFile({ student }: any) {
                           <Text>SGPA: {SGPA}</Text>
                         </View>
                         <View style={styles.cgpa}>
-                          <Text>CGPA: {(CGPA / sCount).toFixed(2)}</Text>
+                          <Text>CGPA: {(cumulativeTGRP / cumulativeCR).toFixed(2)}</Text>
                         </View>
                         <View style={styles.obtained}>
                           <Text>{semTGRP}</Text>
@@ -349,17 +363,17 @@ export default function PDFFile({ student }: any) {
             <Text>
               Passed with{" "}
               <Text style={styles.conclusionBold}>
-                {parseFloat((CGPA / sCount).toFixed(2)) >= 7.5
+                {parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 7.5
                   ? "First Class with Distinction"
-                  : parseFloat((CGPA / sCount).toFixed(2)) >= 6.5
+                  : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 6.5
                   ? "First Division"                                                                                                      
-                  : parseFloat((CGPA / sCount).toFixed(2)) >= 5.5
+                  : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 5.5
                   ? "Second Division"
                   : "Pass Division"}
               </Text>{" "}
               and obtained the Cumulative Grade Point Average of :{" "}
               <Text style={styles.conclusionBold}>
-                {(CGPA / sCount).toFixed(2)}
+                {(cumulativeTGRP / cumulativeCR).toFixed(2)}
               </Text>
             </Text>
           </View>

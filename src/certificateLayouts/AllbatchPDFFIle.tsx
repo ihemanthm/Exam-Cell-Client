@@ -5,6 +5,7 @@ import BatchLayout from "./BatchLayout";
 export default function AllbatchPDFFIle({ details,start,end}: any) {
   const styles = StyleSheet.create({
     page: {
+      marginTop:60,
       paddingBottom: 30,
       paddingLeft: 50,
       paddingRight: 50,

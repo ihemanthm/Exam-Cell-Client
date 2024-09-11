@@ -3,6 +3,7 @@ import MerriweatherRegular from "../fonts/Merriweather-Regular.ttf";
 import MerriweatherLight from "../fonts/Merriweather-Light.ttf";
 import MerriweatherBold from "../fonts/Merriweather-Bold.ttf";
 import MerriweatherBlack from "../fonts/Merriweather-Black.ttf";
+import { format } from "date-fns"; 
 
 import {
   Page,
@@ -35,18 +36,14 @@ export default function BatchLayout({ student }: any) {
     src: MerriweatherBlack,
   });
   const styles = StyleSheet.create({
-    page: {
-      paddingBottom: 30,
-      paddingLeft: 50,
-      paddingRight: 50,
-      backgroundColor: "transparent",
-    },
     image: {
-      margin: 20,
       marginRight: 40,
-      height: 50,
-      width: 50,
+      height: 40,
+      width: 40,
       alignSelf: "flex-end",
+    },
+    textCard: {
+      margin: 5,
     },
     section1: {
       fontSize: 8,
@@ -55,6 +52,7 @@ export default function BatchLayout({ student }: any) {
     highlight: {
       fontSize: 8,
       fontFamily: "MerriweatherBold",
+      lineHeight: 1.5,
     },
 
     table: {
@@ -204,160 +202,172 @@ export default function BatchLayout({ student }: any) {
       fontFamily: "MerriweatherBold",
     },
   });
-  let cumulativeTGRP = 0; // cumulative total grade points for CGPA
+  let cumulativeTGRP = 0;// cumulative total grade points for CGPA
+  let cumulativeCR = 0; 
   let CGPA = 0;
   let sCount = 0;
+  const recentCCMY = student.PUC_RECORDS.reduce((latest: Date | null, sem: any) => {
+    sem.SUBJECTS.forEach((subject: any) => {
+      const subjectDate = new Date(subject.CCMY);
+      if (!latest || subjectDate > latest) {
+        latest = subjectDate;
+      }
+    });
+    return latest;
+  }, null);
+  const formattedCCMY = recentCCMY ? format(recentCCMY, "MMM, yyyy") : "N/A"; // e.g., "Nov, 2018"
   return (
     <>
-      <Image style={styles.image} src={image} />
-      <Text>
-        <Text style={styles.section1}>This is to certify that </Text>
-        <Text style={styles.highlight}>{student.SNAME}</Text>
-        <Text style={styles.section1}> Son/Daughter of </Text>
-        <Text style={styles.highlight}>{student.FNAME}</Text>
-        <Text style={styles.section1}>
-          successfully completed the 4 Semester course of study of 2-year
-          duration fulfilling the pass requirement of the{" "}
-        </Text>
-        <Text style={styles.highlight}>Pre University Course (PUC)</Text>
-        <Text style={styles.section1}>
-          , as a part of the 6-year Integrated B.Tech programme, at the
-          Examination held in{" "}
-        </Text>
-        <Text style={styles.highlight}>Jul, 2024</Text>
-        <Text style={styles.section1}> with ID No: </Text>
-        <Text style={styles.highlight}>{student.ID}</Text>
-        <Text style={styles.section1}> in </Text>
-        <Text style={styles.highlight}>English</Text>
-        <Text style={styles.section1}> Medium and with </Text>
-        <Text style={styles.highlight}>{student.GRP}</Text>
-        <Text style={styles.section1}>
-          {" "}
-          group. He / She secured the overall grades and Grade Point Average
-          (GPA) as shown below.
-        </Text>
-      </Text>
-      <View style={styles.table}>
-        <View style={styles.headerRow}>
-          <View style={styles.HsubCode}>
-            <Text> Subject Code</Text>
-          </View>
-          <View style={styles.HsubName}>
-            <Text> Subject Name</Text>
-          </View>
-          <View style={styles.Hcredit_grade}>
-            <Text>Credits</Text>
-          </View>
-          <View style={styles.Hcredit_grade}>
-            <Text>Grade</Text>
-          </View>
-          <View style={styles.Hobtained}>
-            <Text>Obtained Credits</Text>
-          </View>
-        </View>
-        {student.PUC_RECORDS &&
-          student.PUC_RECORDS.map((sem: any, index: number) => {
-            let semTGRP = 0;
-            let semCR = 0;
+     <Image style={styles.image} src={image} />
+          <Text style={styles.textCard}>
+            <Text style={styles.section1}>This is to certify that </Text>
+            <Text style={styles.highlight}> {student.SNAME} </Text>
+            <Text style={styles.section1}> Son/Daughter of </Text>
+            <Text style={styles.highlight}> {student.FNAME} </Text>
+            <Text style={styles.section1}>
+              successfully completed the 4 Semester course of study of 2-year
+              duration fulfilling the pass requirement of the{" "}
+            </Text>
+            <Text style={styles.highlight}> Pre University Course (PUC) </Text>
+            <Text style={styles.section1}>
+              , as a part of the 6-year Integrated B.Tech programme, at the
+              Examination held in{" "}
+            </Text>
+            <Text style={styles.highlight}> {formattedCCMY} </Text>
+            <Text style={styles.section1}> with ID No: </Text>
+            <Text style={styles.highlight}> {student.ID} </Text>
+            <Text style={styles.section1}> in </Text>
+            <Text style={styles.highlight}> English </Text>
+            <Text style={styles.section1}> Medium and with </Text>
+            <Text style={styles.highlight}> {student.GRP} </Text>
+            <Text style={styles.section1}>
+              {" "}
+              group. He / She secured the overall grades and Grade Point Average
+              (GPA) as shown below.
+            </Text>
+          </Text>
+          <View style={styles.table}>
+            <View style={styles.headerRow}>
+              <View style={styles.HsubCode}>
+                <Text> Subject Code</Text>
+              </View>
+              <View style={styles.HsubName}>
+                <Text> Subject Name</Text>
+              </View>
+              <View style={styles.Hcredit_grade}>
+                <Text>Credits</Text>
+              </View>
+              <View style={styles.Hcredit_grade}>
+                <Text>Grade</Text>
+              </View>
+              <View style={styles.Hobtained}>
+                <Text>Obtained Credits</Text>
+              </View>
+            </View>
+            {student.PUC_RECORDS &&
+              student.PUC_RECORDS.map((sem: any, index: number) => {
+                let semTGRP = 0;
+                let semCR = 0;
 
-            sem.SUBJECTS.forEach((subject: any) => {
-              semTGRP += subject.TGRP;
-              semCR += subject.CR;
-            });
+                sem.SUBJECTS.forEach((subject: any) => {
+                  semTGRP += subject.TGRP;
+                  semCR += subject.CR;
+                });
 
-            // Calculate SGPA
-            const SGPA = semCR > 0 ? (semTGRP / semCR).toFixed(2) : "N/A";
+                // Calculate SGPA
+                const SGPA = semCR > 0 ? (semTGRP / semCR).toFixed(2) : "N/A";
 
-            cumulativeTGRP += semTGRP;
-            CGPA = CGPA + parseFloat(SGPA);
-            sCount = parseFloat(sem.SEM_NO);
-            return (
-              <View style={styles.card}>
-                <View style={styles.greyRow}>
-                  <Text>Semester {sem.SEM_NO}</Text>
-                </View>
-                <View style={styles.gradeCard}>
-                  {Array(11)
-                    .fill(0)
-                    .map((_, i) => {
-                      const subject = sem.SUBJECTS?.[i];
-
-                      if (subject) {
-                        return (
-                          <View style={styles.tableRow}>
-                            <View style={styles.subCode}>
-                              <Text>{subject.PCODE}</Text>
-                            </View>
-                            <View style={styles.subName}>
-                              <Text>{subject.PNAME.toUpperCase()}</Text>
-                            </View>
-                            <View style={styles.credit_grade}>
-                              <Text>{subject.CR}</Text>
-                            </View>
-                            <View style={styles.credit_grade}>
-                              <Text>{subject.GR}</Text>
-                            </View>
-                            <View style={styles.obtained}>
-                              <Text>{subject.TGRP}</Text>
-                            </View>
-                          </View>
-                        );
-                      } else {
-                        return (
-                          <View style={styles.tableRow}>
-                            <View style={styles.subCode}></View>
-                            <View style={styles.subName}></View>
-                            <View style={styles.credit_grade}></View>
-                            <View style={styles.credit_grade}></View>
-                            <View style={styles.obtained}></View>
-                          </View>
-                        );
-                      }
-                    })}
-                </View>
-                <View style={styles.gpa}>
-                  <View style={styles.tableRow}>
-                    <View style={styles.sgpa}>
-                      <Text>SGPA: {SGPA}</Text>
+                cumulativeTGRP += semTGRP;
+                cumulativeCR += semCR;
+                CGPA = CGPA + parseFloat(SGPA);
+                sCount = parseFloat(sem.SEM_NO);
+                return (
+                  <View style={styles.card}>
+                    <View style={styles.greyRow}>
+                      <Text>Semester {sem.SEM_NO}</Text>
                     </View>
-                    <View style={styles.cgpa}>
-                      <Text>CGPA: {(CGPA / sCount).toFixed(2)}</Text>
+                    <View style={styles.gradeCard}>
+                      {Array(11)
+                        .fill(0)
+                        .map((_, i) => {
+                          const subject = sem.SUBJECTS?.[i];
+
+                          if (subject) {
+                            return (
+                              <View style={styles.tableRow}>
+                                <View style={styles.subCode}>
+                                  <Text>{subject.PCODE}</Text>
+                                </View>
+                                <View style={styles.subName}>
+                                  <Text>{subject.PNAME.toUpperCase()}</Text>
+                                </View>
+                                <View style={styles.credit_grade}>
+                                  <Text>{subject.CR}</Text>
+                                </View>
+                                <View style={styles.credit_grade}>
+                                  <Text>{subject.GR}</Text>
+                                </View>
+                                <View style={styles.obtained}>
+                                  <Text>{subject.TGRP}</Text>
+                                </View>
+                              </View>
+                            );
+                          } else {
+                            return (
+                              <View style={styles.tableRow}>
+                                <View style={styles.subCode}></View>
+                                <View style={styles.subName}></View>
+                                <View style={styles.credit_grade}></View>
+                                <View style={styles.credit_grade}></View>
+                                <View style={styles.obtained}></View>
+                              </View>
+                            );
+                          }
+                        })}
                     </View>
-                    <View style={styles.obtained}>
-                      <Text>{semTGRP}</Text>
+                    <View style={styles.gpa}>
+                      <View style={styles.tableRow}>
+                        <View style={styles.sgpa}>
+                          <Text>SGPA: {SGPA}</Text>
+                        </View>
+                        <View style={styles.cgpa}>
+                          <Text>CGPA: {(cumulativeTGRP / cumulativeCR).toFixed(2)}</Text>
+                        </View>
+                        <View style={styles.obtained}>
+                          <Text>{semTGRP}</Text>
+                        </View>
+                      </View>
                     </View>
                   </View>
-                </View>
+                );
+              })}
+            <View style={styles.totalCreditRow}>
+              <View style={styles.totalCredit}>
+                <Text>Total Credits Points Obtained : </Text>
               </View>
-            );
-          })}
-        <View style={styles.totalCreditRow}>
-          <View style={styles.totalCredit}>
-            <Text>Total Credits Points Obtained : </Text>
+              <View style={styles.totalCreditsGained}>
+                <Text>{cumulativeTGRP}</Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.totalCreditsGained}>
-            <Text>{cumulativeTGRP}</Text>
+          <View style={styles.conclusionText}>
+            <Text>
+              Passed with{" "}
+              <Text style={styles.conclusionBold}>
+                {parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 7.5
+                  ? "First Class with Distinction"
+                  : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 6.5
+                  ? "First Division"                                                                                                      
+                  : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 5.5
+                  ? "Second Division"
+                  : "Pass Division"}
+              </Text>{" "}
+              and obtained the Cumulative Grade Point Average of :{" "}
+              <Text style={styles.conclusionBold}>
+                {(cumulativeTGRP / cumulativeCR).toFixed(2)}
+              </Text>
+            </Text>
           </View>
-        </View>
-      </View>
-      <View style={styles.conclusionText}>
-        <Text>
-          Passed with{" "}
-          <Text style={styles.conclusionBold}>
-            {parseFloat((CGPA / sCount).toFixed(2)) >= 7.5
-              ? "First Class with Distinction"
-              : parseFloat((CGPA / sCount).toFixed(2)) >= 6.5
-              ? "First Division"
-              : parseFloat((CGPA / sCount).toFixed(2)) >= 5.5
-              ? "Second Division"
-              : "Pass Division"}
-          </Text>{" "}
-          and obtained the Cumulative Grade Point Average of :{" "}
-          <Text style={styles.conclusionBold}>
-            {(CGPA / sCount).toFixed(2)}
-          </Text>
-        </Text>
-      </View>
     </>
   );
 }

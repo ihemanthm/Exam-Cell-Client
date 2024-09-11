@@ -7,7 +7,6 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -15,20 +14,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
-import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+
 import "../styles/Navbar.css";
 import { Link } from "react-router-dom";
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window?: () => Window;
 }
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 export default function DrawerAppBar(props: Props) {
   const { window } = props;
@@ -45,8 +42,23 @@ export default function DrawerAppBar(props: Props) {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ) => {
+    setSelectedIndex(index);
+  };
+  const [lopen, setLOpen] = React.useState(1);
+
+  const handleLClick = (index: number) => {
+    setLOpen(index);
+  };
+
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box sx={{ textAlign: "center" }}>
       <Typography
         variant="h6"
         component="div"
@@ -54,47 +66,122 @@ export default function DrawerAppBar(props: Props) {
           marginTop: "10%",
           flexGrow: 1,
           color: "black",
-          display: { xs: "block", sm: "none" },
           height: "30%",
         }}
       >
         Examination Cell
       </Typography>
       <Divider />
-      <List sx={{ display: "flex", flexDirection: "column" }}>
-        <ListItem disablePadding>
-          <ListItemButton sx={{ textAlign: "center" }}>
-            <ListItemText
-              primary={
-                <Typography sx={{ fontSize: "1.25rem !important" }}>
-                  Home
-                </Typography>
-              }
-            />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton sx={{ textAlign: "center" }}>
-            <ListItemText
-              primary={
-                <Typography sx={{ fontSize: "1.25rem !important" }}>
-                  About
-                </Typography>
-              }
-            />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton sx={{ textAlign: "center" }}>
-            <ListItemText
-              primary={
-                <Typography sx={{ fontSize: "1.25rem !important" }}>
-                  Contact
-                </Typography>
-              }
-            />
-          </ListItemButton>
-        </ListItem>
+      <List component="nav" aria-label="secondary mailbox folder">
+        <ListItemButton
+          sx={{
+            textAlign: "center",
+            backgroundColor: lopen == 1 ? "black" : "#F9F5F6",
+            color: lopen == 1 ? "#F9F5F6" : "black",
+            marginBottom: "0.2rem",
+            "&:hover": { backgroundColor: lopen == 1 ? "black" : "#F9F5F6" },
+          }}
+          onClick={() => {
+            {
+              lopen != 1 ? handleLClick(1) : handleLClick(0);
+            }
+          }}
+        >
+          <ListItemText primary="Upload Regular Details" />
+          {lopen == 1 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={lopen === 1} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <Link to={"/"} className="link">
+              <ListItemButton
+                sx={{ pl: 6 }}
+                selected={selectedIndex === 1}
+                onClick={(event) => handleListItemClick(event, 1)}
+              >
+                <ListItemText primary="PUC Details" />
+              </ListItemButton>
+            </Link>
+            <Link to={"/ZipFile"} className="link">
+              <ListItemButton
+                sx={{ pl: 6 }}
+                selected={selectedIndex === 2}
+                onClick={(event) => handleListItemClick(event, 2)}
+              >
+                <ListItemText primary="Engg Details" />
+              </ListItemButton>
+            </Link>
+          </List>
+        </Collapse>
+        <ListItemButton
+          sx={{
+            textAlign: "center",
+            backgroundColor: lopen == 2 ? "black" : "#F9F5F6",
+            color: lopen == 2 ? "#F9F5F6" : "black",
+            marginBottom: "0.2rem",
+            "&:hover": { backgroundColor: lopen == 2 ? "black" : "#F9F5F6" },
+          }}
+          onClick={() => {
+            lopen != 2 ? handleLClick(2) : handleLClick(0);
+          }}
+        >
+          <ListItemText primary="Upload Remidial Details" />
+          {lopen == 2 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={lopen === 2} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              sx={{ pl: 6 }}
+              selected={selectedIndex === 3}
+              onClick={(event) => handleListItemClick(event, 3)}
+            >
+              <ListItemText primary="PUC Details" />
+            </ListItemButton>
+            <ListItemButton
+              sx={{ pl: 6 }}
+              selected={selectedIndex === 4}
+              onClick={(event) => handleListItemClick(event, 4)}
+            >
+              <ListItemText primary="Engg Details" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+        <ListItemButton
+          sx={{
+            textAlign: "center",
+            backgroundColor: lopen == 3 ? "black" : "#F9F5F6",
+            color: lopen == 3 ? "#F9F5F6" : "black",
+            marginBottom: "0.2rem",
+            "&:hover": { backgroundColor: lopen == 3 ? "black" : "#F9F5F6" },
+          }}
+          onClick={() => {
+            lopen != 3 ? handleLClick(3) : handleLClick(0);
+          }}
+        >
+          <ListItemText primary="Certificates" />
+          {lopen == 3 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={lopen === 3} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <Link to={"/Layout1"} className="link">
+              <ListItemButton
+                sx={{ pl: 6 }}
+                selected={selectedIndex === 5}
+                onClick={(event) => handleListItemClick(event, 5)}
+              >
+                <ListItemText primary="Single" />
+              </ListItemButton>
+            </Link>
+            <Link to={"/Layout2"} className="link">
+              <ListItemButton
+                sx={{ pl: 6 }}
+                selected={selectedIndex === 6}
+                onClick={(event) => handleListItemClick(event, 6)}
+              >
+                <ListItemText primary="Batch" />
+              </ListItemButton>
+            </Link>
+          </List>
+        </Collapse>
       </List>
     </Box>
   );
@@ -113,7 +200,6 @@ export default function DrawerAppBar(props: Props) {
           MenuListProps={{
             "aria-labelledby": "basic-button",
           }}
-          sx={{ display: { xs: "none", sm: "block" } }}
         >
           <MenuItem onClick={handleClose}>Profile</MenuItem>
           <MenuItem onClick={handleClose}>My account</MenuItem>
@@ -126,24 +212,22 @@ export default function DrawerAppBar(props: Props) {
           component="nav"
           sx={{ backgroundColor: "#F6F5F2 ", position: "fixed" }}
         >
-          <Toolbar
-            sx={{ justifyContent: { xs: "space-between", sm: "start" } }}
-          >
+          <Toolbar sx={{ justifyContent: "space-between" }}>
             <IconButton
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" }, color: "black" }}
+              sx={{ mr: 2, color: "black" }}
             >
               <MenuIcon />
             </IconButton>
+
             <Typography
               variant="h6"
               component="div"
               sx={{
                 flexGrow: 1,
                 color: "black",
-                display: { xs: "block", sm: "none" },
                 textAlign: "center",
               }}
             >
@@ -159,56 +243,6 @@ export default function DrawerAppBar(props: Props) {
                 img: { objectFit: "contain" },
               }}
             />
-
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                flexGrow: 1,
-                color: "black",
-                display: { xs: "none", sm: "block" },
-              }}
-            >
-              Examination Cell
-            </Typography>
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              <Link to="/">
-                <Button sx={{ color: "black" }}>XLSX</Button>
-              </Link>{" "}
-              <Link to="/ZipFile">
-                <Button sx={{ color: "black" }}>Zip</Button>
-              </Link>{" "}
-              <Link to="/Layout1">
-                <Button sx={{ color: "black" }}>Layout 1</Button>
-              </Link>{" "}
-              <Link to="/Layout2">
-                <Button sx={{ color: "black" }}>Layout 2</Button>
-              </Link>
-              <Typography
-                sx={{
-                  marginLeft: "1rem",
-                  marginRight: "0.5rem",
-                  flexGrow: 1,
-                  color: "#405D72",
-                  fontSize: "0.9rem",
-                  display: { xs: "none", sm: "inline" },
-                  textAlign: "center",
-                  "&:hover": { cursor: "pointer" },
-                }}
-              >
-                User name
-              </Typography>
-              <IconButton
-                sx={{
-                  backgroundColor: "black",
-                  padding: 0,
-                  "&:hover": { backgroundColor: "black" },
-                }}
-                onClick={handleClick}
-              >
-                <AccountCircleSharpIcon sx={{ height: 1, color: "white" }} />
-              </IconButton>
-            </Box>
           </Toolbar>
         </AppBar>
         <nav>
@@ -221,7 +255,6 @@ export default function DrawerAppBar(props: Props) {
               keepMounted: true, // Better open performance on mobile.
             }}
             sx={{
-              display: { xs: "block", sm: "none" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
