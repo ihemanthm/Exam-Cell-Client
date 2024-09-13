@@ -1,5 +1,5 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import {  Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import BatchLayout from "./BatchLayout";
 
 export default function AllbatchPDFFIle({ details,start,end}: any) {
@@ -14,7 +14,6 @@ export default function AllbatchPDFFIle({ details,start,end}: any) {
   });
   return (
     <>
-      <Document>
         {details &&
           Array(100)
             .fill(0)
@@ -29,7 +28,6 @@ export default function AllbatchPDFFIle({ details,start,end}: any) {
               }
               return null;
             })}
-      </Document>
     </>
   );
 }

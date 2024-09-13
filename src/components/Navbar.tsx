@@ -101,7 +101,7 @@ export default function DrawerAppBar(props: Props) {
                 <ListItemText primary="PUC Details" />
               </ListItemButton>
             </Link>
-            <Link to={"/ZipFile"} className="link">
+            <Link to={"/EnggUpload"} className="link">
               <ListItemButton
                 sx={{ pl: 6 }}
                 selected={selectedIndex === 2}
@@ -182,6 +182,22 @@ export default function DrawerAppBar(props: Props) {
             </Link>
           </List>
         </Collapse>
+        <Link to={"/ZIPFile"} className="link">
+          <ListItemButton
+            sx={{
+              textAlign: "center",
+              backgroundColor: lopen == 4 ? "black" : "#F9F5F6",
+              color: lopen == 4 ? "#F9F5F6" : "black",
+              marginBottom: "0.2rem",
+              "&:hover": { backgroundColor: lopen == 4 ? "black" : "#F9F5F6" },
+            }}
+            onClick={() => {
+              lopen != 4 ? handleLClick(4) : handleLClick(0);
+            }}
+          >
+            <ListItemText primary="Upload Images" />
+          </ListItemButton>
+        </Link>
       </List>
     </Box>
   );

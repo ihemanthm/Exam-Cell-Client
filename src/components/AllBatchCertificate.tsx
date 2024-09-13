@@ -1,7 +1,7 @@
 import React from "react";
 import AllbatchPDFFIle from "../certificateLayouts/AllbatchPDFFIle";
 import Button from "@mui/material/Button";
-import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFViewer, Document } from "@react-pdf/renderer";
 import DownloadForOfflineRoundedIcon from "@mui/icons-material/DownloadForOfflineRounded";
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
@@ -15,11 +15,14 @@ import { set } from "mongoose";
 export default function AllBatchCertificate() {
   const [details, setDetails] = useState<any | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
+  const [pdfLoading,setPdfLoading]=useState<boolean>(false);
   const [rangeCert, setRangeCert] = useState({
     start: 0,
     end: 0,
   });
   const dispatch = useDispatch();
+
+  const getBatchDetails=process.env.REACT_APP_GET_PUC_BATCH;
 
   interface FormValues {
     REGULATION: string;
@@ -55,7 +58,7 @@ export default function AllBatchCertificate() {
     });
     try {
       let response = await axios.get(
-        `http://localhost:8000/api/v1/getAllStudentsByBatch/${formik.values.REGULATION}`
+        getBatchDetails+formik.values.REGULATION
       );
 
       setDetails(response.data);
@@ -66,6 +69,7 @@ export default function AllBatchCertificate() {
         })
       );
       setLoader(false);
+      setPdfLoading(true);
     } catch (error) {
       const err = error as any;
       setLoader(false);
@@ -152,15 +156,21 @@ export default function AllBatchCertificate() {
               style={{
                 width: "80%",
                 height: "100vh",
-              }}            >
-              <AllbatchPDFFIle
-                details={details && details}
-                start={rangeCert.start}
-                end={rangeCert.end}
-              />
+              }}
+            >
+              <Document>
+                <AllbatchPDFFIle
+                  details={details && details}
+                  start={rangeCert.start}
+                  end={rangeCert.end}
+                />
+              </Document>
             </PDFViewer>
           </>
         )}
+
+
+        
       </div>
     </>
   );
