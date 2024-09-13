@@ -6,8 +6,9 @@ import SnackbarListener from "./components/SnackBarListener";
 import { SnackbarProvider } from "notistack";
 import AllBatchCertificates from "./components/AllBatchCertificate";
 import ZipSelection from "./components/ZIPFileSelection";
-import XLSXSelection from "./components/XLSXFileSelection";
+import PUC_XLSXSelection from "./components/PUC_XLSXFileSelection";
 import SingleCertificate from "./components/SingleCertificate";
+import Engg_XLSXFileSelection from "./components/Engg_XLSXFileSelection";
 
 function App() {
   return (
@@ -21,10 +22,12 @@ function App() {
         <AppNavbar />
         
         <Routes>
-          <Route path="/" element={< XLSXSelection/>} />
-          <Route path="/ZipFile" element={<ZipSelection/>} />
+          <Route path="/" element={< PUC_XLSXSelection/>} />
+          <Route path="/EnggUpload" element={<Engg_XLSXFileSelection/>} />
           <Route path="/Layout1" element={<SingleCertificate/>} />
           <Route path="/Layout2" element={<AllBatchCertificates/>} />
+          <Route path="/ZIPFile" element={<ZipSelection/>} />
+
         </Routes>
        
       </SnackbarProvider>

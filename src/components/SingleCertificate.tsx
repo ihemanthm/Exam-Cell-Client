@@ -16,6 +16,8 @@ export default function SingleCertificate() {
   const [loader, setLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
 
+  const getDetailsById=process.env.REACT_APP_GET_PUC_DETAILS_BY_ID;
+
   interface ResponseData {
     message?: string;
   }
@@ -47,32 +49,28 @@ export default function SingleCertificate() {
     setLoader(true);
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/v1/getStudentById/${formik.values.ID}`
+        getDetailsById+formik.values.ID
       );
-      if(!response.data)
-      {
+
+      setDetails(response.data);
+      setLoader(false);
+    } catch (error: any) {
+      setLoader(false);
+      if (error.status == 404) {
         dispatch(
           setSnackBar({
             message: "User not found",
             variant: "warning",
           })
         );
-        setDetails(null);
+      } else {
+        dispatch(
+          setSnackBar({
+            message: "Faied to search student",
+            variant: "error",
+          })
+        );
       }
-      else
-      {
-        setDetails(response.data);
-      }
-        setLoader(false);
-    } catch (error) {
-      setLoader(false);
-      dispatch(
-        setSnackBar({
-          message: "Faied to search student",
-          variant: "error",
-        })
-      );
-      console.log(error);
     }
   };
   return (
@@ -98,18 +96,22 @@ export default function SingleCertificate() {
                 "Search"
               )}
             </button>
-            {details&&<button type="reset" onClick={()=>
-              {
-                setDetails(null);
-                formik.resetForm();
-              }
-            } className="submit-btn">
-              Cancel
-            </button>}
+            {details && (
+              <button
+                type="reset"
+                onClick={() => {
+                  setDetails(null);
+                  formik.resetForm();
+                }}
+                className="submit-btn"
+              >
+                Cancel
+              </button>
+            )}
           </div>
         </form>
 
-        {details&&(
+        {details && (
           <>
             <PDFViewer
               style={{
@@ -120,7 +122,10 @@ export default function SingleCertificate() {
               <PDFFile student={details} />
             </PDFViewer>
 
-            <PDFDownloadLink document={<PDFFile student={details}/>}fileName={`${details.ID}_memo.pdf`}>
+            <PDFDownloadLink
+              document={<PDFFile student={details} />}
+              fileName={`${details.ID}_memo.pdf`}
+            >
               <Button
                 variant="contained"
                 sx={{ backgroundColor: "black", color: "white" }}
