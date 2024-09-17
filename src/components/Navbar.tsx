@@ -31,6 +31,7 @@ export default function DrawerAppBar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [disableDrawer, setDisableDrawer] = React.useState(true);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -56,6 +57,11 @@ export default function DrawerAppBar(props: Props) {
   const handleLClick = (index: number) => {
     setLOpen(index);
   };
+
+  const handleLogin = ()=>{
+    setDisableDrawer(!disableDrawer);
+   // onLogin().then().catch(resolve);
+  }
 
   const drawer = (
     <Box sx={{ textAlign: "center" }}>
@@ -92,7 +98,7 @@ export default function DrawerAppBar(props: Props) {
         </ListItemButton>
         <Collapse in={lopen === 1} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <Link to={"/"} className="link">
+            <Link to={"/PucUpload"} className="link">
               <ListItemButton
                 sx={{ pl: 6 }}
                 selected={selectedIndex === 1}
@@ -196,6 +202,19 @@ export default function DrawerAppBar(props: Props) {
             }}
           >
             <ListItemText primary="Upload Images" />
+          </ListItemButton>
+        </Link>
+        <Link to="/" className="link" >
+          <ListItemButton
+            sx={{
+              textAlign: "center",
+              backgroundColor: "#F9F5F6",
+              color: "black",
+            }}
+            onClick={handleLogin}
+          >
+            <ListItemText primary="Logout" />
+            
           </ListItemButton>
         </Link>
       </List>

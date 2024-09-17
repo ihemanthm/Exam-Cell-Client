@@ -9,7 +9,7 @@ import ZipSelection from "./components/ZIPFileSelection";
 import PUC_XLSXSelection from "./components/PUC_XLSXFileSelection";
 import SingleCertificate from "./components/SingleCertificate";
 import Engg_XLSXFileSelection from "./components/Engg_XLSXFileSelection";
-
+import Login from "./components/Login"
 function App() {
   return (
     <div>
@@ -22,12 +22,12 @@ function App() {
         <AppNavbar />
         
         <Routes>
-          <Route path="/" element={< PUC_XLSXSelection/>} />
+          <Route path="/" element={< Login/>} />
           <Route path="/EnggUpload" element={<Engg_XLSXFileSelection/>} />
           <Route path="/Layout1" element={<SingleCertificate/>} />
           <Route path="/Layout2" element={<AllBatchCertificates/>} />
           <Route path="/ZIPFile" element={<ZipSelection/>} />
-
+          <Route path="PucUpload" element={<PUC_XLSXSelection />} />
         </Routes>
        
       </SnackbarProvider>
