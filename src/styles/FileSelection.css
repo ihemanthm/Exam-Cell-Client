@@ -117,7 +117,7 @@
     background-color: #f2f2f2;
     color: black;
 }
-.submit-btn:disabled:hover,.range:disabled:hover,.field:disabled:hover
+.submit-btn:disabled:hover,.range:disabled:hover,.field:disabled:hover,.radio-btn:disabled:hover
 {
     cursor: not-allowed;
 }

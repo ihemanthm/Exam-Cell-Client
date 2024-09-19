@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AllbatchPDFFIle from "../certificateLayouts/AllbatchPDFFIle";
 import Button from "@mui/material/Button";
-import { PDFViewer, Document } from "@react-pdf/renderer";
-import DownloadForOfflineRoundedIcon from "@mui/icons-material/DownloadForOfflineRounded";
+import { PDFViewer, Document, PDFDownloadLink } from "@react-pdf/renderer";
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -10,27 +9,35 @@ import { useState } from "react";
 import { setSnackBar } from "../store/features/snackbar/snackbar";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
-import { set } from "mongoose";
+import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
 export default function AllBatchCertificate() {
   const [details, setDetails] = useState<any | null>(null);
+  const [pdfDetails, setPDFDetails] = useState<any | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
-  const [pdfLoading,setPdfLoading]=useState<boolean>(false);
-  const [rangeCert, setRangeCert] = useState({
-    start: 0,
-    end: 0,
-  });
+  const [showRangeSelect, setShowRangeSelect] = useState<boolean>(false);
+
   const dispatch = useDispatch();
 
-  const getBatchDetails=process.env.REACT_APP_GET_PUC_BATCH;
+  const getPUCBatchDetails = process.env.REACT_APP_GET_PUC_BATCH;
+  const getEnggBatchDetails = process.env.REACT_APP_GET_ENGG_BATCH;
+
+  interface StudentData {
+    id: number;
+    name: string;
+  }
 
   interface FormValues {
     REGULATION: string;
-    range: number;
+    range: string;
+    type: string;
+    layout: string;
   }
   const initialValues: FormValues = {
     REGULATION: "",
-    range: 1,
+    range: "",
+    type: "",
+    layout: "L1",
   };
   const validate = (values: FormValues) => {
     const errors: Partial<FormValues> = {};
@@ -42,38 +49,108 @@ export default function AllBatchCertificate() {
     }
     return errors;
   };
-
   const formik = useFormik<FormValues>({
     initialValues,
     validate,
     onSubmit: (values) => {},
   });
+
+  const generateRangeOptions = () => {
+    if (details && details.length === null) return [];
+    const options = [];
+    const numberOfRanges = Math.ceil(
+      ((details && parseInt(details[details.length - 1].ID.slice(-4), 10)) -
+        (details && parseInt(details[0].ID.slice(-4), 10))) /
+        100
+    ); // Calculate number of rangesd
+    const remaining = details && details.length % 100;
+    for (let i = 0; i < numberOfRanges; i++) {
+      const start = i * 100 + 1;
+      const end = Math.min((i + 1) * 100, details.length);
+
+      options.push({
+        label: `${start}-${end}`, // Range label
+        value: `${start}-${end}`, // Range value as a string
+      });
+    }
+    // if (remaining) {
+    //   const start = numberOfRanges * 100 + 1;
+    //   const end = details && details.length;
+    //   options.push({
+    //     label: `${start}-${end}`,
+    //     value: `${start}-${end}`,
+    //   });
+    // }
+    return options;
+  };
+
+  const rangeOptions = generateRangeOptions();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setDetails(null);
-    setLoader(true);
-    setRangeCert({
-      start: formik.values.range * 100 - 99,
-      end: formik.values.range * 100,
-    });
-    try {
-      let response = await axios.get(
-        getBatchDetails+formik.values.REGULATION
-      );
+    if (!details) return;
+    let array = [];
+    const [start, end] = formik.values.range.split("-").map(Number);
 
-      setDetails(response.data);
+    for (let i = 0; i < details.length; i++) {
+      const ID = parseInt(details[i].ID.slice(-4), 10);
+      if (ID >= start && ID <= end) {
+        array.push(details[i]);
+      }
+    }
+
+    if (array.length > 0) {
+      setLoader(true); // Show loader while processing the PDF details
+      setPDFDetails(array);
+      setLoader(false);
       dispatch(
         setSnackBar({
-          message: `Please wait, ${formik.values.REGULATION} PDF is loading.`,
+          message: `${formik.values.REGULATION} batch pdf is generating please wait...`,
+          variant: "info",
+        })
+      ); // Stop loader when done
+    } else {
+      // Handle case when no data matches the range
+      dispatch(
+        setSnackBar({
+          message: "No students found in the selected range",
+          variant: "warning",
+        })
+      );
+      setLoader(false);
+    }
+  };
+  const handleRange = async () => {
+    try {
+      if (formik.values.type === "" || formik.values.REGULATION === "") {
+        dispatch(
+          setSnackBar({
+            message: `Select the fields properly`,
+            variant: "warning",
+          })
+        );
+        return;
+      }
+      setLoader(true);
+      const url =
+        formik.values.type == "puc" ? getPUCBatchDetails : getEnggBatchDetails;
+      const response = await axios.get<StudentData[]>(
+        `${url}${formik.values.REGULATION}`
+      );
+      console.log(response.data);
+      setDetails(response.data);
+      setShowRangeSelect(true);
+      dispatch(
+        setSnackBar({
+          message: `Please wait,select range of ID `,
           variant: "info",
         })
       );
       setLoader(false);
-      setPdfLoading(true);
     } catch (error) {
-      const err = error as any;
       setLoader(false);
-      if (err.status === 404) {
+      const err = error as any; // Ensure error is cast to any
+      if (err.response?.status === 404) {
         dispatch(
           setSnackBar({
             message: `${formik.values.REGULATION} batch has no records`,
@@ -83,19 +160,75 @@ export default function AllBatchCertificate() {
       } else {
         dispatch(
           setSnackBar({
-            message: "Faied to search student",
+            message: "Failed to search student",
             variant: "error",
           })
         );
       }
       setDetails(null);
     }
+    setShowRangeSelect(true);
   };
   return (
     <>
       <div className="home-pdf-container">
-        <form onSubmit={handleSubmit} className="search-form">
-          <div className="input-box">
+        <form
+          onSubmit={handleSubmit}
+          className="search-form"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <div
+            className="radio-buttons"
+            style={{ display: "flex", marginBottom: "30px" }}
+          >
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="type"
+              className="radio-btn"
+              value={formik.values.type}
+            >
+              <FormControlLabel
+                value="puc"
+                onChange={formik.handleChange}
+                className="radio-btn"
+                control={
+                  <Radio
+                    sx={{
+                      color: "gray",
+                      "&.Mui-checked": {
+                        color: "black",
+                      },
+                    }}
+                    required
+                    disabled={details ? true : false}
+                  />
+                }
+                label="PUC"
+                required={false}
+              />
+              <FormControlLabel
+                value="engg"
+                onChange={formik.handleChange}
+                className="radio-btn"
+                control={
+                  <Radio
+                    sx={{
+                      color: "gray",
+                      "&.Mui-checked": {
+                        color: "black",
+                      },
+                    }}
+                    required
+                    disabled={details ? true : false}
+                  />
+                }
+                label="Engineering"
+                required={false}
+              />
+            </RadioGroup>
+          </div>
+          <div className="input-box" style={{ marginBottom: "30px" }}>
             <input
               type="text"
               placeholder="Enter the Batch (RXX)"
@@ -108,28 +241,12 @@ export default function AllBatchCertificate() {
               pattern="R\d{2}"
               disabled={details}
             />
-            <select
-              name="range"
-              className="range"
-              required
-              onChange={formik.handleChange}
-              value={formik.values.range}
+            <button
+              className="submit-btn"
               disabled={details}
+              onClick={handleRange}
             >
-              <option value={1}>1-100</option>
-              <option value={2}>101-200</option>
-              <option value={3}>201-300</option>
-              <option value={4}>301-400</option>
-              <option value={5}>401-500</option>
-              <option value={6}>501-600</option>
-              <option value={7}>601-700</option>
-              <option value={8}>701-800</option>
-              <option value={9}>801-900</option>
-              <option value={10}>901-1000</option>
-              <option value={11}>1001-1100</option>
-            </select>
-            <button type="submit" className="submit-btn" disabled={details}>
-              {loader ? (
+              {loader && pdfDetails == null ? (
                 <CircularProgress size={27} sx={{ color: "white" }} />
               ) : (
                 "Search"
@@ -140,6 +257,8 @@ export default function AllBatchCertificate() {
                 type="reset"
                 onClick={() => {
                   setDetails(null);
+                  setShowRangeSelect(false);
+                  setPDFDetails(null);
                   formik.resetForm();
                 }}
                 className="submit-btn"
@@ -148,29 +267,90 @@ export default function AllBatchCertificate() {
               </button>
             )}
           </div>
+          {rangeOptions.length > 0 && showRangeSelect && (
+            <>
+              <div className="ranges">
+                <select
+                  name="range"
+                  className="range"
+                  required
+                  onChange={formik.handleChange}
+                  value={formik.values.range}
+                  style={{ marginBottom: "30px" }}
+                >
+                  {rangeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="layouts" style={{ display: "flex" }}>
+                <RadioGroup
+                  defaultValue="L1"
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="layout"
+                >
+                  <FormControlLabel
+                    value="L1"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label="Layout 1"
+                  />
+                  <FormControlLabel
+                    value="L2"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label="Layout 2"
+                  />
+                </RadioGroup>
+              </div>
+              <button
+                type="submit"
+                className="submit-btn"
+                style={{ width: "70%" }}
+              >
+                {loader ? (
+                  <CircularProgress size={27} sx={{ color: "white" }} />
+                ) : (
+                  "Generate PDF"
+                )}
+              </button>
+            </>
+          )}
         </form>
 
-        {details && (
-          <>
-            <PDFViewer
-              style={{
-                width: "80%",
-                height: "100vh",
-              }}
-            >
-              <Document>
-                <AllbatchPDFFIle
-                  details={details && details}
-                  start={rangeCert.start}
-                  end={rangeCert.end}
-                />
-              </Document>
-            </PDFViewer>
-          </>
+        {pdfDetails && pdfDetails.length > 0 && (
+          <PDFViewer
+            style={{
+              width: "80%",
+              height: "100vh",
+            }}
+          >
+            <Document>
+              <AllbatchPDFFIle type={formik.values.type} details={pdfDetails} />
+            </Document>
+          </PDFViewer>
         )}
-
-
-        
       </div>
     </>
   );

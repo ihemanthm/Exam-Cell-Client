@@ -1,7 +1,14 @@
 import React from "react";
-import PDFFile from "../certificateLayouts/PDFFile";
+import PUC_Layout_1 from "../certificateLayouts/PUC_Layout_1";
+import Engg_Layout_1 from "../certificateLayouts/Engg_Layout_1";
 import Button from "@mui/material/Button";
-import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
+import {
+  PDFViewer,
+  PDFDownloadLink,
+  Document,
+  Page,
+  StyleSheet,
+} from "@react-pdf/renderer";
 import DownloadForOfflineRoundedIcon from "@mui/icons-material/DownloadForOfflineRounded";
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
@@ -16,7 +23,8 @@ export default function SingleCertificate() {
   const [loader, setLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
 
-  const getDetailsById=process.env.REACT_APP_GET_PUC_DETAILS_BY_ID;
+  const getDetailsById = process.env.REACT_APP_GET_PUC_DETAILS_BY_ID;
+  const getEnggDetailsById = process.env.REACT_APP_GET_ENGG_DETAILS_BY_ID;
 
   interface ResponseData {
     message?: string;
@@ -48,10 +56,8 @@ export default function SingleCertificate() {
     setDetails(null);
     setLoader(true);
     try {
-      const response = await axios.get(
-        getDetailsById+formik.values.ID
-      );
-
+      const response = await axios.get(getEnggDetailsById + formik.values.ID);
+      console.log(response);
       setDetails(response.data);
       setLoader(false);
     } catch (error: any) {
@@ -73,6 +79,23 @@ export default function SingleCertificate() {
       }
     }
   };
+  const styles = StyleSheet.create({
+    page: {
+      marginTop: 60,
+      paddingBottom: 30,
+      paddingLeft: 40,
+      paddingRight: 50,
+      textAlign: "justify",
+      backgroundColor: "transparent",
+    },
+    engg_page: {
+      marginTop: 80,
+      textAlign: "justify",
+      marginLeft: 20,
+      marginRight: 40,
+      backgroundColor: "transparent",
+    },
+  });
   return (
     <>
       <div className="home-pdf-container">
@@ -111,7 +134,7 @@ export default function SingleCertificate() {
           </div>
         </form>
 
-        {details && (
+        {/* {details && (
           <>
             <PDFViewer
               style={{
@@ -119,11 +142,21 @@ export default function SingleCertificate() {
                 height: "100vh",
               }}
             >
-              <PDFFile student={details} />
+              <Document>
+                <Page size="A4" style={styles.page}>
+                  <PUC_Layout_1 student={details} />
+                </Page>
+              </Document>
             </PDFViewer>
 
             <PDFDownloadLink
-              document={<PDFFile student={details} />}
+              document={
+                <Document>
+                  <Page size="A4" style={styles.page}>
+                    <PUC_Layout_1 student={details} />
+                  </Page>
+                </Document>
+              }
               fileName={`${details.ID}_memo.pdf`}
             >
               <Button
@@ -135,6 +168,21 @@ export default function SingleCertificate() {
               </Button>
             </PDFDownloadLink>
           </>
+        )} */}
+
+        {details && (
+          <PDFViewer
+            style={{
+              width: "80%",
+              height: "100vh",
+            }}
+          >
+            <Document>
+              <Page size="A4" style={styles.engg_page}>
+                <Engg_Layout_1 details={details} />
+              </Page>
+            </Document>
+          </PDFViewer>
         )}
       </div>
     </>
