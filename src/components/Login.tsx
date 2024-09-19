@@ -71,7 +71,7 @@ export default function Login({setLogin}:{setLogin:React.Dispatch<React.SetState
       //  });
       if(formik.values.email === "admin@rguktrkv.ac.in" && formik.values.password === "Admin@123"){
         setLogin(true);
-        navigate("/pucUpload")
+        navigate("/PucUpload")
       }
       else{setError("*Wrong Credentials")}
     }
