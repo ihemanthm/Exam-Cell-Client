@@ -1,4 +1,3 @@
-import { useState } from "react";
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -23,14 +22,16 @@ import "../styles/Navbar.css";
 import { Link } from "react-router-dom";
 interface Props {
   window?: () => Window;
+  setLogin: (arg0 : boolean)=>void;
 }
 
 const drawerWidth = 300;
 
 export default function DrawerAppBar(props: Props) {
-  const { window } = props;
+  const { window,setLogin } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [disableDrawer, setDisableDrawer] = React.useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -56,9 +57,16 @@ export default function DrawerAppBar(props: Props) {
   const handleLClick = (index: number) => {
     setLOpen(index);
   };
+  const handleLogout = ()=>{
+    handleDrawerToggle();
+    setDisableDrawer(!disableDrawer);
+    setLogin(false);
+    handleDrawerToggle();
+   // onLogin().then().catch(resolve);
+  } 
 
   const drawer = (
-    <Box sx={{ textAlign: "center" }}>
+    <Box sx={{ textAlign : "center" }} >
       <Typography
         variant="h6"
         component="div"
@@ -92,7 +100,7 @@ export default function DrawerAppBar(props: Props) {
         </ListItemButton>
         <Collapse in={lopen === 1} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <Link to={"/"} className="link">
+            <Link to={"/PucUpload"} className="link">
               <ListItemButton
                 sx={{ pl: 6 }}
                 selected={selectedIndex === 1}
@@ -101,7 +109,7 @@ export default function DrawerAppBar(props: Props) {
                 <ListItemText primary="PUC Details" />
               </ListItemButton>
             </Link>
-            <Link to={"/EnggUpload"} className="link">
+            <Link to={"/ZipFile"} className="link">
               <ListItemButton
                 sx={{ pl: 6 }}
                 selected={selectedIndex === 2}
@@ -182,20 +190,18 @@ export default function DrawerAppBar(props: Props) {
             </Link>
           </List>
         </Collapse>
-        <Link to={"/ZIPFile"} className="link">
+        <Link to="/" className="link" >
           <ListItemButton
             sx={{
-              textAlign: "center",
-              backgroundColor: lopen == 4 ? "black" : "#F9F5F6",
-              color: lopen == 4 ? "#F9F5F6" : "black",
-              marginBottom: "0.2rem",
-              "&:hover": { backgroundColor: lopen == 4 ? "black" : "#F9F5F6" },
+              textAlign : "center",
+              pl : 6,
+              backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
+              color: lopen === 7 ? "#F9F5F6" : "black",
             }}
-            onClick={() => {
-              lopen != 4 ? handleLClick(4) : handleLClick(0);
-            }}
+            selected={selectedIndex === 7}
+            onClick={(event) => handleLogout()}
           >
-            <ListItemText primary="Upload Images" />
+            <ListItemText primary="Logout" />
           </ListItemButton>
         </Link>
       </List>
@@ -229,15 +235,17 @@ export default function DrawerAppBar(props: Props) {
           sx={{ backgroundColor: "#F6F5F2 ", position: "fixed" }}
         >
           <Toolbar sx={{ justifyContent: "space-between" }}>
-            <IconButton
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, color: "black" }}
-            >
-              <MenuIcon />
-            </IconButton>
-
+            {
+              !disableDrawer &&
+              <IconButton
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, color: "black" }}
+              >
+                <MenuIcon /> 
+              </IconButton>
+            }
             <Typography
               variant="h6"
               component="div"
@@ -276,8 +284,9 @@ export default function DrawerAppBar(props: Props) {
                 width: drawerWidth,
               },
             }}
+           
           >
-            {drawer}
+            {drawer }
           </Drawer>
         </nav>
       </Box>
