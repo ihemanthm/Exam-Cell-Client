@@ -27,7 +27,7 @@ const generateQRCodeBase64 = async (text: string): Promise<string> => {
 const generateBarcodeBase64 = (text: string): string => {
   const canvas = document.createElement("canvas");
   JsBarcode(canvas, text, {
-    // format: "CODE128",
+    format: "CODE128",
     width: 1,
     height: 50,
     displayValue: false,
@@ -80,6 +80,7 @@ export default function Engg_Layout_1({ details }: any) {
       // marginBottom: 2,
     },
     semName: {
+      backgroundColor:"#AAB396",
       fontSize: 8,
       fontWeight: "bold",
       height: 11,
@@ -235,7 +236,6 @@ export default function Engg_Layout_1({ details }: any) {
 
     return `${day}-${monthName}-${year}`;
   }
-  const [majorCGPA,setMajorCGPA]=useState(0.0);
   const [qrCodeBase64, setQrCodeBase64] = useState("");
   const [barcodeBase64, setBarcodeBase64] = useState("");
   useEffect(() => {
