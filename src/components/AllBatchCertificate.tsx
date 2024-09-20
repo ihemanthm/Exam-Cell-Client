@@ -267,24 +267,10 @@ export default function AllBatchCertificate() {
               </button>
             )}
           </div>
-          {rangeOptions.length > 0 && showRangeSelect && (
-            <>
-              <div className="ranges">
-                <select
-                  name="range"
-                  className="range"
-                  required
-                  onChange={formik.handleChange}
-                  value={formik.values.range}
-                  style={{ marginBottom: "30px" }}
-                >
-                  {rangeOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+
+          {rangeOptions.length > 0 &&
+            showRangeSelect &&
+            formik.values.type === "puc" && (
               <div className="layouts" style={{ display: "flex" }}>
                 <RadioGroup
                   defaultValue="L1"
@@ -324,6 +310,26 @@ export default function AllBatchCertificate() {
                   />
                 </RadioGroup>
               </div>
+            )}
+          {rangeOptions.length > 0 && showRangeSelect && (
+            <>
+              <div className="ranges">
+                <select
+                  name="range"
+                  className="range"
+                  required
+                  onChange={formik.handleChange}
+                  value={formik.values.range}
+                  style={{ marginBottom: "30px" }}
+                >
+                  {rangeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <button
                 type="submit"
                 className="submit-btn"
@@ -347,7 +353,7 @@ export default function AllBatchCertificate() {
             }}
           >
             <Document>
-              <AllbatchPDFFIle type={formik.values.type} details={pdfDetails} />
+              <AllbatchPDFFIle type={formik.values.type} details={pdfDetails} layout={formik.values.layout}/>
             </Document>
           </PDFViewer>
         )}
