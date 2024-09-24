@@ -1,6 +1,5 @@
 import React from "react";
 import { Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-// import BatchLayout from "./BatchLayout";
 import PUC_Layout_1 from "./PUC_Layout_1";
 import Engg_Layout_1 from "./Engg_Layout_1";
 import PUC_Layout_2 from './PUC_Layout_2';

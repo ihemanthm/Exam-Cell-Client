@@ -2,7 +2,8 @@ import React from "react";
 import PUC_Layout_1 from "../certificateLayouts/PUC_Layout_1";
 import Engg_Layout_1 from "../certificateLayouts/Engg_Layout_1";
 import PUC_Layout_2 from "../certificateLayouts/PUC_Layout_2";
-import Button from "@mui/material/Button";
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
 import {
@@ -20,6 +21,7 @@ import { useState } from "react";
 import { setSnackBar } from "../store/features/snackbar/snackbar";
 import { useDispatch } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Public } from "@mui/icons-material";
 
 export default function SingleCertificate() {
   const [details, setDetails] = useState<any | null>(null);
@@ -39,7 +41,7 @@ export default function SingleCertificate() {
   }
   const initialValues: FormValues = {
     ID: "",
-    type: "",
+    type: "engg",
     layout: "L1",
   };
   const validate = (values: FormValues) => {
@@ -56,7 +58,7 @@ export default function SingleCertificate() {
   const formik = useFormik<FormValues>({
     initialValues,
     validate,
-    onSubmit: (values) => {},
+    onSubmit: (values) => { },
   });
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -198,7 +200,20 @@ export default function SingleCertificate() {
                         }}
                       />
                     }
-                    label="Layout 1"
+                    label={
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../portrait.png")}
+                            alt="Landscape Layout"
+                          />
+                        </Card>
+                        <span>Layout 2</span>
+                      </div>
+                    }
                   />
                   <FormControlLabel
                     value="L2"
@@ -213,7 +228,20 @@ export default function SingleCertificate() {
                         }}
                       />
                     }
-                    label="Layout 2"
+                    label={
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../landscape.png")}
+                            alt="Landscape Layout"
+                          />
+                        </Card>
+                        <span>Layout 2</span>
+                      </div>
+                    }
                   />
                 </RadioGroup>
               </div>
@@ -263,7 +291,7 @@ export default function SingleCertificate() {
             >
               <Document>
                 {formik.values.type === "puc" &&
-                formik.values.layout == "L1" ? (
+                  formik.values.layout == "L1" ? (
                   <Page size="A4" style={styles.PUC_Layout_1_page}>
                     <PUC_Layout_1 student={details} />
                   </Page>
@@ -283,58 +311,8 @@ export default function SingleCertificate() {
                 )}
               </Document>
             </PDFViewer>
-
-            <PDFDownloadLink
-              document={
-                <Document>
-                  {formik.values.type === "puc" &&
-                  formik.values.layout == "L1" ? (
-                    <Page size="A4" style={styles.PUC_Layout_1_page}>
-                      <PUC_Layout_1 student={details} />
-                    </Page>
-                  ) : formik.values.type === "puc" &&
-                    formik.values.layout == "L2" ? (
-                    <Page
-                      size="A4"
-                      orientation="landscape"
-                      style={styles.PUC_Layout_2_page}
-                    >
-                      <PUC_Layout_2 student={details} />
-                    </Page>
-                  ) : (
-                    <Page style={styles.engg_page}>
-                      <Engg_Layout_1 details={details} />
-                    </Page>
-                  )}
-                </Document>
-              }
-              fileName={`${details.ID}_memo.pdf`}
-            >
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: "black", color: "white" }}
-                endIcon={<DownloadForOfflineRoundedIcon />}
-              >
-                Download
-              </Button>
-            </PDFDownloadLink>
           </>
         )}
-
-        {/* {details && (
-          <PDFViewer
-            style={{
-              width: "80%",
-              height: "100vh",
-            }}
-          >
-            <Document>
-              <Page size="A4" style={styles.engg_page}>
-                <Engg_Layout_1 details={details} />
-              </Page>
-            </Document>
-          </PDFViewer>
-        )} */}
       </div>
     </>
   );

@@ -43,21 +43,8 @@ const generateBarcodeBase64 = (text: string): string => {
 };
 
 export default function PUC_Layout_2({ student }: any) {
-  const [ind, setInd] = useState<any>(0);
-
   const [qrCodeBase64, setQrCodeBase64] = useState("");
   const [barcodeBase64, setBarcodeBase64] = useState("");
-  useEffect(() => {
-    const generateQR = async () => {
-      const qrText = `${student.ID} \n${student.SNAME} \n ${student.GRP} `;
-      const qrBase64 = await generateQRCodeBase64(qrText);
-      setQrCodeBase64(qrBase64);
-      const barcodeText = `${student.ID} `;
-      const barcodeImage = generateBarcodeBase64(barcodeText);
-      setBarcodeBase64(barcodeImage);
-    };
-    generateQR();
-  }, [student]);
 
   Font.register({
     family: "Merriweather",
@@ -77,13 +64,6 @@ export default function PUC_Layout_2({ student }: any) {
   });
 
   const styles = StyleSheet.create({
-    page: {
-      marginTop: 130,
-      paddingBottom: 30,
-      paddingLeft: 50,
-      paddingRight: 50,
-      backgroundColor: "transparent",
-    },
     image: {
       marginRight: 40,
       height: 60,
@@ -107,116 +87,111 @@ export default function PUC_Layout_2({ student }: any) {
       flexDirection: "column",
     },
     headingRow: {
+      display:"flex",
       flexDirection: "row",
       height: 50,
       fontWeight: "bold",
       textAlign: "center",
+      fontSize:8,
     },
     subName: {
-      fontFamily: "MerriweatherBold",
       backgroundColor: "#ffe23e",
       alignItems: "center",
       justifyContent: "center",
-      fontSize: 8,
       height: 50,
-      width: 125,
-      borderBottomWidth: 1,
+      width: 105,
+      borderBottom: 1,
     },
     semesters: {
+      display:"flex",
       flexDirection: "column",
-      width: 130,
+      width: 135,
       height: 50,
     },
     sem: {
-      fontSize: 7,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#a84702",
-      width: 130,
+      width: 135,
       height: 10,
       color: "white",
-      borderRightWidth: 1,
-      borderBottomWidth: 1,
-      borderLeftWidth: 1,
+      borderRight: 1,
+      borderBottom: 1,
+      borderLeft: 1,
     },
     semHead: {
       flexDirection: "row",
       height: 40,
-      width: 130,
+      width: 135,
     },
     subCode: {
-      fontFamily: "MerriweatherBold",
       width: 35,
       height: 40,
-      fontSize: 7,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#ffe23e",
-      borderBottomWidth: 1,
-      borderLeftWidth: 1,
+      borderBottom: 1,
+      borderLeft: 1,
     },
     credits: {
-      fontFamily: "MerriweatherBold",
       width: 30,
       height: 40,
-      fontSize: 7,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#ffe23e",
       borderLeft: 1,
-      borderBottomWidth: 1,
+      borderBottom: 1,
     },
     grade: {
-      fontFamily: "MerriweatherBold",
-      width: 35,
+      width: 40,
       height: 40,
-      fontSize: 7,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#ffe23e",
       borderLeft: 1,
-      borderBottomWidth: 1,
+      borderBottom: 1,
     },
     creditPoints: {
-      fontFamily: "MerriweatherBold",
       width: 30,
       height: 40,
-      fontSize: 7,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#ffe23e",
+      borderBottom: 1,
       borderLeft: 1,
-      borderBottomWidth: 1,
     },
     maxCredits: {
-      fontFamily: "MerriweatherBold",
       width: 50,
-      fontSize: 7,
       height: 50,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "#ffe23e",
-      borderBottomWidth: 1,
-      borderLeftWidth: 1,
+      borderBottom: 1,
+      borderLeft: 1,
     },
     dataRow: {
       flexDirection: "row",
-      height: 15,
     },
     subNameData: {
-      fontFamily: "MerriweatherBold",
       justifyContent: "center",
       textAlign: "left",
-      fontSize: 7,
+      fontSize: 8,
       fontWeight: "extrabold",
-      width: 125,
+      width: 105,
       paddingLeft: 5,
       height: 15,
+    },
+    semHeadData:{
+      display:"flex",
+      position:"absolute",
+      flexDirection: "row",
+      height: 15,
+      width: 135,
     },
     subCodeData: {
       justifyContent: "center",
       alignItems: "center",
-      fontSize: 7,
+      fontSize: 6,
       borderLeft: 1,
       height: 15,
       width: 35,
@@ -224,7 +199,7 @@ export default function PUC_Layout_2({ student }: any) {
     creditsData: {
       justifyContent: "center",
       alignItems: "center",
-      fontSize: 7,
+      fontSize: 6,
       width: 30,
       borderLeft: 1,
       height: 15,
@@ -232,15 +207,15 @@ export default function PUC_Layout_2({ student }: any) {
     gradeData: {
       justifyContent: "center",
       alignItems: "center",
-      fontSize: 7,
-      width: 35,
+      fontSize: 6,
+      width: 40,
       borderLeft: 1,
       height: 15,
     },
     creditPointsData: {
       justifyContent: "center",
       alignItems: "center",
-      fontSize: 7,
+      fontSize: 6,
       width: 30,
       borderLeft: 1,
       height: 15,
@@ -248,20 +223,19 @@ export default function PUC_Layout_2({ student }: any) {
     maxCreditsData: {
       justifyContent: "center",
       alignItems: "center",
-      fontSize: 7,
+      fontSize: 6,
       width: 50,
       borderLeft: 1,
       height: 15,
     },
     tcpRow: {
-      fontFamily: "MerriweatherBold",
       flexDirection: "row",
       alignItems: "flex-start",
-      fontSize: 7,
+      fontSize: 8,
       height: 10,
     },
     tcpName: {
-      width: 125,
+      width: 105,
       height: 10,
       fontWeight: "extrabold",
       borderTop: 1,
@@ -271,7 +245,7 @@ export default function PUC_Layout_2({ student }: any) {
     tcpEmpty: {
       borderLeft: 1,
       borderTop: 1,
-      width: 100,
+      width: 105,
       height: 10,
 
     },
@@ -287,7 +261,6 @@ export default function PUC_Layout_2({ student }: any) {
     tcpTotalMax: {
       width: 50,
       height: 10,
-      fontSize: 7,
       alignItems: "center",
       justifyContent: "center",
       borderLeft: 1,
@@ -295,23 +268,21 @@ export default function PUC_Layout_2({ student }: any) {
     },
 
     gpaRow: {
-      fontFamily: "MerriweatherBold",
       flexDirection: "row",
       alignItems: "flex-start",
-      fontSize: 7,
+      fontSize: 8,
       height: 10,
     },
     gpaName: {
-      width: 125,
+      width: 105,
       height: 10,
-      fontSize: 7,
       fontWeight: "extrabold",
       borderTop: 1,
       alignItems: "center",
       justifyContent: "center",
     },
     gpaData: {
-      width: 130,
+      width: 135,
       alignItems: "center",
       justifyContent: "center",
       height: 10,
@@ -322,7 +293,6 @@ export default function PUC_Layout_2({ student }: any) {
     gpaTotal: {
       width: 100,
       height: 10,
-      fontSize: 7,
       fontWeight: "extrabold",
       alignItems: "center",
       justifyContent: "center",
@@ -347,17 +317,17 @@ export default function PUC_Layout_2({ student }: any) {
       width: 100,
       height: 50,
       left:"35%",
-      bottom:-50,
+      bottom:-75,
     },
     qrCode: {
       left: 50,
-      width: 30,
-      height: 30,
+      width: 40,
+      height: 40,
     },
     barCode: {
       left: 150,
       width: 80,
-      height: 25,
+      height: 35,
     },
   });
 
@@ -391,6 +361,23 @@ export default function PUC_Layout_2({ student }: any) {
   var cgpa: string[] = Array(4).fill(0);
   var creditsObtainedSoFar = 0;
   var maxCreditsSoFar = 0;
+
+  useEffect(() => {
+    const generateQR = async () => {
+      const qrText = `${student.ID} \n${student.SNAME} \n ${student.GRP} `;
+      const qrBase64 = await generateQRCodeBase64(qrText);
+      setQrCodeBase64(qrBase64);
+      let date=new Date(recentCCMY);
+      const qrMonth= (date.getMonth() + 1).toString().padStart(2, '0');
+      const qrYear=date.getFullYear();
+      const barcodeText = `${qrMonth}/${student.ID.slice(1)}/${qrYear}`;
+      const barcodeImage = generateBarcodeBase64(barcodeText);
+      setBarcodeBase64(barcodeImage);
+    };
+    generateQR();
+  }, [student]);
+
+
   return (
     <Document>
         <Image style={styles.image} src={image} />
@@ -435,16 +422,16 @@ export default function PUC_Layout_2({ student }: any) {
               </View>
               <View style={styles.semHead}>
                 <View style={styles.subCode}>
-                  <Text>Subject {"\n"}Code</Text>
+                  <Text>Subject Code</Text>
                 </View>
                 <View style={styles.credits}>
                   <Text>Credits</Text>
                 </View>
                 <View style={styles.grade}>
-                  <Text>Grade{"\n"}Obtained</Text>
+                  <Text>Grade Obtained</Text>
                 </View>
                 <View style={styles.creditPoints}>
-                  <Text>Credit{"\n"}Points</Text>
+                  <Text>Credit Points</Text>
                 </View>
               </View>
             </View>
@@ -456,16 +443,16 @@ export default function PUC_Layout_2({ student }: any) {
               </View>
               <View style={styles.semHead}>
                 <View style={styles.subCode}>
-                  <Text>Subject {"\n"}Code</Text>
+                  <Text>Subject Code</Text>
                 </View>
                 <View style={styles.credits}>
                   <Text>Credits</Text>
                 </View>
                 <View style={styles.grade}>
-                  <Text>Grade{"\n"}Obtained</Text>
+                  <Text>Grade Obtained</Text>
                 </View>
                 <View style={styles.creditPoints}>
-                  <Text>Credit{"\n"}Points</Text>
+                  <Text>Credit Points</Text>
                 </View>
               </View>
             </View>
@@ -477,16 +464,16 @@ export default function PUC_Layout_2({ student }: any) {
               </View>
               <View style={styles.semHead}>
                 <View style={styles.subCode}>
-                  <Text>Subject {"\n"}Code</Text>
+                  <Text>Subject Code</Text>
                 </View>
                 <View style={styles.credits}>
                   <Text>Credits</Text>
                 </View>
                 <View style={styles.grade}>
-                  <Text>Grade{"\n"}Obtained</Text>
+                  <Text>Grade Obtained</Text>
                 </View>
                 <View style={styles.creditPoints}>
-                  <Text>Credit{"\n"}Points</Text>
+                  <Text>Credit Points</Text>
                 </View>
               </View>
             </View>
@@ -498,25 +485,25 @@ export default function PUC_Layout_2({ student }: any) {
               </View>
               <View style={styles.semHead}>
                 <View style={styles.subCode}>
-                  <Text>Subject {"\n"}Code</Text>
+                  <Text>Subject Code</Text>
                 </View>
                 <View style={styles.credits}>
                   <Text>Credits</Text>
                 </View>
                 <View style={styles.grade}>
-                  <Text>Grade{"\n"}Obtained</Text>
+                  <Text>Grade Obtained</Text>
                 </View>
                 <View style={styles.creditPoints}>
-                  <Text>Credit{"\n"}Points</Text>
+                  <Text>Credit Points</Text>
                 </View>
               </View>
             </View>
 
             <View style={styles.maxCredits} wrap={false}>
-              <Text>Total Max. Credit Points</Text>
+              <Text>Total {"\n"}Max. {"\n"}Credit {"\n"}Points</Text>
             </View>
             <View style={styles.maxCredits} wrap={false}>
-              <Text>Total Credit Points Obtained</Text>
+              <Text>Total {"\n"}Credit {"\n"}Points {"\n"}Obtained</Text>
             </View>
 
           </View>
