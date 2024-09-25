@@ -20,15 +20,10 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 
 import "../styles/Navbar.css";
 import { Link } from "react-router-dom";
-interface Props {
-  window?: () => Window;
-  setLogin: (arg0 : boolean)=>void;
-}
 
 const drawerWidth = 300;
 
-export default function DrawerAppBar(props: Props) {
-  const { window,setLogin } = props;
+export default function DrawerAppBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [disableDrawer, setDisableDrawer] = React.useState(false);
@@ -57,16 +52,9 @@ export default function DrawerAppBar(props: Props) {
   const handleLClick = (index: number) => {
     setLOpen(index);
   };
-  const handleLogout = ()=>{
-    handleDrawerToggle();
-    setDisableDrawer(!disableDrawer);
-    setLogin(false);
-    handleDrawerToggle();
-   // onLogin().then().catch(resolve);
-  } 
 
   const drawer = (
-    <Box sx={{ textAlign : "center" }} >
+    <Box sx={{ textAlign: "center" }} >
       <Typography
         variant="h6"
         component="div"
@@ -109,7 +97,7 @@ export default function DrawerAppBar(props: Props) {
                 <ListItemText primary="PUC Details" />
               </ListItemButton>
             </Link>
-            <Link to={"/ZipFile"} className="link">
+            <Link to={"/EnggUpload"} className="link">
               <ListItemButton
                 sx={{ pl: 6 }}
                 selected={selectedIndex === 2}
@@ -190,26 +178,42 @@ export default function DrawerAppBar(props: Props) {
             </Link>
           </List>
         </Collapse>
-        <Link to="/" className="link" >
+        <Link to="/gradeSheet" className="link" >
           <ListItemButton
             sx={{
-              textAlign : "center",
-              pl : 6,
+              textAlign: "center",
+              pl: 6,
+              marginBottom: "0.2rem",
               backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
               color: lopen === 7 ? "#F9F5F6" : "black",
             }}
             selected={selectedIndex === 7}
-            onClick={(event) => handleLogout()}
+            
           >
-            <ListItemText primary="Logout" />
+            <ListItemText primary="Grade Sheet" />
+          </ListItemButton>
+        </Link>
+
+        <Link to="/ZIPFile" className="link" >
+          <ListItemButton
+            sx={{
+              textAlign: "center",
+              pl: 6,
+              marginBottom: "0.2rem",
+              backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
+              color: lopen === 7 ? "#F9F5F6" : "black",
+            }}
+            selected={selectedIndex === 7}
+            
+          >
+            <ListItemText primary="Upload Images" />
           </ListItemButton>
         </Link>
       </List>
     </Box>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  // const container =window !== undefined ? () => window().document.body : undefined;
 
   return (
     <div className="navbar-div">
@@ -243,7 +247,7 @@ export default function DrawerAppBar(props: Props) {
                 onClick={handleDrawerToggle}
                 sx={{ mr: 2, color: "black" }}
               >
-                <MenuIcon /> 
+                <MenuIcon />
               </IconButton>
             }
             <Typography
@@ -271,7 +275,7 @@ export default function DrawerAppBar(props: Props) {
         </AppBar>
         <nav>
           <Drawer
-            container={container}
+            // container={}
             variant="temporary"
             open={mobileOpen}
             onClose={handleDrawerToggle}
@@ -284,9 +288,9 @@ export default function DrawerAppBar(props: Props) {
                 width: drawerWidth,
               },
             }}
-           
+
           >
-            {drawer }
+            {drawer}
           </Drawer>
         </nav>
       </Box>

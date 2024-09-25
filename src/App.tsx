@@ -9,15 +9,17 @@ import ZipSelection from "./components/ZIPFileSelection";
 import PUC_XLSXSelection from "./components/PUC_XLSXFileSelection";
 import SingleCertificate from "./components/SingleCertificate";
 import Engg_XLSXFileSelection from "./components/Engg_XLSXFileSelection";
+import GradeSheet from "./components/GradeSheet";
 import Login from "./components/Login";
 
-// Protected Route Component
-function ProtectedRoute({ element, login }: { element: JSX.Element, login: boolean }) {
-  return login ? element : <Navigate to="/" />; // Redirect to login if not logged in
-}
+// // Protected Route Component
+// function ProtectedRoute({ element, login }: { element: JSX.Element, login: boolean }) {
+//   // return login ? element : <Navigate to="/" />;
+//   return element;
+// }
 
 function App() {
-  const [login, setLogin] = useState(false);
+  // const [login, setLogin] = useState(true);
 
   return (
     <div>
@@ -27,32 +29,35 @@ function App() {
         autoHideDuration={3000}
       >
         <SnackbarListener />
-        {login && <AppNavbar setLogin={setLogin} />}
+        <AppNavbar />
 
         <Routes>
-          {/* Login Route is always accessible */}
-          <Route path="/" element={<Login setLogin={setLogin} />} />
+          {/* <Route path="/" element={<Login setLogin={setLogin} />} /> */}
 
           {/* Protected Routes */}
           <Route
             path="/EnggUpload"
-            element={<ProtectedRoute login={login} element={<Engg_XLSXFileSelection />} />}
+            element={<Engg_XLSXFileSelection />}
           />
           <Route
             path="/Layout1"
-            element={<ProtectedRoute login={login} element={<SingleCertificate />} />}
+            element={<SingleCertificate />}
           />
           <Route
             path="/Layout2"
-            element={<ProtectedRoute login={login} element={<AllBatchCertificates />} />}
+            element={<AllBatchCertificates />}
           />
           <Route
             path="/ZIPFile"
-            element={<ProtectedRoute login={login} element={<ZipSelection />} />}
+            element={<ZipSelection />}
           />
           <Route
             path="/PucUpload"
-            element={<ProtectedRoute login={login} element={<PUC_XLSXSelection />} />}
+            element={<PUC_XLSXSelection />}
+          />
+          <Route
+            path="/gradeSheet"
+            element={<GradeSheet />}
           />
         </Routes>
       </SnackbarProvider>

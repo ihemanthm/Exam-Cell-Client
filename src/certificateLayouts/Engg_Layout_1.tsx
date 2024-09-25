@@ -36,6 +36,9 @@ const generateBarcodeBase64 = (text: string): string => {
 };
 
 export default function Engg_Layout_1({ details }: any) {
+  const [qrCodeBase64, setQrCodeBase64] = useState("");
+  const [barcodeBase64, setBarcodeBase64] = useState("");
+
   const styles = StyleSheet.create({
     image: {
       height: 50,
@@ -236,19 +239,7 @@ export default function Engg_Layout_1({ details }: any) {
 
     return `${day}-${monthName}-${year}`;
   }
-  const [qrCodeBase64, setQrCodeBase64] = useState("");
-  const [barcodeBase64, setBarcodeBase64] = useState("");
-  useEffect(() => {
-    const generateQR = async () => {
-      const qrText = `${details.ID} \n${details.SNAME} \n ${details.GRP} `;
-      const qrBase64 = await generateQRCodeBase64(qrText);
-      setQrCodeBase64(qrBase64);
-      const barcodeText = `${details.ID} `;
-      const barcodeImage = generateBarcodeBase64(barcodeText);
-      setBarcodeBase64(barcodeImage);
-    };
-    generateQR();
-  }, [details]);
+
   const recentEXAMMY = details.ENGG_RECORDS.reduce(
     (latest: Date | null, sem: any) => {
       sem.SUBJECTS.forEach((subject: any) => {
@@ -262,6 +253,21 @@ export default function Engg_Layout_1({ details }: any) {
     null
   );
   const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
+
+  useEffect(() => {
+    const generateQR = async () => {
+      const qrText = `${details.ID} \n${details.SNAME} \n ${details.GRP} `;
+      const qrBase64 = await generateQRCodeBase64(qrText);
+      setQrCodeBase64(qrBase64);
+      let date=new Date(recentEXAMMY);
+      const qrMonth= (date.getMonth() + 1).toString().padStart(2, '0');
+      const qrYear=date.getFullYear();
+      const barcodeText = `${qrMonth}/${details.ID.slice(1)}/${qrYear}`;
+      const barcodeImage = generateBarcodeBase64(barcodeText);
+      setBarcodeBase64(barcodeImage);
+    };
+    generateQR();
+  }, [details]);
 
   return (
     <>
