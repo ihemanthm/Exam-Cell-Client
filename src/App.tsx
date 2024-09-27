@@ -10,6 +10,7 @@ import PUC_XLSXSelection from "./components/PUC_XLSXFileSelection";
 import SingleCertificate from "./components/SingleCertificate";
 import Engg_XLSXFileSelection from "./components/Engg_XLSXFileSelection";
 import GradeSheet from "./components/GradeSheet";
+import TemporaryGrade from './components/TemporaryGrade';
 import Login from "./components/Login";
 
 // // Protected Route Component
@@ -58,6 +59,10 @@ function App() {
           <Route
             path="/gradeSheet"
             element={<GradeSheet />}
+          />
+          <Route
+            path="/temporaryGrade"
+            element={<TemporaryGrade />}
           />
         </Routes>
       </SnackbarProvider>
