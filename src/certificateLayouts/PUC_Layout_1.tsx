@@ -46,14 +46,6 @@ export default function PDFFile({ student }: any) {
   });
 
   const styles = StyleSheet.create({
-    page: {
-      marginTop: 60,
-      paddingBottom: 30,
-      paddingLeft: 40,
-      paddingRight: 50,
-      textAlign: "justify",
-      backgroundColor: "transparent",
-    },
     image: {
       // marginTop:5,
       marginRight: 40,
@@ -74,7 +66,6 @@ export default function PDFFile({ student }: any) {
       fontFamily: "MerriweatherBold",
       lineHeight: 1.5,
     },
-
     table: {
       border: 0.5,
     },

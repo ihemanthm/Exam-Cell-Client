@@ -178,6 +178,23 @@ export default function DrawerAppBar() {
             </Link>
           </List>
         </Collapse>
+
+        <Link to="/temporaryCertificate" className="link" >
+          <ListItemButton
+            sx={{
+              textAlign: "center",
+              pl: 6,
+              marginBottom: "0.2rem",
+              backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
+              color: lopen === 7 ? "#F9F5F6" : "black",
+            }}
+            selected={selectedIndex === 7}
+            
+          >
+            <ListItemText primary="Temporary Certificates" />
+          </ListItemButton>
+        </Link>
+
         <Link to="/gradeSheet" className="link" >
           <ListItemButton
             sx={{
