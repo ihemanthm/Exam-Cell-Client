@@ -12,7 +12,7 @@ import {
 
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import rgukt_logo from './logo.jpg'
+import rgukt_logo from './rgukt.jpg'
 
 export default function Temporary_Grade({ details }: any) {
   
@@ -24,6 +24,13 @@ export default function Temporary_Grade({ details }: any) {
       alignItems:"center",
       marginBottom:10,
       fontWeight:"bold",
+    },
+    watermark:{
+      fontSize:60,
+      position:"absolute",
+      top:"55%",
+      color:"rgba(0,0,0,0.1)",
+      transform:'rotate(-45deg)',
     },
     clg:{
       fontSize:14,
@@ -260,6 +267,7 @@ export default function Temporary_Grade({ details }: any) {
     <>
       
       <View>
+        <Text style={styles.watermark}>Temporary Certificate</Text>
         <View style={styles.pageHeader}>
           <Image style={styles.image} src={rgukt_logo} />
           <View style={styles.headerText}>
