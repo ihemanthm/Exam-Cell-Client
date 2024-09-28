@@ -253,7 +253,7 @@ export default function Temporary_PUC_Layout({ student }: any) {
       height: "100%",
     },
     footer:{
-      marginTop:60,
+      marginTop:50,
       display:"flex",
       flexDirection:"row",
       justifyContent:"space-between",
@@ -284,6 +284,11 @@ export default function Temporary_PUC_Layout({ student }: any) {
   let cumulativeCR = 0;
   let CGPA = 0;
   let sCount = 0;
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+  const year = today.getFullYear();
+  const todayDate = `${day}-${month}-${year}`;
   return (
     <>
       <Text style={styles.watermark}>Temporary Certificate</Text>
@@ -417,6 +422,9 @@ export default function Temporary_PUC_Layout({ student }: any) {
             <Text>{cumulativeTGRP}</Text>
           </View>
         </View>
+      </View>
+      <View>
+        <Text style={styles.textSmall}><Text style={styles.boldText}>Date :</Text>{todayDate}</Text>
       </View>
       <View style={styles.footer}>
         <View style={styles.verified}>

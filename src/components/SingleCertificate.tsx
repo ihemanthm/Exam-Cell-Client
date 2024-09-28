@@ -208,10 +208,10 @@ export default function SingleCertificate() {
                             height="100"
                             width="100"
                             image={require("../portrait.png")}
-                            alt="Landscape Layout"
+                            alt="Portrait Layout"
                           />
                         </Card>
-                        <span>Layout 2</span>
+                        <span>Layout 1</span>
                       </div>
                     }
                   />
