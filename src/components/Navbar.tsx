@@ -20,7 +20,6 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 
 import "../styles/Navbar.css";
 import { Link } from "react-router-dom";
-import rgukt_logo from "../certificateLayouts/rgukt.jpg";
 
 const drawerWidth = 300;
 
@@ -48,7 +47,7 @@ export default function DrawerAppBar() {
   ) => {
     setSelectedIndex(index);
   };
-  const [lopen, setLOpen] = React.useState(3);
+  const [lopen, setLOpen] = React.useState(1);
 
   const handleLClick = (index: number) => {
     setLOpen(index);
@@ -70,6 +69,78 @@ export default function DrawerAppBar() {
       </Typography>
       <Divider />
       <List component="nav" aria-label="secondary mailbox folder">
+        <ListItemButton
+          sx={{
+            textAlign: "center",
+            backgroundColor: lopen == 1 ? "black" : "#F9F5F6",
+            color: lopen == 1 ? "#F9F5F6" : "black",
+            marginBottom: "0.2rem",
+            "&:hover": { backgroundColor: lopen == 1 ? "black" : "#F9F5F6" },
+          }}
+          onClick={() => {
+            {
+              lopen != 1 ? handleLClick(1) : handleLClick(0);
+            }
+          }}
+        >
+          <ListItemText primary="Upload Regular Details" />
+          {lopen == 1 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={lopen === 1} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <Link to={"/PucUpload"} className="link">
+              <ListItemButton
+                sx={{ pl: 6 }}
+                selected={selectedIndex === 1}
+                onClick={(event) => handleListItemClick(event, 1)}
+              >
+                <ListItemText primary="PUC Details" />
+              </ListItemButton>
+            </Link>
+            <Link to={"/EnggUpload"} className="link">
+              <ListItemButton
+                sx={{ pl: 6 }}
+                selected={selectedIndex === 2}
+                onClick={(event) => handleListItemClick(event, 2)}
+              >
+                <ListItemText primary="Engg Details" />
+              </ListItemButton>
+            </Link>
+          </List>
+        </Collapse>
+        <ListItemButton
+          sx={{
+            textAlign: "center",
+            backgroundColor: lopen == 2 ? "black" : "#F9F5F6",
+            color: lopen == 2 ? "#F9F5F6" : "black",
+            marginBottom: "0.2rem",
+            "&:hover": { backgroundColor: lopen == 2 ? "black" : "#F9F5F6" },
+          }}
+          onClick={() => {
+            lopen != 2 ? handleLClick(2) : handleLClick(0);
+          }}
+        >
+          <ListItemText primary="Upload Remidial Details" />
+          {lopen == 2 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={lopen === 2} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              sx={{ pl: 6 }}
+              selected={selectedIndex === 3}
+              onClick={(event) => handleListItemClick(event, 3)}
+            >
+              <ListItemText primary="PUC Details " />
+            </ListItemButton>
+            <ListItemButton
+              sx={{ pl: 6 }}
+              selected={selectedIndex === 4}
+              onClick={(event) => handleListItemClick(event, 4)}
+            >
+              <ListItemText primary="Engg Details" />
+            </ListItemButton>
+          </List>
+        </Collapse>
         <ListItemButton
           sx={{
             textAlign: "center",
@@ -155,82 +226,6 @@ export default function DrawerAppBar() {
             <ListItemText primary="Upload Images" />
           </ListItemButton>
         </Link>
-
-        {/* Upload Remedial Details  */}
-        <ListItemButton
-          sx={{
-            textAlign: "center",
-            backgroundColor: lopen == 2 ? "black" : "#F9F5F6",
-            color: lopen == 2 ? "#F9F5F6" : "black",
-            marginBottom: "0.2rem",
-            "&:hover": { backgroundColor: lopen == 2 ? "black" : "#F9F5F6" },
-          }}
-          onClick={() => {
-            lopen != 2 ? handleLClick(2) : handleLClick(0);
-          }}
-        >
-          <ListItemText primary="Upload Remidial Details" />
-          {lopen == 2 ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={lopen === 2} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton
-              sx={{ pl: 6 }}
-              selected={selectedIndex === 3}
-              onClick={(event) => handleListItemClick(event, 3)}
-            >
-              <ListItemText primary="PUC Details " />
-            </ListItemButton>
-            <ListItemButton
-              sx={{ pl: 6 }}
-              selected={selectedIndex === 4}
-              onClick={(event) => handleListItemClick(event, 4)}
-            >
-              <ListItemText primary="Engg Details" />
-            </ListItemButton>
-          </List>
-        </Collapse>
-
-        {/* Upload Regular Details  */}
-        <ListItemButton
-          sx={{
-            textAlign: "center",
-            backgroundColor: lopen == 1 ? "black" : "#F9F5F6",
-            color: lopen == 1 ? "#F9F5F6" : "black",
-            marginBottom: "0.2rem",
-            "&:hover": { backgroundColor: lopen == 1 ? "black" : "#F9F5F6" },
-          }}
-          onClick={() => {
-            {
-              lopen != 1 ? handleLClick(1) : handleLClick(0);
-            }
-          }}
-        >
-          <ListItemText primary="Upload Regular Details" />
-          {lopen == 1 ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={lopen === 1} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <Link to={"/PucUpload"} className="link">
-              <ListItemButton
-                sx={{ pl: 6 }}
-                selected={selectedIndex === 1}
-                onClick={(event) => handleListItemClick(event, 1)}
-              >
-                <ListItemText primary="PUC Details" />
-              </ListItemButton>
-            </Link>
-            <Link to={"/EnggUpload"} className="link">
-              <ListItemButton
-                sx={{ pl: 6 }}
-                selected={selectedIndex === 2}
-                onClick={(event) => handleListItemClick(event, 2)}
-              >
-                <ListItemText primary="Engg Details" />
-              </ListItemButton>
-            </Link>
-          </List>
-        </Collapse>
       </List>
     </Box>
   );
@@ -285,11 +280,10 @@ export default function DrawerAppBar() {
             </Typography>
             <Avatar
               alt="Remy Sharp"
-              src={rgukt_logo}
+              src="https://th.bing.com/th/id/R.5f4a536e09c111530b7aaae0f3181db3?rik=BvkIzGduEF%2foEw&riu=http%3a%2f%2fwww.rgukt.in%2fimages%2fLogonew.png&ehk=233hO90aIpxhCitQWTAzX2WCze82Sl8ZNNKF956t%2f8Q%3d&risl=&pid=ImgRaw&r=0"
               sx={{
-                // mixBlendMode:"color-burn",
-                width: 100,
-                height: 80,
+                width: 40,
+                height: 40,
                 marginRight: "1rem",
                 img: { objectFit: "contain" },
               }}
