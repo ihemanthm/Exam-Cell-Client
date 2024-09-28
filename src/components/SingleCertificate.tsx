@@ -98,7 +98,7 @@ export default function SingleCertificate() {
   };
   const styles = StyleSheet.create({
     PUC_Layout_1_page: {
-      marginTop: 60,
+      marginTop: 77,
       paddingBottom: 30,
       paddingLeft: 50,
       paddingRight: 50,

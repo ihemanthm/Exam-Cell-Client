@@ -3,16 +3,16 @@ import MerriweatherRegular from "../fonts/Merriweather-Regular.ttf";
 import MerriweatherLight from "../fonts/Merriweather-Light.ttf";
 import MerriweatherBold from "../fonts/Merriweather-Bold.ttf";
 import MerriweatherBlack from "../fonts/Merriweather-Black.ttf";
+import RobotoRegular from '../fonts/RobotoCondensed-Regular.ttf';
+import RobotoBold from '../fonts/RobotoCondensed-Bold.ttf';
 import { format } from "date-fns";
 import QRCode from "qrcode";
 
 import {
-  Page,
   Image,
   Text,
   View,
   Font,
-  Document,
   StyleSheet,
 } from "@react-pdf/renderer";
 import image from "./O170422.jpg";
@@ -44,6 +44,24 @@ export default function PDFFile({ student }: any) {
     family: "MerriweatherBlack",
     src: MerriweatherBlack,
   });
+  
+  Font.register({
+    family: "MerriweatherBlack",
+    src: MerriweatherBlack,
+  });
+  Font.register({
+    family: "RobotoRegular",
+    src: RobotoRegular,
+  });
+  Font.register({
+    family: "RobotoBold",
+    src: RobotoBold,
+  });
+  Font.register({
+    family: "MerriweatherBlack",
+    src: MerriweatherBlack,
+  });
+  
 
   const styles = StyleSheet.create({
     image: {
@@ -57,14 +75,14 @@ export default function PDFFile({ student }: any) {
       marginBottom: 5,
     },
     section1: {
-      letterSpacing: 0.7,
-      fontSize: 7,
-      fontFamily: "MerriweatherLight",
+      // letterSpacing: 0.7,
+      fontSize: 9,
+      fontFamily: "RobotoRegular",
     },
     highlight: {
-      fontSize: 7,
-      fontFamily: "MerriweatherBold",
-      lineHeight: 1.5,
+      fontSize: 9,
+      fontFamily: "RobotoBold",
+      lineHeight: 1.2,
     },
     table: {
       border: 0.5,
@@ -83,7 +101,7 @@ export default function PDFFile({ student }: any) {
       borderRight: 0.5,
       width: 80,
       height: "100%",
-      fontFamily: "MerriweatherBold",
+      fontFamily: "RobotoBold",
       fontWeight: "bold",
     },
     HsubName: {
@@ -91,7 +109,7 @@ export default function PDFFile({ student }: any) {
       width: 270,
       height: "100%",
       justifyContent: "center",
-      fontFamily: "MerriweatherBold",
+      fontFamily: "RobotoBold",
       fontWeight: "bold",
     },
     Hcredit_grade: {
@@ -99,14 +117,14 @@ export default function PDFFile({ student }: any) {
       width: 35,
       height: "100%",
       justifyContent: "center",
-      fontFamily: "MerriweatherBold",
+      fontFamily: "RobotoBold",
       fontWeight: "bold",
     },
     Hobtained: {
       height: "100%",
       width: 70,
       justifyContent: "center",
-      fontFamily: "MerriweatherBold",
+      fontFamily: "RobotoBold",
       fontWeight: "bold",
     },
     card: {},
@@ -120,17 +138,17 @@ export default function PDFFile({ student }: any) {
       alignItems: "center",
       height: 12,
       color: "black",
-      fontFamily: "MerriweatherBold",
+      fontFamily: "RobotoBold",
     },
     gradeCard: {
-      height: 110,
+      height: 99,
     },
     tableRow: {
       textAlign: "center",
       fontSize: 7,
       flexDirection: "row",
       alignItems: "center",
-      height: 10,
+      height: 9,
       padding: 0,
       margin: 0,
     },
@@ -145,7 +163,7 @@ export default function PDFFile({ student }: any) {
     subCode: {
       justifyContent: "center",
       fontWeight: "thin",
-      fontFamily: "Times-Bold",
+      fontFamily: "RobotoBold",
       margin: 0,
       borderRight: 0.5,
       width: 80,
@@ -159,7 +177,7 @@ export default function PDFFile({ student }: any) {
       textAlign: "left",
       paddingLeft: 5,
       fontWeight: "bold",
-      fontFamily: "Times-Bold",
+      fontFamily: "RobotoBold",
     },
     credit_grade: {
       borderRight: 0.5,
@@ -167,14 +185,14 @@ export default function PDFFile({ student }: any) {
       justifyContent: "center",
       height: "100%",
       fontWeight: "bold",
-      fontFamily: "Times-Bold",
+      fontFamily: "RobotoBold",
     },
     obtained: {
       width: 70,
       justifyContent: "center",
       height: "100%",
       fontWeight: "bold",
-      fontFamily: "Times-Bold",
+      fontFamily: "RobotoBold",
     },
     gpa: {
       borderTop: 0.5,
@@ -183,7 +201,7 @@ export default function PDFFile({ student }: any) {
       justifyContent: "center",
       width: 80,
       fontWeight: "bold",
-      fontFamily: "Times-Bold",
+      fontFamily: "RobotoBold",
       height: "100%",
     },
     cgpa: {
@@ -193,7 +211,7 @@ export default function PDFFile({ student }: any) {
       borderRight: 0.5,
       height: "100%",
       fontWeight: "bold",
-      fontFamily: "Times-Bold",
+      fontFamily: "RobotoBold",
       justifyContent: "center",
     },
     totalCreditRow: {
@@ -211,13 +229,13 @@ export default function PDFFile({ student }: any) {
       justifyContent: "center",
       height: "100%",
       fontWeight: "bold",
-      fontFamily: "Times-Bold",
+      fontFamily: "RobotoBold",
       paddingRight: 3,
     },
     totalCreditsGained: {
       width: 70,
       fontWeight: "bold",
-      fontFamily: "Times-Bold",
+      fontFamily: "RobotoBold",
       textAlign: "center",
       justifyContent: "center",
       height: "100%",
@@ -225,17 +243,18 @@ export default function PDFFile({ student }: any) {
     conclusionText: {
       fontSize: 8,
       marginTop: 2,
+      fontFamily: "RobotoRegular",
     },
     conclusionBold: {
       fontWeight: "bold",
-      fontFamily: "MerriweatherBold",
+      fontFamily: "RobotoBold",
     },
     qrCode: {
-      width: 30,
-      height: 30,
+      width: 40,
+      height: 40,
       position: "absolute",
       bottom: -50,
-      left: 150,
+      left: 176,
     },
   });
   let cumulativeTGRP = 0; // cumulative total grade points for CGPA
@@ -423,7 +442,7 @@ export default function PDFFile({ student }: any) {
             </View>
           </View>
           <View style={styles.conclusionText}>
-            <Text>
+            <Text >
               Passed with{" "}
               <Text style={styles.conclusionBold}>
                 {parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 7.5

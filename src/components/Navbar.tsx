@@ -88,7 +88,7 @@ export default function DrawerAppBar() {
         </ListItemButton>
         <Collapse in={lopen === 1} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <Link to={"/PucUpload"} className="link">
+            <Link to={"/"} className="link">
               <ListItemButton
                 sx={{ pl: 6 }}
                 selected={selectedIndex === 1}
