@@ -53,7 +53,7 @@ function App() {
             element={<ZipSelection />}
           />
           <Route
-            path="/PucUpload"
+            path="/"
             element={<PUC_XLSXSelection />}
           />
           <Route
