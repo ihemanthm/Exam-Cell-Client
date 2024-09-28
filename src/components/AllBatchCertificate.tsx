@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import AllbatchPDFFIle from "../certificateLayouts/AllbatchPDFFIle";
 import Button from "@mui/material/Button";
 import { PDFViewer, Document, PDFDownloadLink } from "@react-pdf/renderer";
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -291,7 +293,18 @@ export default function AllBatchCertificate() {
                         }}
                       />
                     }
-                    label="Layout 1"
+                    label={<div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <Card variant="outlined">
+                      <CardMedia
+                        component="img"
+                        height="100"
+                        width="100"
+                        image={require("../portrait.png")}
+                        alt="Portrait Layout"
+                      />
+                    </Card>
+                    <span>Layout 1</span>
+                  </div>}
                   />
                   <FormControlLabel
                     value="L2"
@@ -306,7 +319,18 @@ export default function AllBatchCertificate() {
                         }}
                       />
                     }
-                    label="Layout 2"
+                    label={<div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <Card variant="outlined">
+                      <CardMedia
+                        component="img"
+                        height="100"
+                        width="100"
+                        image={require("../landscape.png")}
+                        alt="Landscape Layout"
+                      />
+                    </Card>
+                    <span>Layout 2</span>
+                  </div>}
                   />
                 </RadioGroup>
               </div>

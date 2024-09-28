@@ -222,13 +222,18 @@ export default function Temporary_Grade({ details }: any) {
     location:{
       fontSize:10,
       marginLeft:20
-    }
+    },
+    boldText:{
+      fontFamily: "Times-Bold",
+    },
+    textSmall:{
+      fontSize:12,
+    },
   });
   function formatDate(dateString: string) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
     const year = date.getFullYear();
-
     const monthNames = [
       "January",
       "February",
@@ -261,7 +266,11 @@ export default function Temporary_Grade({ details }: any) {
     null
   );
   const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
-
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+  const year = today.getFullYear();
+  const todayDate = `${day}-${month}-${year}`;
   
   return (
     <>
@@ -492,6 +501,9 @@ export default function Temporary_Grade({ details }: any) {
             }
           })}
         </View>
+        <View style={{marginLeft:10}}>
+        <Text style={styles.textSmall}><Text style={styles.boldText}>Date :</Text>{todayDate}</Text>
+      </View>
         <View style={styles.footer}>
           <Text style={styles.highlight}>Verified by</Text>
           <View>
