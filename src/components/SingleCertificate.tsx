@@ -112,10 +112,10 @@ export default function SingleCertificate() {
       backgroundColor: "transparent",
     },
     PUC_Layout_2_page: {
-      marginTop: 130,
+      marginTop: 100,
       paddingBottom: 30,
-      paddingLeft: 50,
-      paddingRight: 50,
+      paddingLeft: 38,
+      paddingRight: 35,
       backgroundColor: "transparent",
     },
   });

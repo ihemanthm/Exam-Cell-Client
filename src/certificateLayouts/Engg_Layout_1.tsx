@@ -262,7 +262,7 @@ export default function Engg_Layout_1({ details }: any) {
       let date=new Date(recentEXAMMY);
       const qrMonth= (date.getMonth() + 1).toString().padStart(2, '0');
       const qrYear=date.getFullYear();
-      const barcodeText = `${qrMonth}/${details.ID.slice(1)}/${qrYear}`;
+      const barcodeText = `${qrMonth}${details.ID.slice(1)}${qrYear}`;
       const barcodeImage = generateBarcodeBase64(barcodeText);
       setBarcodeBase64(barcodeImage);
     };
