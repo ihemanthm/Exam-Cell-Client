@@ -3,6 +3,7 @@ import PUC_Layout_1 from "../certificateLayouts/PUC_Layout_1";
 import Engg_Layout_1 from "../certificateLayouts/Engg_Layout_1";
 import PUC_Layout_2 from "../certificateLayouts/PUC_Layout_2";
 import Card from '@mui/material/Card';
+import Engg_Layout_2 from "../certificateLayouts/Engg_Layout_2";
 import CardMedia from '@mui/material/CardMedia';
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
@@ -41,7 +42,7 @@ export default function SingleCertificate() {
   }
   const initialValues: FormValues = {
     ID: "",
-    type: "engg",
+    type: "puc",
     layout: "L1",
   };
   const validate = (values: FormValues) => {
@@ -116,6 +117,13 @@ export default function SingleCertificate() {
       paddingBottom: 30,
       paddingLeft: 38,
       paddingRight: 35,
+      backgroundColor: "transparent",
+    },
+    engg_page_2: {
+      marginTop: 30,
+      textAlign: "justify",
+      marginLeft: 20,
+      marginRight: 40,
       backgroundColor: "transparent",
     },
   });
@@ -246,6 +254,73 @@ export default function SingleCertificate() {
                 </RadioGroup>
               </div>
             )}
+            {formik.values.type === "engg" && (
+              <div className="layouts" style={{ display: "flex" }}>
+                <RadioGroup
+                  defaultValue="L1"
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="layout"
+                >
+                  <FormControlLabel
+                    value="L1"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../Engg_Layout_Portrait.png")}
+                            alt="Portrait Layout"
+                          />
+                        </Card>
+                        <span>Layout 1</span>
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
+                    value="L2"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../Engg_Layout_Landscape.png")}
+                            alt="Landscape Layout"
+                          />
+                        </Card>
+                        <span>Layout 2</span>
+                      </div>
+                    }
+                  />
+                </RadioGroup>
+              </div>
+            )}
           </div>
           <div className="input-box">
             <input
@@ -304,11 +379,19 @@ export default function SingleCertificate() {
                   >
                     <PUC_Layout_2 student={details} />
                   </Page>
-                ) : (
-                  <Page style={styles.engg_page}>
+                ) : formik.values.type === "engg" &&
+                formik.values.layout == "L1" ?(
+                  <Page style={styles.engg_page} size="A4"
+                 >
                     <Engg_Layout_1 details={details} />
                   </Page>
-                )}
+                ):(
+                  <Page style={styles.engg_page_2} size="A4"
+                  orientation="landscape">
+                    <Engg_Layout_2 details={details} />
+                  </Page>
+                  )
+                }
               </Document>
             </PDFViewer>
           </>
