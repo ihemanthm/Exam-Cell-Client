@@ -24,7 +24,7 @@ export default function RankListByBatch() {
         onSubmit: async (values) => {
             const pattern = /^R\d{2}$/;
             if (!pattern.test(values.REGULATION)) {
-                dispatch(setSnackBar({ message: "Invalid Regulation", variant:"error",}));
+                dispatch(setSnackBar({ message: "Invalid Regulation", variant: "error", }));
                 return;
             }
             await handleSubmit(values.REGULATION);
@@ -34,7 +34,7 @@ export default function RankListByBatch() {
     const handleSubmit = async (regulation: string) => {
         setLoader(true);
         try {
-            const response:Record<string, any> = await axios.get(getRankList+regulation, {
+            const response: Record<string, any> = await axios.get(getRankList + regulation, {
                 responseType: 'blob', // Important for downloading files
             });
             const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -46,7 +46,7 @@ export default function RankListByBatch() {
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
-            dispatch(setSnackBar({ message: "Failed to download file.", variant: "error"}));
+            dispatch(setSnackBar({ message: "Failed to download file.", variant: "error" }));
         } finally {
             setLoader(false);
         }
@@ -54,37 +54,39 @@ export default function RankListByBatch() {
 
     return (
         <>
-            <form
-                onSubmit={formik.handleSubmit}
-                className="search-form"
-                style={{ display: "flex", flexDirection: "column" }}
-            >
-                <div className="input-box" style={{ marginBottom: "30px" }}>
-                    <input
-                        type="text"
-                        placeholder="Enter the Batch (RXX)"
-                        name="REGULATION"
-                        className="input-field field"
-                        id="REGULATION"
-                        onChange={formik.handleChange}
-                        value={formik.values.REGULATION}
-                        required
-                    />
-                    <button
-                        type="submit"
-                        className="submit-btn"
-                    >
-                        {loader ? (
-                            <CircularProgress size={27} sx={{ color: "white" }} />
-                        ) : (
-                            "Search"
-                        )}
-                    </button>
-                </div>
-                {formik.errors.REGULATION && (
-                    <div style={{ color: "red" }}>{formik.errors.REGULATION}</div>
-                )}
-            </form>
+            <div className="home-pdf-container">
+                <form
+                    onSubmit={formik.handleSubmit}
+                    className="search-form"
+                    style={{ display: "flex", flexDirection: "column" }}
+                >
+                    <div className="input-box" style={{ marginBottom: "30px" }}>
+                        <input
+                            type="text"
+                            placeholder="Enter the Batch (RXX)"
+                            name="REGULATION"
+                            className="input-field field"
+                            id="REGULATION"
+                            onChange={formik.handleChange}
+                            value={formik.values.REGULATION}
+                            required
+                        />
+                        <button
+                            type="submit"
+                            className="submit-btn"
+                        >
+                            {loader ? (
+                                <CircularProgress size={27} sx={{ color: "white" }} />
+                            ) : (
+                                "Search"
+                            )}
+                        </button>
+                    </div>
+                    {formik.errors.REGULATION && (
+                        <div style={{ color: "red" }}>{formik.errors.REGULATION}</div>
+                    )}
+                </form>
+            </div>
         </>
     );
 }
