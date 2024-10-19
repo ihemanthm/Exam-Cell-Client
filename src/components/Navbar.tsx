@@ -226,6 +226,21 @@ export default function DrawerAppBar() {
             <ListItemText primary="Upload Images" />
           </ListItemButton>
         </Link>
+        <Link to="/SerialNo" className="link" >
+          <ListItemButton
+            sx={{
+              textAlign: "center",
+              pl: 6,
+              marginBottom: "0.2rem",
+              backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
+              color: lopen === 8 ? "#F9F5F6" : "black",
+            }}
+            selected={selectedIndex === 8}
+
+          >
+            <ListItemText primary="Upload Certificate Number" />
+          </ListItemButton>
+        </Link>
       </List>
     </Box>
   );
