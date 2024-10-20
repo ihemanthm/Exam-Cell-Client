@@ -310,7 +310,7 @@ export default function SerialNumbersSubmission() {
                 id="originalCertificateNumber"
                 onChange={formik.handleChange}
                 value={formik.values.ORIGINAL_DEGREE_CERTIFICATE_NO}
-                
+
               />
             </div>
             <div className="input-box" style={styles.inputField}>
