@@ -189,9 +189,24 @@ export default function DrawerAppBar() {
               color: lopen === 7 ? "#F9F5F6" : "black",
             }}
             selected={selectedIndex === 7}
-            
+
           >
             <ListItemText primary="Temporary Certificates" />
+          </ListItemButton>
+        </Link>
+
+        <Link to="/RankListByBatch" className="link">
+          <ListItemButton 
+            sx={{
+              textAlign:"center",
+              pl:6,
+              marginBottom:"0.2rem",
+              backgroundColor:lopen==9? "black" : "#F9F5F6",
+              color: lopen ===9 ? "#F9F5F6" : "black",
+            }}
+            selected={selectedIndex===9}
+          >
+            <ListItemText primary="Rank List" />
           </ListItemButton>
         </Link>
 
@@ -205,7 +220,6 @@ export default function DrawerAppBar() {
               color: lopen === 7 ? "#F9F5F6" : "black",
             }}
             selected={selectedIndex === 7}
-            
           >
             <ListItemText primary="Grade Sheet" />
           </ListItemButton>
@@ -221,7 +235,7 @@ export default function DrawerAppBar() {
               color: lopen === 7 ? "#F9F5F6" : "black",
             }}
             selected={selectedIndex === 7}
-            
+
           >
             <ListItemText primary="Upload Images" />
           </ListItemButton>
@@ -232,13 +246,12 @@ export default function DrawerAppBar() {
               textAlign: "center",
               pl: 6,
               marginBottom: "0.2rem",
-              backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
+              backgroundColor: lopen === 8 ? "black" : "#F9F5F6",
               color: lopen === 8 ? "#F9F5F6" : "black",
             }}
             selected={selectedIndex === 8}
-
           >
-            <ListItemText primary="Upload Certificate Number" />
+            <ListItemText primary="Serial Number" />
           </ListItemButton>
         </Link>
       </List>
