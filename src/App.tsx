@@ -12,8 +12,8 @@ import Engg_XLSXFileSelection from "./components/Engg_XLSXFileSelection";
 import GradeSheet from "./components/GradeSheet";
 import TemporaryCertificate from './components/TemporaryCertificate';
 import Login from "./components/Login";
-import TranscriptLayout from "./components/TranscriptLayout"
 import SerialNumbersSubmission from "./components/SerialNumbersSubmission";
+import RankListByBatch from "./components/RankListByBatch";
 
 // // Protected Route Component
 // function ProtectedRoute({ element, login }: { element: JSX.Element, login: boolean }) {
@@ -67,12 +67,12 @@ function App() {
             element={<TemporaryCertificate />}
           />
           <Route
-            path="transcript"
-            element={<TranscriptLayout />}
-          />
-          <Route
-            path="SerialNo"
+            path="/SerialNo"
             element={<SerialNumbersSubmission />}
+          />
+          <Route 
+            path="/RankListByBatch"
+            element={<RankListByBatch />}
           />
         </Routes>
       </SnackbarProvider>

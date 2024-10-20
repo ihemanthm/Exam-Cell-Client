@@ -502,7 +502,7 @@ export default function Temporary_Grade({ details }: any) {
           })}
         </View>
         <View style={{marginLeft:10}}>
-        <Text style={styles.textSmall}><Text style={styles.boldText}>Date :</Text>{todayDate}</Text>
+        <Text style={styles.textSmall}><Text style={styles.boldText}>Date : </Text>{todayDate}</Text>
       </View>
         <View style={styles.footer}>
           <Text style={styles.highlight}>Verified by</Text>

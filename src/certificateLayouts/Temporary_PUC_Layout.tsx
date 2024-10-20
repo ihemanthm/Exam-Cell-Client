@@ -424,14 +424,14 @@ export default function Temporary_PUC_Layout({ student }: any) {
         </View>
       </View>
       <View>
-        <Text style={styles.textSmall}><Text style={styles.boldText}>Date :</Text>{todayDate}</Text>
+        <Text style={styles.textSmall}><Text style={styles.boldText}>Date : </Text>{todayDate}</Text>
       </View>
       <View style={styles.footer}>
         <View style={styles.verified}>
           <Text>Verified By :</Text>
         </View>
         <View style={styles.seal}>
-          <Text>Controller Of Examinations{"\n"}<Text style={styles.textExtraSmall}>R.K. Valley, A.P - 516 330</Text></Text>
+          <Text>Controller of Examinations{"\n"}<Text style={styles.textExtraSmall}>R.K. Valley, A.P - 516 330</Text></Text>
         </View>
       </View>
     </>
