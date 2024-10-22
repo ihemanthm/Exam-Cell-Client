@@ -174,6 +174,7 @@ export default function AllBatchCertificate() {
   return (
     <>
       <div className="home-pdf-container">
+        <h1>Batch wise Certificate</h1>
         <form
           onSubmit={handleSubmit}
           className="search-form"

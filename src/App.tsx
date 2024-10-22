@@ -14,6 +14,7 @@ import TemporaryCertificate from './components/TemporaryCertificate';
 import Login from "./components/Login";
 import SerialNumbersSubmission from "./components/SerialNumbersSubmission";
 import RankListByBatch from "./components/RankListByBatch";
+import StudentDetails from "./components/StudentDetails";
 
 // // Protected Route Component
 // function ProtectedRoute({ element, login }: { element: JSX.Element, login: boolean }) {
@@ -73,6 +74,10 @@ function App() {
           <Route 
             path="/RankListByBatch"
             element={<RankListByBatch />}
+          />
+          <Route 
+            path="/StudentDetails"
+            element={<StudentDetails />}
           />
         </Routes>
       </SnackbarProvider>

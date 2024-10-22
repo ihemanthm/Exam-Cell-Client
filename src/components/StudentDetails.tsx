@@ -7,55 +7,67 @@ import "../styles/FileSelection.css";
 import { useDispatch } from "react-redux";
 
 export default function RankListByBatch() {
+    const [studentData, setStudentData] = useState<null | {}>(null);
     const [loader, setLoader] = useState<boolean>(false);
     const dispatch = useDispatch();
-    const getRankList = process.env.REACT_APP_GET_RANKLIST_BATCH;
+    const getStudent = process.env.REACT_APP_GET_ENGG_DETAILS_BY_ID;
 
     interface FormValues {
-        REGULATION: string;
+        ID: string;
     }
 
     const initialValues: FormValues = {
-        REGULATION: "",
+        ID: "",
     };
 
     const formik = useFormik<FormValues>({
         initialValues,
         onSubmit: async (values) => {
-            const pattern = /^R\d{2}$/;
-            if (!pattern.test(values.REGULATION)) {
-                dispatch(setSnackBar({ message: "Invalid Regulation", variant: "error", }));
+            const pattern = /^R\d{6}$/;
+            if (!pattern.test(values.ID)) {
+                dispatch(setSnackBar({ message: "Invalid ID", variant: "error", }));
                 return;
             }
-            await handleSubmit(values.REGULATION);
+            await handleSubmit(values.ID);
         }
     });
 
-    const handleSubmit = async (regulation: string) => {
-        setLoader(true);
-        try {
-            const response: Record<string, any> = await axios.get(getRankList + regulation, {
-                responseType: 'blob', // Important for downloading files
-            });
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `RankList_${regulation}.xlsx`);
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            window.URL.revokeObjectURL(url);
-        } catch (error) {
-            dispatch(setSnackBar({ message: "No Batch found", variant: "warning" }));
-        } finally {
-            setLoader(false);
+    
+const handleSubmit = async (id: string) => {
+    setLoader(true);
+    try {
+        const response = await axios.get(`${getStudent}${id}`);
+        const fetchedStudentData = response.data;
+
+        if (!fetchedStudentData) {
+            dispatch(setSnackBar({ message: "No Student found", variant: "warning" }));
+        } else {
+            setStudentData(fetchedStudentData);
         }
-    };
+    } catch (error) {
+        dispatch(setSnackBar({ message: "Error fetching student", variant: "warning" }));
+    } finally {
+        setLoader(false);
+    }
+};
+
+// Component to render student data
+const StudentComponent = ({ data }: { data: any }) => {
+    // You can manage loading and student data state here
+    return (
+        <div>
+            <h1>Student ID : {data.ID}</h1>
+            <pre>
+                {JSON.stringify(data, null, 2)}
+            </pre>
+        </div>
+    );
+};
 
     return (
         <>
             <div className="home-pdf-container">
-                <h1>Batch wise Rank List</h1>
+                <h1>Get Student Details</h1>
                 <form
                     onSubmit={formik.handleSubmit}
                     className="search-form"
@@ -64,12 +76,12 @@ export default function RankListByBatch() {
                     <div className="input-box" style={{ marginBottom: "30px" }}>
                         <input
                             type="text"
-                            placeholder="Enter the Batch (RXX)"
-                            name="REGULATION"
+                            placeholder="Enter student ID (RXXXXXX)"
+                            name="ID"
                             className="input-field"
-                            id="REGULATION"
+                            id="ID"
                             onChange={formik.handleChange}
-                            value={formik.values.REGULATION}
+                            value={formik.values.ID}
                             required
                         />
                         <button
@@ -83,10 +95,11 @@ export default function RankListByBatch() {
                             )}
                         </button>
                     </div>
-                    {formik.errors.REGULATION && (
-                        <div style={{ color: "red" }}>{formik.errors.REGULATION}</div>
+                    {formik.errors.ID && (
+                        <div style={{ color: "red" }}>{formik.errors.ID}</div>
                     )}
                 </form>
+                {studentData && <StudentComponent data={studentData} />}
             </div>
         </>
     );
