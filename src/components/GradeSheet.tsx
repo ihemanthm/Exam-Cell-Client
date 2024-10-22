@@ -94,20 +94,51 @@ export default function GradeSheet() {
         },
     });
 
-
-    interface BioData {
-
+    interface Subjects {
+        PNO: number,
+        PCODE: string,
+        PNAME: string,
+        EXAMMY: Date,
+        CR: number,
+        GR: string,
+        GRPTS: number,
+        TGRP: number,
+        ATTEMPT: string,
+    }
+    interface Record {
+        SEM: number,
+        SGPA: number,
+        CGPA: number,
+        TCR: number,
+        SUBJECTS: Subjects[]
+    }
+    interface StudentRecord {
         REGULATION: string;
         SNAME: string;
         FNAME: string;
         ID: string;
         GRP: string;
         DOB: Date;
+        DOJ: Date;
+        OBTAINED_CREDITS: number[],
+        TOTAL_CREDITS: number[],
+        RECORDS: Record[]
     }
-
+    interface Subject {
+        PNO: number;
+        PCODE: string;
+        PNAME: string;
+        CR: number;
+        GR: string;
+        GRPTS: number;
+        TGRP: number;
+        ATTEMPT: string;
+        EXAMMY: Date | null;
+    }
     return (
         <>
             <div className="home-pdf-container">
+                <h1>Engineering Grade Sheets</h1>
                 <form
                     onSubmit={handleSubmit}
                     className="search-form"
@@ -146,15 +177,61 @@ export default function GradeSheet() {
                         )}
                     </div>
                 </form>
-                {details &&(
+                {details && (
                     <PDFViewer style={{ width: "80%", height: "100vh", }}>
                         <Document>
-                            {details && details.ENGG_RECORDS.map((sem: any, index: number) => {
-                                return (
-                                    <Page size="A4" style={styles.gradeSheet}>
-                                        <Grade_Sheet details={details} semno={index + 1} />
-                                    </Page>)
-                            })};
+                            {(() => {
+                                //centralized student structure
+                                const student: StudentRecord = {
+                                    REGULATION: details.REGULATION,
+                                    SNAME: details.SNAME,
+                                    FNAME: details.FNAME,
+                                    ID: details.ID,
+                                    GRP: details.GRP,
+                                    DOB: details.DOB,
+                                    DOJ: details.DOJ,
+                                    OBTAINED_CREDITS: details.OBTAINED_CREDITS,
+                                    TOTAL_CREDITS: details.TOTAL_CREDITS,
+                                    RECORDS: []
+                                };
+
+                                details.ENGG_RECORDS.forEach((sem: any) => {
+                                    const currentRecord: Record = {
+                                        SEM: sem.SEM,
+                                        SGPA: sem.SGPA,
+                                        CGPA: sem.CGPA,
+                                        TCR: sem.TCR,
+                                        SUBJECTS: sem.SUBJECTS || [] 
+                                    };
+
+                                    // Push the current record into the student's records
+                                    student.RECORDS.push(currentRecord);
+
+                                    // Check for remedial records
+                                    let record = details.REMEDIAL_RECORDS.find((rem_sem: any) => rem_sem.SEM === sem.SEM);
+                                    if (record) {
+                                        record.REMEDIAL_DATES.forEach((attempt: any) => {
+                                            if (attempt.SUBJECTS.length > 0) {
+                                                const remRecord: Record = {
+                                                    SEM: record.SEM,
+                                                    SGPA: record.SGPA,
+                                                    CGPA: record.CGPA,
+                                                    TCR: record.TCR,
+                                                    SUBJECTS: attempt.SUBJECTS
+                                                };
+                                                student.RECORDS.push(remRecord);
+                                            }
+                                        });
+                                    }
+                                });
+
+                                // Map over student.RECORDS to create pages
+                                return student.RECORDS.map((record: Record, idx: number) => (
+                                    <Page size="A4" style={styles.gradeSheet} key={idx}>
+                                        <Grade_Sheet details={student} index={idx} />
+                                    </Page>
+                                ));
+                            })()}
                         </Document>
                     </PDFViewer>
                 )};

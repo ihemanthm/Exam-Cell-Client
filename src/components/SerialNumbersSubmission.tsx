@@ -183,6 +183,7 @@ export default function SerialNumbersSubmission() {
 
   return (
     <div className="home-pdf-container">
+      <h1>Update Serial Numbers</h1>
       <form
         onSubmit={formik.handleSubmit}
         className="search-form"
@@ -235,7 +236,6 @@ export default function SerialNumbersSubmission() {
             onChange={formik.handleChange}
             value={formik.values.ID}
             required
-            style={{ width: "440px" }}
           />
           <button
             className="submit-btn"

@@ -37,9 +37,9 @@ const generateBarcodeBase64 = (text: string): string => {
 
 interface GradeSheetProps {
     details: any;
-    semno: any;
+    index: any;
 }
-const Grade_Sheet = ({ details, semno }: GradeSheetProps) => {
+const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
 
     const styles = StyleSheet.create({
         details: {
@@ -169,7 +169,7 @@ const Grade_Sheet = ({ details, semno }: GradeSheetProps) => {
         return `${day} ${monthName} ${year}`;
     }
 
-    const recentEXAMMY = details.ENGG_RECORDS.reduce(
+    const recentEXAMMY = details.RECORDS.reduce(
         (latest: Date | null, sem: any) => {
             sem.SUBJECTS.forEach((subject: any) => {
                 const subjectDate = new Date(subject.EXAMMY);
@@ -188,6 +188,7 @@ const Grade_Sheet = ({ details, semno }: GradeSheetProps) => {
 
     var maxSgpaCredits: number = 0;
     var romans = ['I', 'II', 'III', 'IV']
+    var semno=details.RECORDS[index].SEM;
     var romanSemester: string = romans[(semno + 1) % 2];
     var romanYear: string = romans[Math.ceil(semno / 2)-1];
     return (
@@ -223,7 +224,7 @@ const Grade_Sheet = ({ details, semno }: GradeSheetProps) => {
             </View>
             <View style={styles.tableData}>
                 <View style={styles.data}>
-                {details.ENGG_RECORDS[semno - 1].SUBJECTS.map((sub: any, i: number) => {
+                {details.RECORDS[index].SUBJECTS.map((sub: any, i: number) => {
                     maxSgpaCredits += sub.CR;
                     return (
                         <View style={styles.eachRow}>
@@ -250,11 +251,11 @@ const Grade_Sheet = ({ details, semno }: GradeSheetProps) => {
                 </View>
                 <View style={styles.totalRow}>
                     <View style={styles.empty}></View>
-                    <View style={styles.totalsgpa}><Text>{details.ENGG_RECORDS[semno-1].SGPA}</Text></View>
+                    <View style={styles.totalsgpa}><Text>{details.RECORDS[index].SGPA}</Text></View>
                 </View>
                 <View style={styles.totalRow}>
                     <View style={styles.empty}></View>
-                    <View style={styles.totalsgpa}><Text>{details.ENGG_RECORDS[semno-1].CGPA}</Text></View>
+                    <View style={styles.totalsgpa}><Text>{details.RECORDS[index].CGPA}</Text></View>
                 </View>
             </View>
             <View style={styles.conclusionText}>

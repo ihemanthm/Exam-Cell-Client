@@ -113,6 +113,7 @@ export default function SingleCertificate() {
     return (
         <>
             <div className="home-pdf-container">
+                <h1>Temporary Certificate</h1>
                 <form
                     onSubmit={handleSubmit}
                     className="search-form"
