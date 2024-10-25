@@ -113,8 +113,8 @@ export default function SingleCertificate() {
       backgroundColor: "transparent",
     },
     PUC_Layout_2_page: {
-      marginTop: 100,
-      paddingBottom: 30,
+      marginTop: 70,
+      paddingBottom: 60,
       paddingLeft: 38,
       paddingRight: 35,
       backgroundColor: "transparent",

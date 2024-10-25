@@ -86,7 +86,7 @@ export default function GradeSheet() {
     };
     const styles = StyleSheet.create({
         gradeSheet: {
-            marginTop: 60,
+            marginTop: 30,
             paddingBottom: 30,
             paddingLeft: 50,
             paddingRight: 50,
@@ -201,7 +201,7 @@ export default function GradeSheet() {
                                         SGPA: sem.SGPA,
                                         CGPA: sem.CGPA,
                                         TCR: sem.TCR,
-                                        SUBJECTS: sem.SUBJECTS || [] 
+                                        SUBJECTS: sem.SUBJECTS || [] ,
                                     };
 
                                     // Push the current record into the student's records
@@ -214,8 +214,8 @@ export default function GradeSheet() {
                                             if (attempt.SUBJECTS.length > 0) {
                                                 const remRecord: Record = {
                                                     SEM: record.SEM,
-                                                    SGPA: record.SGPA,
-                                                    CGPA: record.CGPA,
+                                                    SGPA: attempt.SGPA,
+                                                    CGPA: attempt.CGPA,
                                                     TCR: record.TCR,
                                                     SUBJECTS: attempt.SUBJECTS
                                                 };
@@ -235,33 +235,6 @@ export default function GradeSheet() {
                         </Document>
                     </PDFViewer>
                 )};
-
-                {/* {details && (
-                    <>
-                        <Page style={styles.gradeSheet}>
-                            <Grade_Sheet details={details} />
-                        </Page>
-
-                        <PDFDownloadLink
-                            document={
-                                <Document>
-                                    <Page style={styles.gradeSheet}>
-                                        <Grade_Sheet details={details} />
-                                    </Page>
-                                </Document>
-                            }
-                            fileName={`${details.ID}_memo.pdf`}
-                        >
-                            <Button
-                                variant="contained"
-                                sx={{ backgroundColor: "black", color: "white" }}
-                                endIcon={<DownloadForOfflineRoundedIcon />}
-                            >
-                                Download
-                            </Button>
-                        </PDFDownloadLink>
-                    </>
-                )} */}
             </div>
         </>
     );

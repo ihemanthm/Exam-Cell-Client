@@ -31,22 +31,25 @@ export default function RankListByBatch() {
         }
     });
 
-    const handleSubmit = async (regulation: string) => {
+    const handleSubmit = async (REGULATION: string) => {
         setLoader(true);
         try {
-            const response: Record<string, any> = await axios.get(getRankList + regulation, {
+            const fullUrl=`${getRankList}${REGULATION}`;
+            console.log(fullUrl);
+            const response: Record<string, any> = await axios.get(fullUrl, {
                 responseType: 'blob', // Important for downloading files
             });
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `RankList_${regulation}.xlsx`);
+            link.setAttribute('download', `RankList_${REGULATION}.xlsx`);
             document.body.appendChild(link);
             link.click();
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
             dispatch(setSnackBar({ message: "No Batch found", variant: "warning" }));
+            console.log(error);
         } finally {
             setLoader(false);
         }
