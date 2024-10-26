@@ -15,6 +15,8 @@ import JsBarcode from "jsbarcode";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
+import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
+import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
 const generateQRCodeBase64 = async (text: string): Promise<string> => {
     try {
         const dataUrl = await QRCode.toDataURL(text, { width: 200 });
@@ -169,14 +171,12 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
         return `${day} ${monthName} ${year}`;
     }
 
-    const recentEXAMMY = details.RECORDS.reduce(
-        (latest: Date | null, sem: any) => {
-            sem.SUBJECTS.forEach((subject: any) => {
-                const subjectDate = new Date(subject.EXAMMY);
+    const recentEXAMMY = details.RECORDS[index].SUBJECTS.reduce(
+        (latest: Date | null, sub: any) => {
+                const subjectDate = new Date(sub.EXAMMY);
                 if (!latest || subjectDate > latest) {
                     latest = subjectDate;
                 }
-            });
             return latest;
         },
         null
