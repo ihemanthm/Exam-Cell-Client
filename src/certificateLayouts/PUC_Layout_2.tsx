@@ -79,6 +79,7 @@ export default function PUC_Layout_2({ student }: any) {
   const styles = StyleSheet.create({
     image: {
       marginRight: 40,
+      marginTop:10,
       height: 80,
       width: 70,
       alignSelf: "flex-end",
@@ -319,7 +320,7 @@ export default function PUC_Layout_2({ student }: any) {
       width: 125,
       height: 50,
       left: "32%",
-      bottom: -35,
+      bottom: -25,
     },
     qrCode: {
       left: 50,

@@ -120,39 +120,6 @@ export default function DrawerAppBar() {
             lopen != 2 ? handleLClick(2) : handleLClick(0);
           }}
         >
-          <ListItemText primary="Upload Remidial Details" />
-          {lopen == 2 ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={lopen === 2} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton
-              sx={{ pl: 6 }}
-              selected={selectedIndex === 3}
-              onClick={(event) => handleListItemClick(event, 3)}
-            >
-              <ListItemText primary="PUC Details " />
-            </ListItemButton>
-            <ListItemButton
-              sx={{ pl: 6 }}
-              selected={selectedIndex === 4}
-              onClick={(event) => handleListItemClick(event, 4)}
-            >
-              <ListItemText primary="Engg Details" />
-            </ListItemButton>
-          </List>
-        </Collapse>
-        <ListItemButton
-          sx={{
-            textAlign: "center",
-            backgroundColor: lopen == 3 ? "black" : "#F9F5F6",
-            color: lopen == 3 ? "#F9F5F6" : "black",
-            marginBottom: "0.2rem",
-            "&:hover": { backgroundColor: lopen == 3 ? "black" : "#F9F5F6" },
-          }}
-          onClick={() => {
-            lopen != 3 ? handleLClick(3) : handleLClick(0);
-          }}
-        >
           <ListItemText primary="Certificates" />
           {lopen == 3 ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
@@ -189,9 +156,24 @@ export default function DrawerAppBar() {
               color: lopen === 7 ? "#F9F5F6" : "black",
             }}
             selected={selectedIndex === 7}
-            
+
           >
             <ListItemText primary="Temporary Certificates" />
+          </ListItemButton>
+        </Link>
+
+        <Link to="/RankListByBatch" className="link">
+          <ListItemButton 
+            sx={{
+              textAlign:"center",
+              pl:6,
+              marginBottom:"0.2rem",
+              backgroundColor:lopen==9? "black" : "#F9F5F6",
+              color: lopen ===9 ? "#F9F5F6" : "black",
+            }}
+            selected={selectedIndex===9}
+          >
+            <ListItemText primary="Rank List" />
           </ListItemButton>
         </Link>
 
@@ -205,7 +187,6 @@ export default function DrawerAppBar() {
               color: lopen === 7 ? "#F9F5F6" : "black",
             }}
             selected={selectedIndex === 7}
-            
           >
             <ListItemText primary="Grade Sheet" />
           </ListItemButton>
@@ -221,7 +202,7 @@ export default function DrawerAppBar() {
               color: lopen === 7 ? "#F9F5F6" : "black",
             }}
             selected={selectedIndex === 7}
-            
+
           >
             <ListItemText primary="Upload Images" />
           </ListItemButton>
@@ -232,13 +213,27 @@ export default function DrawerAppBar() {
               textAlign: "center",
               pl: 6,
               marginBottom: "0.2rem",
-              backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
-              color: lopen === 8 ? "#F9F5F6" : "black",
+              backgroundColor: lopen === 3 ? "black" : "#F9F5F6",
+              color: lopen === 3 ? "#F9F5F6" : "black",
             }}
-            selected={selectedIndex === 8}
-            
+            selected={selectedIndex === 3}
           >
-            <ListItemText primary="Upload Certificate Number" />
+            <ListItemText primary="Serial Number" />
+          </ListItemButton>
+        </Link>
+
+        <Link to="/Backup" className="link" >
+          <ListItemButton
+            sx={{
+              textAlign: "center",
+              pl: 6,
+              marginBottom: "0.2rem",
+              backgroundColor: lopen === 4 ? "black" : "#F9F5F6",
+              color: lopen === 4 ? "#F9F5F6" : "black",
+            }}
+            selected={selectedIndex === 4}
+          >
+            <ListItemText primary="Backup" />
           </ListItemButton>
         </Link>
       </List>

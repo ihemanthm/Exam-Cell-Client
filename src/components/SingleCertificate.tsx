@@ -113,8 +113,8 @@ export default function SingleCertificate() {
       backgroundColor: "transparent",
     },
     PUC_Layout_2_page: {
-      marginTop: 100,
-      paddingBottom: 30,
+      marginTop: 70,
+      paddingBottom: 60,
       paddingLeft: 38,
       paddingRight: 35,
       backgroundColor: "transparent",
@@ -130,6 +130,7 @@ export default function SingleCertificate() {
   return (
     <>
       <div className="home-pdf-container">
+        <h1>Single Certificate</h1>
         <form
           onSubmit={handleSubmit}
           className="search-form"

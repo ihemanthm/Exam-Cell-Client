@@ -73,6 +73,7 @@ export default function PDFFile({ student }: any) {
     },
     textCard: {
       marginBottom: 5,
+      textAlign:"justify",
     },
     section1: {
       // letterSpacing: 0.7,
