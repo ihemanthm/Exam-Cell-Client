@@ -82,7 +82,7 @@ export default function RankListByBatch() {
                             {loader ? (
                                 <CircularProgress size={27} sx={{ color: "white" }} />
                             ) : (
-                                "Search"
+                                "Download"
                             )}
                         </button>
                     </div>

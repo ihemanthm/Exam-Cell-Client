@@ -108,7 +108,7 @@ export default function DrawerAppBar() {
             </Link>
           </List>
         </Collapse>
-        <ListItemButton
+        {/*<ListItemButton
           sx={{
             textAlign: "center",
             backgroundColor: lopen == 2 ? "black" : "#F9F5F6",
@@ -118,6 +118,39 @@ export default function DrawerAppBar() {
           }}
           onClick={() => {
             lopen != 2 ? handleLClick(2) : handleLClick(0);
+          }}
+        >
+           <ListItemText primary="Upload Remidial Details" />
+          {lopen == 2 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={lopen === 2} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              sx={{ pl: 6 }}
+              selected={selectedIndex === 3}
+              onClick={(event) => handleListItemClick(event, 3)}
+            >
+              <ListItemText primary="PUC Details " />
+            </ListItemButton>
+            <ListItemButton
+              sx={{ pl: 6 }}
+              selected={selectedIndex === 4}
+              onClick={(event) => handleListItemClick(event, 4)}
+            >
+              <ListItemText primary="Engg Details" />
+            </ListItemButton>
+          </List>
+        </Collapse> */}
+        <ListItemButton
+          sx={{
+            textAlign: "center",
+            backgroundColor: lopen == 3 ? "black" : "#F9F5F6",
+            color: lopen == 3 ? "#F9F5F6" : "black",
+            marginBottom: "0.2rem",
+            "&:hover": { backgroundColor: lopen == 3 ? "black" : "#F9F5F6" },
+          }}
+          onClick={() => {
+            lopen != 3 ? handleLClick(3) : handleLClick(0);
           }}
         >
           <ListItemText primary="Certificates" />
@@ -152,10 +185,10 @@ export default function DrawerAppBar() {
               textAlign: "center",
               pl: 6,
               marginBottom: "0.2rem",
-              backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
-              color: lopen === 7 ? "#F9F5F6" : "black",
+              backgroundColor: lopen === 12 ? "black" : "#F9F5F6",
+              color: lopen === 12 ? "#F9F5F6" : "black",
             }}
-            selected={selectedIndex === 7}
+            selected={selectedIndex === 12}
 
           >
             <ListItemText primary="Temporary Certificates" />
@@ -198,10 +231,10 @@ export default function DrawerAppBar() {
               textAlign: "center",
               pl: 6,
               marginBottom: "0.2rem",
-              backgroundColor: lopen === 7 ? "black" : "#F9F5F6",
-              color: lopen === 7 ? "#F9F5F6" : "black",
+              backgroundColor: lopen === 8 ? "black" : "#F9F5F6",
+              color: lopen === 8 ? "#F9F5F6" : "black",
             }}
-            selected={selectedIndex === 7}
+            selected={selectedIndex === 8}
 
           >
             <ListItemText primary="Upload Images" />
@@ -213,10 +246,10 @@ export default function DrawerAppBar() {
               textAlign: "center",
               pl: 6,
               marginBottom: "0.2rem",
-              backgroundColor: lopen === 3 ? "black" : "#F9F5F6",
-              color: lopen === 3 ? "#F9F5F6" : "black",
+              backgroundColor: lopen === 10 ? "black" : "#F9F5F6",
+              color: lopen === 10 ? "#F9F5F6" : "black",
             }}
-            selected={selectedIndex === 3}
+            selected={selectedIndex === 10}
           >
             <ListItemText primary="Serial Number" />
           </ListItemButton>
@@ -228,10 +261,10 @@ export default function DrawerAppBar() {
               textAlign: "center",
               pl: 6,
               marginBottom: "0.2rem",
-              backgroundColor: lopen === 4 ? "black" : "#F9F5F6",
-              color: lopen === 4 ? "#F9F5F6" : "black",
+              backgroundColor: lopen === 11 ? "black" : "#F9F5F6",
+              color: lopen === 11 ? "#F9F5F6" : "black",
             }}
-            selected={selectedIndex === 4}
+            selected={selectedIndex === 11}
           >
             <ListItemText primary="Backup" />
           </ListItemButton>
