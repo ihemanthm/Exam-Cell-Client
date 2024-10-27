@@ -58,7 +58,7 @@ export default function Backup() {
       setLoader(false);
       dispatch(
         setSnackBar({
-          message: "Faied to search student",
+          message: "Faied to Backup the data",
           variant: "error",
         })
       );
@@ -127,7 +127,7 @@ export default function Backup() {
               {loader ? (
                 <CircularProgress size={27} sx={{ color: "white" }} />
               ) : (
-                "Backup"
+                "Get Data"
               )}
             </button>
           </div>
