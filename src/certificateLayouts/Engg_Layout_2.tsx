@@ -25,7 +25,7 @@ interface Subject {
   PCODE: string;
   PNAME: string;
   CR: number;
-  GR: number;
+  GR: string;
 }
 
 interface Record {
@@ -111,19 +111,29 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     generateBarcode();
   }, [details]);
 
+
+  
+  
+
   const styles = StyleSheet.create({
-    details: {
+    headDetails: {
       display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-around",
+      flexDirection: "column",
       marginTop: 50,
       fontFamily: "RobotoBold",
     },
+    Details:{
+      display: "flex",
+      flexDirection: "row", 
+      justifyContent:"space-around",
+      marginTop: 10,
+      fontFamily: "RobotoBold",
+    },
     leftDetails: {
-      marginLeft: 50,
+      marginLeft: 35,
     },
     rightDetails: {
-      marginRight: 100,
+      marginRight: 45,
     },
     item: {
       fontSize: 10,
@@ -132,13 +142,15 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
       height: 15,
     },
     headerTitle: {
-      fontSize: 10,
-      marginTop: 30,
+      fontSize: 12,
+      position: "relative",
+      textAlign: "center", // Add this line to center the text
+     
     },
     reg: {
-      marginLeft: 30,
+      marginLeft: 0,
     },
-    name: { marginLeft: 10 },
+    name: { marginLeft: 8 },
     major: { marginLeft: 10 },
     ID: { marginLeft: 10 },
     admission: { marginLeft: 10 },
@@ -153,8 +165,8 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
       flexDirection: "row",
     },
     subTable: {
-      width: "33%",
-      margin: 2,
+      width: "34%",
+      margin: 1,
       borderTop: 1,
       borderBottom: 1,
       borderRight: 1,
@@ -180,7 +192,6 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
       fontFamily: "RobotoBold",
       width: "15%",
       textAlign: "center",
-      justifyContent: "center",
       borderRight: 1,
       height: 12,
     },
@@ -188,7 +199,7 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
       fontSize: 8,
       height: 12,
       fontFamily: "RobotoBold",
-      width: "75%",
+      width: "77%",
       textAlign: "center",
       justifyContent: "center",
       borderRight: 1,
@@ -220,16 +231,18 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     },
     code: {
       width: "15%",
-      textAlign: "center",
-      justifyContent: "center",
+      textAlign: "left",
       borderRight: 1,
+      paddingLeft:1.5
     },
     title: {
-      width: "75%",
+      width: "77%",
       textAlign: "left",
       justifyContent: "center",
       borderRight: 1,
-      paddingLeft: 4,
+      paddingLeft: 1.5,
+      paddingRight:2
+      
     },
     Cr: {
       width: "5%",
@@ -266,7 +279,6 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     footer: {
       display: "flex",
       flexDirection: "row",
-      justifyContent: "space-around",
       marginTop: 50,
       fontFamily: "RobotoBold",
       fontSize: 10,
@@ -274,7 +286,7 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     majorCGPA: {
       fontSize: 10,
       fontFamily: "RobotoBold",
-      marginLeft: 100,
+      marginLeft: 80,
       marginTop: 10,
     },
     highlight: {
@@ -283,35 +295,48 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     barCode: {
       width: 150,
       height: 30,
-      marginLeft:40
+      marginLeft:30
     },
+    verified:{
+      marginLeft:60
+    },
+    footHead:{
+      marginLeft:250
+    },
+    director:{
+      marginLeft:200,
+      fontSize: 11,
+    }
+    
   });
 
   return (
     <View>
-      <View style={styles.details}>
-        <View style={styles.leftDetails}>
-          <View style={styles.item}>
-            <Text>Name : </Text>
-            <Text style={styles.name}>{details.SNAME}</Text>
+      <View style={styles.headDetails}>
+        <View style={styles.Details}>
+          <View style={styles.leftDetails}>
+            <View style={styles.item}>
+              <Text>Name  : </Text>
+              <Text style={styles.name}>{details.SNAME}</Text>
+            </View>
+            <View style={styles.item}>
+              <Text>Major  :</Text>
+              <Text style={styles.major}>{details.GRP}</Text>
+            </View>
           </View>
-          <View style={styles.item}>
-            <Text>Major :</Text>
-            <Text style={styles.major}>{details.GRP}</Text>
+          <View style={styles.rightDetails}>
+            <View style={styles.item}>
+              <Text style={styles.reg}>Reg No                    : </Text>
+              <Text style={styles.ID}>{details.ID}</Text>
+            </View>
+            <View style={styles.item}>
+              <Text>Year of Admission : </Text>
+              <Text style={styles.admission}>December-2020</Text>
+            </View>
           </View>
         </View>
         <View>
           <Text style={styles.headerTitle}>B.Tech Transcript</Text>
-        </View>
-        <View style={styles.rightDetails}>
-          <View style={styles.item}>
-            <Text style={styles.reg}>Reg No : </Text>
-            <Text style={styles.ID}>{details.ID}</Text>
-          </View>
-          <View style={styles.item}>
-            <Text>Year of Admission : </Text>
-            <Text style={styles.admission}>December-2020</Text>
-          </View>
         </View>
       </View>
       <View style={styles.table}>
@@ -334,8 +359,13 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
                     const sem = (rowIndex + index) % 2 === 0 ? "I" : "II"; //semester calculation
                     return (
                       <View
-                        style={styles.subTable}
-                        key={`sem-${index + rowIndex}`}
+                      style={[
+                        styles.subTable,
+                        year === 4 && (sem==="I" || sem === "II") 
+                          ? { width: '37%' } // Increase width for 7th and 8th semester
+                          : { width: '33%' } // Default width
+                      ]}
+                      key={`sem-${index + rowIndex}`}
                       >
                         <View style={styles.semName}>
                           <Text>
@@ -364,11 +394,15 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
                               <Text>Gr.</Text>
                             </View>
                           </View>
-                          {Array(maxLength)
+                          {Array(maxLength) 
                             .fill(0)
                             .map((sub: any, index: number) => {
                               const subject = currentRecord.SUBJECTS[index];
                               if (subject) {
+                                const formattedGrade = subject.GR === "EX" 
+                                  ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase()
+                                  : subject.GR;
+
                                 return (
                                   <View style={styles.row}>
                                     <View style={styles.code}>
@@ -381,8 +415,9 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
                                       <Text>{subject.CR.toFixed(1)}</Text>
                                     </View>
                                     <View style={styles.Gr}>
-                                      <Text>{subject.GR}</Text>
+                                      <Text>{formattedGrade}</Text>
                                     </View>
+
                                   </View>
                                 );
                               } else {
@@ -450,9 +485,9 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
         })}
       </View>
       <View style={styles.footer}>
-        <Text>Verified by:</Text>
-        <Text>Controller of Examination</Text>
-        <Text>DIRECTOR</Text>
+        <Text style={styles.verified}>Verified by:</Text>
+        <Text style={styles.footHead}>Controller of Examination</Text>
+        <Text style={styles.director}>Director</Text>
       </View>
     </View>
   );
