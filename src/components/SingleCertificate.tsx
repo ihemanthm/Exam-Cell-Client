@@ -123,7 +123,7 @@ export default function SingleCertificate() {
       marginTop: 30,
       textAlign: "justify",
       marginLeft: 20,
-      marginRight: 40,
+      marginRight: 0,
       backgroundColor: "transparent",
     },
   });
@@ -387,7 +387,7 @@ export default function SingleCertificate() {
                     <Engg_Layout_1 details={details} />
                   </Page>
                 ):(
-                  <Page style={styles.engg_page_2} size="A4"
+                  <Page style={styles.engg_page_2} 
                   orientation="landscape">
                     <Engg_Layout_2 details={details} />
                   </Page>
