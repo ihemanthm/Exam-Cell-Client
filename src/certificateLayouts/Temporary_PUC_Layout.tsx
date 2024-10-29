@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from "react";
 import MerriweatherRegular from "../fonts/Merriweather-Regular.ttf";
 import MerriweatherLight from "../fonts/Merriweather-Light.ttf";
 import MerriweatherBold from "../fonts/Merriweather-Bold.ttf";
 import MerriweatherBlack from "../fonts/Merriweather-Black.ttf";
-import { format } from "date-fns";
 
 import {
-  Page,
   Image,
   Text,
   View,
   Font,
-  Document,
   StyleSheet,
-  PDFViewer,
 } from "@react-pdf/renderer";
 import rgukt_logo from "./rgukt.jpg";
 

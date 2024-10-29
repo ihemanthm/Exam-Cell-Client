@@ -67,19 +67,27 @@ export default function SingleCertificate() {
     setLoader(true);
     try {
       const url =
-        formik.values.type == "puc" ? getPUCDetailsById : getEnggDetailsById;
+        formik.values.type === "puc" ? getPUCDetailsById : getEnggDetailsById;
 
-      const response = await axios.get(url + formik.values.ID);
-      setDetails(response.data);
-      dispatch(
-        setSnackBar({
-          message: `${formik.values.ID} PDF is generating ,Please wait ....`,
-          variant: "info",
-        })
-      );
-      setLoader(false);
+      const response:any = await axios.get(url + formik.values.ID);
+      if(formik.values.type === "puc" && response.data.CURRENT_REMS>0){
+        dispatch(
+          setSnackBar({
+            message: `Remedial Records found`,
+            variant: "warning",
+          })
+        );
+      }
+      else{
+        setDetails(response.data);
+        dispatch(
+          setSnackBar({
+            message: `${formik.values.ID} PDF is generating ,Please wait ....`,
+            variant: "info",
+          })
+        );
+      }
     } catch (error: any) {
-      setLoader(false);
       if (error.status == 404) {
         dispatch(
           setSnackBar({
@@ -95,6 +103,9 @@ export default function SingleCertificate() {
           })
         );
       }
+    }
+    finally{
+      setLoader(false);
     }
   };
   const styles = StyleSheet.create({

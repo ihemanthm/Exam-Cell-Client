@@ -1,24 +1,16 @@
 //Engg layout
-import React, { useState, useEffect } from "react";
-import MerriweatherRegular from "../fonts/Merriweather-Regular.ttf";
-import MerriweatherLight from "../fonts/Merriweather-Light.ttf";
-import MerriweatherBold from "../fonts/Merriweather-Bold.ttf";
-import MerriweatherBlack from "../fonts/Merriweather-Black.ttf";
+import { useState, useEffect } from "react";
 
 import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
 import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
-import { format } from "date-fns";
 import JsBarcode from "jsbarcode";
 
 import {
-  Page,
   Image,
   Text,
   View,
   Font,
-  Document,
   StyleSheet,
-  PDFViewer,
 } from "@react-pdf/renderer";
 
 interface Subject {
@@ -58,26 +50,10 @@ const generateBarcodeBase64 = (text: string): string => {
 
 export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
   Font.register({
-    family: "Merriweather",
-    src: MerriweatherRegular,
-  });
-  Font.register({
-    family: "MerriweatherLight",
-    src: MerriweatherLight,
-  });
-  Font.register({
-    family: "MerriweatherBold",
-    src: MerriweatherBold,
-  });
-  Font.register({
-    family: "MerriweatherBlack",
-    src: MerriweatherBlack,
-  });
-
-  Font.register({
     family: "RobotoBold",
     src: RobotoBold,
   });
+  
   Font.register({
     family: "RobotoRegular",
     src: RobotoRegular,

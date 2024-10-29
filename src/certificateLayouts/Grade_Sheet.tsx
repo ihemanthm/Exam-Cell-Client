@@ -1,41 +1,12 @@
-import React from "react";
 import {
-    PDFViewer,
-    PDFDownloadLink,
-    Document,
-    Page,
     Text,
-    Image,
     View,
     StyleSheet,
 } from "@react-pdf/renderer";
-import image from "./O170422.jpg";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
-import { useState, useEffect } from "react";
 import { format } from "date-fns";
 
-import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
-import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
-const generateQRCodeBase64 = async (text: string): Promise<string> => {
-    try {
-        const dataUrl = await QRCode.toDataURL(text, { width: 200 });
-        return dataUrl;
-    } catch (err) {
-        console.error(err);
-        return "";
-    }
-};
-const generateBarcodeBase64 = (text: string): string => {
-    const canvas = document.createElement("canvas");
-    JsBarcode(canvas, text, {
-        format: "CODE128",
-        width: 1,
-        height: 50,
-        displayValue: false,
-    });
-    return canvas.toDataURL("image/png");
-};
 
 interface GradeSheetProps {
     details: any;
@@ -224,7 +195,7 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
             </View>
             <View style={styles.tableData}>
                 <View style={styles.data}>
-                {details.RECORDS[index].SUBJECTS.map((sub: any, i: number) => {
+                {details.RECORDS[index].SUBJECTS.map((sub: any) => {
                     maxSgpaCredits += sub.CR;
                     return (
                         <View style={styles.eachRow}>

@@ -1,9 +1,4 @@
-import React from "react";
 import {
-  PDFViewer,
-  PDFDownloadLink,
-  Document,
-  Page,
   Text,
   Image,
   View,
