@@ -16,6 +16,7 @@ import SerialNumbersSubmission from "./components/SerialNumbersSubmission";
 import RankListByBatch from "./components/RankListByBatch";
 import StudentDetails from "./components/StudentDetails";
 import Backup from "./components/Backup";
+import ResultsPage from "./components/ResultsPage"
 
 // // Protected Route Component
 // function ProtectedRoute({ element, login }: { element: JSX.Element, login: boolean }) {
@@ -83,6 +84,10 @@ function App() {
           <Route
             path="/Backup"
             element={<Backup />}
+          />
+          <Route
+            path="/results"
+            element={<ResultsPage />}
           />
         </Routes>
       </SnackbarProvider>
