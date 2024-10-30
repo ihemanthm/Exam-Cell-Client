@@ -80,7 +80,7 @@ const EnggResults = ({ details }: EnggResultsProps) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{ minWidth: "80px" }}>Admission</p>
             <p style={{ margin: "0 10px" }}>:</p>
-            <p>December-2020</p>
+            <p>{formattedEXAMMY}</p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{ minWidth: "80px" }}>Result</p>
@@ -103,12 +103,12 @@ const EnggResults = ({ details }: EnggResultsProps) => {
               <TableHead>
                 <TableRow>
                   <TableCell
-                    colSpan={4}
+                    colSpan={6}
                     align="center"
                     sx={{
                       borderBottom: '2px solid black',
                       fontWeight: 'bold',
-                      fontSize: '14px',
+                      fontSize: '18px',
                       textAlign: 'center',
                       padding: '5px',
                     }}
@@ -129,19 +129,25 @@ const EnggResults = ({ details }: EnggResultsProps) => {
               <TableBody>
                 {record.SUBJECTS.map((subject, idx) => (
                   <TableRow key={`subject-${idx}`}>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{subject.PCODE}</TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', textAlign:"left",paddingLeft:"80px"}}>{subject.PNAME}</TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{subject.CR.toFixed(1)}</TableCell>
                     <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                      {subject.PCODE}
+                      </TableCell>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', textAlign:"left",paddingLeft:"80px"}}>
+                      {subject.PNAME}
+                      </TableCell>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                      {subject.CR.toFixed(1)}
+                    </TableCell>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' ,backgroundColor: subject.GR === "R" || subject.GR === "MP" || subject.GR === "Ab" ? 'red' : 'transparent' }} >
                       {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase(): subject.GR}
                     </TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{formattedEXAMMY}</TableCell>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{new Date(subject.EXAMMY).toLocaleDateString('en-GB').replace(/\//g, '-')}</TableCell>
                     <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{subject.ATTEMPT}</TableCell>
                   </TableRow>
                 ))}
                 <TableRow>
-                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px',textAlign:"center" }}><strong>SGPA: {record.SGPA}</strong></TableCell>
-                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px' }}><strong>CGPA: {record.CGPA}</strong></TableCell>
+                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px',textAlign:"center" }}><strong>SGPA: {record.SGPA.toFixed(2)}</strong></TableCell>
+                  <TableCell colSpan={4} align="center" sx={{textAlign:"center", padding: '3px' }}><strong>CGPA: {record.CGPA.toFixed(2)}</strong></TableCell>
                 </TableRow>
               </TableBody>
             </Table>
