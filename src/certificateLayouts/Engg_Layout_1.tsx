@@ -249,6 +249,20 @@ export default function Engg_Layout_1({ details }: any) {
   );
   const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
 
+  // cgpa and sgpa calculation
+  var sgpa=new Array(8).fill(0);
+  var cgpa=new Array(8).fill(0);
+  let prevObtained=0;
+  let prevTotal=0;
+  
+  for (let i=0;i<7;i++){
+    prevObtained+=details.OBTAINED_CREDITS[i];
+    prevTotal+=details.TOTAL_CREDITS[i];
+    sgpa[i]=parseFloat((details.OBTAINED_CREDITS[i]/details.TOTAL_CREDITS[i]).toFixed(2));
+    cgpa[i]=parseFloat((prevObtained/prevTotal).toFixed(2));
+  }
+
+
   useEffect(() => {
     const generateQR = async () => {
       const qrText = `${details.ID} \n${details.SNAME} \n ${details.GRP} `;
@@ -363,10 +377,10 @@ export default function Engg_Layout_1({ details }: any) {
                         })}
                       <View style={styles.gpa}>
                         <View style={styles.sgpa}>
-                          <Text>SGPA : {record.SGPA}</Text>
+                          <Text>SGPA : {sgpa[index]}</Text>
                         </View>
                         <View style={styles.sgpa}>
-                          <Text>CGPA : {record.CGPA}</Text>
+                          <Text>CGPA : {cgpa[index]}</Text>
                         </View>
                       </View>
                     </View>

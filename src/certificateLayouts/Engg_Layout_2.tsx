@@ -13,29 +13,6 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 
-interface Subject {
-  PCODE: string;
-  PNAME: string;
-  CR: number;
-  GR: string;
-}
-
-interface Record {
-  SUBJECTS: Subject[];
-  SGPA: number;
-  CGPA: number;
-}
-
-interface Details {
-  SNAME: string;
-  GRP: string;
-  ID: string;
-  ENGG_RECORDS: Record[];
-}
-
-interface TranscriptLayoutProps {
-  details: Details;
-}
 
 const generateBarcodeBase64 = (text: string): string => {
   const canvas = document.createElement("canvas");
@@ -48,7 +25,7 @@ const generateBarcodeBase64 = (text: string): string => {
   return canvas.toDataURL("image/png");
 };
 
-export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
+export default function Transcript_Layout({ details }:any) {
   Font.register({
     family: "RobotoBold",
     src: RobotoBold,
@@ -73,6 +50,20 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     },
     null
   );
+
+  // cgpa and sgpa calculation
+  var sgpa=new Array(8).fill(0);
+  var cgpa=new Array(8).fill(0);
+  let prevObtained=0;
+  let prevTotal=0;
+  
+  for (let i=0;i<7;i++){
+    prevObtained+=details.OBTAINED_CREDITS[i];
+    prevTotal+=details.TOTAL_CREDITS[i];
+    sgpa[i]=parseFloat((details.OBTAINED_CREDITS[i]/details.TOTAL_CREDITS[i]).toFixed(2));
+    cgpa[i]=parseFloat((prevObtained/prevTotal).toFixed(2));
+  }
+
   useEffect(() => {
     const generateBarcode = async () => {
       if (recentEXAMMY) {
@@ -316,7 +307,7 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
         </View>
       </View>
       <View style={styles.table}>
-        {details.ENGG_RECORDS.map((_, index: number) => {
+        {details.ENGG_RECORDS.map((_:any, index: number) => {
           if (index % 3 === 0) {
             const record = details.ENGG_RECORDS[index];
             const secondRecord = details.ENGG_RECORDS[index + 1];
@@ -418,12 +409,12 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
                           <View style={styles.gpa}>
                             <View style={styles.sgpa}>
                               <Text>
-                                SGPA : {currentRecord.SGPA.toFixed(2)}
+                                SGPA : {sgpa[index]}
                               </Text>
                             </View>
                             <View style={styles.cgpa}>
                               <Text>
-                                CGPA : {currentRecord.CGPA.toFixed(2)}
+                                CGPA : {cgpa[index]}
                               </Text>
                             </View>
                           </View>

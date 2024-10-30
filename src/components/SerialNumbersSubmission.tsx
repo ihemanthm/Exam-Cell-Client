@@ -29,6 +29,7 @@ export default function SerialNumbersSubmission() {
     PROVISIONAL_CERTIFICATE_NO: string;
     ORIGINAL_DEGREE_CERTIFICATE_NO: string;
     ISSUED_SEM_CARDS_NUMBER: number;
+    SCANNED_COPY: Blob | null;
   }
 
   interface PUCDetails {
@@ -50,6 +51,7 @@ export default function SerialNumbersSubmission() {
     PROVISIONAL_CERTIFICATE_NO: "",
     ORIGINAL_DEGREE_CERTIFICATE_NO: "",
     ISSUED_SEM_CARDS_NUMBER: 0,
+    SCANNED_COPY: null,
   };
 
   const validate = (values: FormValues) => {
@@ -94,10 +96,13 @@ export default function SerialNumbersSubmission() {
             ISSUED_SEM_CARDS_NUMBER: values.ISSUED_SEM_CARDS_NUMBER,
           };
         }
+        data.SCANNED_COPY = values.SCANNED_COPY ? values.SCANNED_COPY : null;
+        console.log(data);
         const url =
           values.type === "puc" ? updatePUCCertificate : updateEnggCertificate;
-        const response = await axios.put(url, data);
-        console.log("URL:", response);
+        
+          const response = await axios.put(url, data);
+        
         setLoader(true);
         dispatch(
           setSnackBar({
@@ -152,6 +157,10 @@ export default function SerialNumbersSubmission() {
           engineeringData.ISSUED_SEM_CARDS_NUMBER
         );
       }
+      formik.setFieldValue(
+        "SCANNED_COPY",
+        (response.data as any).SCANNED_COPY
+      );
 
       setDetails(response.data);
       dispatch(
@@ -239,7 +248,7 @@ export default function SerialNumbersSubmission() {
           />
           <button
             className="submit-btn"
-            disabled={loader||details}
+            disabled={loader || details}
             onClick={handleSearchSubmit}
           >
             {loader ? (
@@ -269,7 +278,7 @@ export default function SerialNumbersSubmission() {
                 htmlFor="consolidateCertificateNumber"
                 style={styles.label}
               >
-                Consolidate Certificate Number
+                Consolidate Certificate Number *
               </label>
               <input
                 type="text"
@@ -286,7 +295,7 @@ export default function SerialNumbersSubmission() {
                 htmlFor="provisionalCertificateNumber"
                 style={styles.label}
               >
-                Provisional Certificate Number
+                Provisional Certificate Number *
               </label>
               <input
                 type="text"
@@ -300,7 +309,7 @@ export default function SerialNumbersSubmission() {
             </div>
             <div className="input-box" style={styles.inputField}>
               <label htmlFor="originalCertificateNumber" style={styles.label}>
-                Original Certificate Number
+                Original Certificate Number *
               </label>
               <input
                 type="text"
@@ -315,7 +324,7 @@ export default function SerialNumbersSubmission() {
             </div>
             <div className="input-box" style={styles.inputField}>
               <label htmlFor="semCardsIssued" style={styles.label}>
-                No of Sem Cards Issued
+                No of Sem Cards Issued *
               </label>
               <input
                 type="text"
@@ -327,24 +336,53 @@ export default function SerialNumbersSubmission() {
                 value={formik.values.ISSUED_SEM_CARDS_NUMBER}
               />
             </div>
+            <div className="input-box" style={styles.inputField}>
+              <label htmlFor="scannedCopy" style={styles.label}>
+                Scanned Copy
+              </label>
+              <input
+                type="file"
+                accept=".pdf"
+                name="SCANNED_COPY"
+                className="input-field"
+                id="scannedCopy"
+                onChange={formik.handleChange}
+                required={false}
+              />
+            </div>
           </>
         )}
 
         {details && formik.values.type === "puc" && (
-          <div className="input-box" style={styles.inputField}>
-            <label htmlFor="candidateCertificateNumber" style={styles.label}>
-              PUC Certificate Number
-            </label>
-            <input
-              type="text"
-              placeholder="Enter PUC Certificate Number"
-              name="CERTIFICATE_NUMBER"
-              className="input-field"
-              id="candidateCertificateNumber"
-              onChange={formik.handleChange}
-              value={formik.values.CERTIFICATE_NUMBER}
-            />
-          </div>
+          <>
+            <div className="input-box" style={styles.inputField}>
+              <label htmlFor="candidateCertificateNumber" style={styles.label}>
+                PUC Certificate Number *
+              </label>
+              <input
+                type="text"
+                placeholder="Enter PUC Certificate Number"
+                name="CERTIFICATE_NUMBER"
+                className="input-field"
+                id="candidateCertificateNumber"
+                onChange={formik.handleChange}
+                value={formik.values.CERTIFICATE_NUMBER}
+              />
+            </div>
+            <div className="input-box" style={styles.inputField}>
+              <label htmlFor="scannedCopy" style={styles.label}>
+                Scanned Copy
+              </label>
+              <input
+                type="file"
+                accept=".pdf"
+                name="SCANNED_COPY"
+                className="input-field"
+                id="scannedCopy"
+                onChange={formik.handleChange}
+              />
+            </div>
+          </>
         )}
 
         {details && (
