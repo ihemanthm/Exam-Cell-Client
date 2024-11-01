@@ -30,7 +30,10 @@ interface Details {
   DOB: string;
   GRP: string;
   ID: string;
+  DOJ:Date,
   ENGG_RECORDS: Record[];
+  TOTAL_CREDITS:[],
+  OBTAINED_CREDITS:[]
 }
 
 interface EnggResultsProps {
@@ -51,6 +54,28 @@ const EnggResults = ({ details }: EnggResultsProps) => {
     null
   );
   const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
+
+
+
+  const sgpa = Array(8).fill(0);
+  const cgpa = Array(8).fill(0);
+  let prevObtained = 0;
+  let prevTotal = 0;
+
+  
+  for (let i = 0; i < 8; i++) {
+    if (details.TOTAL_CREDITS[i] > 0) {
+      prevObtained += details.OBTAINED_CREDITS[i];
+      prevTotal += details.TOTAL_CREDITS[i];
+      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
+      cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
+    } else {
+      sgpa[i] = 0; // Handle division by zero
+      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
+    }
+  }
+
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '70%', marginTop: '70px',fontWeight:"bold" }}>
@@ -80,7 +105,7 @@ const EnggResults = ({ details }: EnggResultsProps) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{ minWidth: "80px" }}>Admission</p>
             <p style={{ margin: "0 10px" }}>:</p>
-            <p>December-2020</p>
+            <p>{new Date(details.DOJ).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{ minWidth: "80px" }}>Result</p>
@@ -129,19 +154,25 @@ const EnggResults = ({ details }: EnggResultsProps) => {
               <TableBody>
                 {record.SUBJECTS.map((subject, idx) => (
                   <TableRow key={`subject-${idx}`}>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{subject.PCODE}</TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', textAlign:"left",paddingLeft:"80px"}}>{subject.PNAME}</TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{subject.CR.toFixed(1)}</TableCell>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                      {subject.PCODE}
+                      </TableCell>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', textAlign:"left",paddingLeft:"80px"}}>
+                      {subject.PNAME}
+                      </TableCell>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                      {subject.CR.toFixed(1)}
+                    </TableCell>
                     <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
                       {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase(): subject.GR}
                     </TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{formattedEXAMMY}</TableCell>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{new Date(subject.EXAMMY).toLocaleDateString('en-GB').replace(/\//g, '-')}</TableCell>
                     <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{subject.ATTEMPT}</TableCell>
                   </TableRow>
                 ))}
                 <TableRow>
-                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px',textAlign:"center" }}><strong>SGPA: {record.SGPA}</strong></TableCell>
-                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px' }}><strong>CGPA: {record.CGPA}</strong></TableCell>
+                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px',textAlign:"center" }}><strong>SGPA: {sgpa[index].toFixed(2)}</strong></TableCell>
+                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px' }}><strong>CGPA: {cgpa[index].toFixed(2)}</strong></TableCell>
                 </TableRow>
               </TableBody>
             </Table>
