@@ -57,7 +57,7 @@ export default function Transcript_Layout({ details }:any) {
   let prevObtained=0;
   let prevTotal=0;
   
-  for (let i=0;i<7;i++){
+  for (let i=0;i<8;i++){
     prevObtained+=details.OBTAINED_CREDITS[i];
     prevTotal+=details.TOTAL_CREDITS[i];
     sgpa[i]=parseFloat((details.OBTAINED_CREDITS[i]/details.TOTAL_CREDITS[i]).toFixed(2));
@@ -409,12 +409,12 @@ export default function Transcript_Layout({ details }:any) {
                           <View style={styles.gpa}>
                             <View style={styles.sgpa}>
                               <Text>
-                                SGPA : {sgpa[index]}
+                                SGPA : {sgpa[currentRecord.SEM-1].toFixed(2)}
                               </Text>
                             </View>
                             <View style={styles.cgpa}>
                               <Text>
-                                CGPA : {cgpa[index]}
+                                CGPA : {cgpa[currentRecord.SEM-1].toFixed(2)}
                               </Text>
                             </View>
                           </View>
@@ -430,9 +430,7 @@ export default function Transcript_Layout({ details }:any) {
                           <Text style={styles.highlight}>
                             {details.ENGG_RECORDS &&
                             details.ENGG_RECORDS.length > 0
-                              ? details.ENGG_RECORDS[
-                                  details.ENGG_RECORDS.length - 1
-                                ].CGPA
+                              ? cgpa[7].toFixed(2)
                               : ""}
                           </Text>
                         </Text>

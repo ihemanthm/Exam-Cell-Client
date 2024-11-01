@@ -19,6 +19,7 @@ const generateQRCodeBase64 = async (text: string): Promise<string> => {
     return "";
   }
 };
+
 const generateBarcodeBase64 = (text: string): string => {
   const canvas = document.createElement("canvas");
   JsBarcode(canvas, text, {
@@ -64,10 +65,10 @@ export default function Engg_Layout_1({ details }: any) {
       border: "0.8px solid black",
       borderTop: "none",
       borderBottom: "none",
-      marginLeft:10,
+      marginLeft: 10,
       marginRight: 50,
-      marginTop:20,
-      rowGap:3,
+      marginTop: 20,
+      rowGap: 3,
     },
     tableRow: {
       display: "flex",
@@ -75,10 +76,9 @@ export default function Engg_Layout_1({ details }: any) {
     },
     subTable: {
       width: "50%",
-      // marginBottom: 2,
     },
     semName: {
-      backgroundColor:"#AAB396",
+      backgroundColor: "#AAB396",
       fontSize: 8,
       fontWeight: "bold",
       height: 11,
@@ -185,22 +185,16 @@ export default function Engg_Layout_1({ details }: any) {
     qrCode: {
       width: 30,
       height: 30,
-      // position: "absolute",
-      // bottom: -50,
-      // left: 150,
     },
     barCode: {
       width: 80,
       height: 25,
-      // position: "absolute",
-      // bottom: -50,
-      // left: 350,
     },
     footer: {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-around",
-      marginTop:25,
+      marginTop: 25,
     },
     majorCGPA: {
       fontSize: 10,
@@ -211,72 +205,63 @@ export default function Engg_Layout_1({ details }: any) {
       color: "red",
     },
   });
-  function formatDate(dateString: string) {
+
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
-    const year = date.getFullYear();
-
     const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December",
     ];
     const monthName = monthNames[date.getMonth()];
+    return `${day}-${monthName}-${date.getFullYear()}`;
+  };
 
-    return `${day}-${monthName}-${year}`;
+  const recentEXAMMY = details.ENGG_RECORDS.reduce((latest: Date | null, sem: any) => {
+    sem.SUBJECTS.forEach((subject: any) => {
+      const subjectDate = new Date(subject.EXAMMY);
+      if (!latest || subjectDate > latest) {
+        latest = subjectDate;
+      }
+    });
+    return latest;
+  }, null);
+
+  const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A";
+
+  const sgpa = Array(8).fill(0);
+  const cgpa = Array(8).fill(0);
+  let prevObtained = 0;
+  let prevTotal = 0;
+
+  for (let i = 0; i < 8; i++) {
+    if (details.TOTAL_CREDITS[i] > 0) {
+      prevObtained += details.OBTAINED_CREDITS[i];
+      prevTotal += details.TOTAL_CREDITS[i];
+      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
+      cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
+    } else {
+      sgpa[i] = 0; // Handle division by zero
+      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
+    }
   }
-
-  const recentEXAMMY = details.ENGG_RECORDS.reduce(
-    (latest: Date | null, sem: any) => {
-      sem.SUBJECTS.forEach((subject: any) => {
-        const subjectDate = new Date(subject.EXAMMY);
-        if (!latest || subjectDate > latest) {
-          latest = subjectDate;
-        }
-      });
-      return latest;
-    },
-    null
-  );
-  const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
-
-  // cgpa and sgpa calculation
-  var sgpa=new Array(8).fill(0);
-  var cgpa=new Array(8).fill(0);
-  let prevObtained=0;
-  let prevTotal=0;
-  
-  for (let i=0;i<7;i++){
-    prevObtained+=details.OBTAINED_CREDITS[i];
-    prevTotal+=details.TOTAL_CREDITS[i];
-    sgpa[i]=parseFloat((details.OBTAINED_CREDITS[i]/details.TOTAL_CREDITS[i]).toFixed(2));
-    cgpa[i]=parseFloat((prevObtained/prevTotal).toFixed(2));
-  }
-
 
   useEffect(() => {
     const generateQR = async () => {
-      const qrText = `${details.ID} \n${details.SNAME} \n ${details.GRP} `;
+      const qrText = `${details.ID} \n${details.SNAME} \n${details.GRP}`;
       const qrBase64 = await generateQRCodeBase64(qrText);
       setQrCodeBase64(qrBase64);
-      let date=new Date(recentEXAMMY);
-      const qrMonth= (date.getMonth() + 1).toString().padStart(2, '0');
-      const qrYear=date.getFullYear();
+
+      let date = new Date(recentEXAMMY);
+      const qrMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+      const qrYear = date.getFullYear();
       const barcodeText = `${qrMonth}${details.ID.slice(1)}${qrYear}`;
       const barcodeImage = generateBarcodeBase64(barcodeText);
       setBarcodeBase64(barcodeImage);
     };
+
     generateQR();
-  }, [details]);
+  }, [details, recentEXAMMY]);
 
   return (
     <>
@@ -299,191 +284,71 @@ export default function Engg_Layout_1({ details }: any) {
         <View style={styles.table}>
           {details.ENGG_RECORDS.map((record: any, index: number) => {
             const nextRecord = details.ENGG_RECORDS[index + 1];
-            if (index % 2 == 0 && details.ENGG_RECORDS[index + 1]) {
-              const maxLength =
-                record.SUBJECTS.length > nextRecord.SUBJECTS.length
-                  ? record.SUBJECTS.length
-                  : nextRecord.SUBJECTS.length;
-              const year = index / 2 + 1;
+            if (index % 2 === 0 && nextRecord) {
+              const maxLength = Math.max(record.SUBJECTS.length, nextRecord.SUBJECTS.length);
+              const year = Math.floor(index / 2) + 1;
               return (
                 <View style={styles.tableRow} key={`semPair-${index}`}>
                   <View style={styles.subTable}>
                     <View style={styles.semName}>
-                      <Text>
-                        {year == 1
-                          ? "I"
-                          : year == 2
-                          ? "II"
-                          : year == 3
-                          ? "III"
-                          : "IV"}{" "}
-                        YEAR I SEMESTER
-                      </Text>
+                      <Text>{year} YEAR I SEMESTER</Text>
                     </View>
                     <View>
                       <View style={styles.header}>
-                        <View style={styles.Hcode}>
-                          <Text>Code</Text>
-                        </View>
-                        <View style={styles.Htitle}>
-                          <Text>Subject Title</Text>
-                        </View>
-                        <View style={styles.HCr}>
-                          <Text>Cr.</Text>
-                        </View>
-                        <View style={styles.HGr}>
-                          <Text>Gr.</Text>
-                        </View>
+                        <View style={styles.Hcode}><Text>Code</Text></View>
+                        <View style={styles.Htitle}><Text>Subject Title</Text></View>
+                        <View style={styles.HCr}><Text>Cr.</Text></View>
+                        <View style={styles.HGr}><Text>Gr.</Text></View>
                       </View>
-                      {Array(maxLength)
-                        .fill(0)
-                        .map((sub: any, index: number) => {
-                          const subject = record.SUBJECTS[index];
-                          if (subject) {
-                            return (
-                              <View style={styles.row}>
-                                <View style={styles.code}>
-                                  <Text>{subject.PCODE}</Text>
-                                </View>
-                                <View style={styles.title}>
-                                  <Text>{subject.PNAME}</Text>
-                                </View>
-                                <View style={styles.Cr}>
-                                  <Text>{subject.CR.toFixed(1)}</Text>
-                                </View>
-                                <View style={styles.Gr}>
-                                  <Text>{subject.GR}</Text>
-                                </View>
-                              </View>
-                            );
-                          } else {
-                            return (
-                              <View style={styles.row}>
-                                <View style={styles.code}>
-                                  <Text></Text>
-                                </View>
-                                <View style={styles.title}>
-                                  <Text></Text>
-                                </View>
-                                <View style={styles.Cr}>
-                                  <Text></Text>
-                                </View>
-                                <View style={styles.Gr}>
-                                  <Text></Text>
-                                </View>
-                              </View>
-                            );
-                          }
-                        })}
+                      {Array.from({ length: maxLength }).map((_, subIndex) => {
+                        const subject = record.SUBJECTS[subIndex];
+                        return (
+                          <View style={styles.row} key={`sub-${subIndex}`}>
+                            <View style={styles.code}><Text>{subject ? subject.PCODE : ''}</Text></View>
+                            <View style={styles.title}><Text>{subject ? subject.PNAME : ''}</Text></View>
+                            <View style={styles.Cr}><Text>{subject ? subject.CR.toFixed(1) : ''}</Text></View>
+                            <View style={styles.Gr}><Text>{subject ? subject.GR : ''}</Text></View>
+                          </View>
+                        );
+                      })}
                       <View style={styles.gpa}>
-                        <View style={styles.sgpa}>
-                          <Text>SGPA : {sgpa[index]}</Text>
-                        </View>
-                        <View style={styles.sgpa}>
-                          <Text>CGPA : {cgpa[index]}</Text>
-                        </View>
+                        <View style={styles.sgpa}><Text>SGPA : {sgpa[index].toFixed(2)}</Text></View>
+                        <View style={styles.sgpa}><Text>CGPA : {cgpa[index].toFixed(2)}</Text></View>
                       </View>
                     </View>
                   </View>
                   <View style={styles.subTable}>
-                    <View
-                      style={[styles.semName, { borderRightWidth: "none" }]}
-                    >
-                      <Text>
-                        {year == 1
-                          ? "I"
-                          : year == 2
-                          ? "II"
-                          : year == 3
-                          ? "III"
-                          : "IV"}{" "}
-                        YEAR II SEMESTER
-                      </Text>
+                    <View style={[styles.semName, { borderRightWidth: "none" }]}>
+                      <Text>{year} YEAR II SEMESTER</Text>
                     </View>
                     <View>
                       <View style={styles.header}>
-                        <View style={styles.Hcode}>
-                          <Text>Code</Text>
-                        </View>
-                        <View style={styles.Htitle}>
-                          <Text>Subject Title</Text>
-                        </View>
-                        <View style={styles.HCr}>
-                          <Text>Cr.</Text>
-                        </View>
-                        <View
-                          style={[styles.HGr, { borderRightWidth: "none" }]}
-                        >
-                          <Text>Gr.</Text>
-                        </View>
+                        <View style={styles.Hcode}><Text>Code</Text></View>
+                        <View style={styles.Htitle}><Text>Subject Title</Text></View>
+                        <View style={styles.HCr}><Text>Cr.</Text></View>
+                        <View style={[styles.HGr, { borderRightWidth: "none" }]}><Text>Gr.</Text></View>
                       </View>
-                      {Array(maxLength)
-                        .fill(0)
-                        .map((sub: any, index: number) => {
-                          const subject = nextRecord.SUBJECTS[index];
-                          if (subject) {
-                            return (
-                              <View style={styles.row}>
-                                <View style={styles.code}>
-                                  <Text>{subject.PCODE}</Text>
-                                </View>
-                                <View style={styles.title}>
-                                  <Text>{subject.PNAME}</Text>
-                                </View>
-                                <View style={styles.Cr}>
-                                  <Text>{subject.CR.toFixed(1)}</Text>
-                                </View>
-                                <View
-                                  style={[
-                                    styles.Gr,
-                                    { borderRightWidth: "none" },
-                                  ]}
-                                >
-                                  <Text>{subject.GR}</Text>
-                                </View>
-                              </View>
-                            );
-                          } else {
-                            return (
-                              <View style={styles.row}>
-                                <View style={styles.code}>
-                                  <Text></Text>
-                                </View>
-                                <View style={styles.title}>
-                                  <Text></Text>
-                                </View>
-                                <View style={styles.Cr}>
-                                  <Text></Text>
-                                </View>
-                                <View
-                                  style={[
-                                    styles.Gr,
-                                    { borderRightWidth: "none" },
-                                  ]}
-                                >
-                                  <Text></Text>
-                                </View>
-                              </View>
-                            );
-                          }
-                        })}
+                      {Array.from({ length: maxLength }).map((_, subIndex) => {
+                        const subject = nextRecord.SUBJECTS[subIndex];
+                        return (
+                          <View style={styles.row} key={`nextSub-${subIndex}`}>
+                            <View style={styles.code}><Text>{subject ? subject.PCODE : ''}</Text></View>
+                            <View style={styles.title}><Text>{subject ? subject.PNAME : ''}</Text></View>
+                            <View style={styles.Cr}><Text>{subject ? subject.CR.toFixed(1) : ''}</Text></View>
+                            <View style={[styles.Gr, { borderRightWidth: "none" }]}><Text>{subject ? subject.GR : ''}</Text></View>
+                          </View>
+                        );
+                      })}
                       <View style={styles.gpa}>
-                        <View style={styles.sgpa}>
-                          <Text>SGPA : {nextRecord.SGPA}</Text>
-                        </View>
-                        <View
-                          style={[styles.sgpa, { borderRightWidth: "none" }]}
-                        >
-                          <Text>CGPA : {nextRecord.CGPA}</Text>
-                        </View>
+                        <View style={styles.sgpa}><Text>SGPA : {nextRecord.SGPA}</Text></View>
+                        <View style={[styles.sgpa, { borderRightWidth: "none" }]}><Text>CGPA : {nextRecord.CGPA}</Text></View>
                       </View>
                     </View>
                   </View>
                 </View>
               );
-            } else {
-              return null;
             }
+            return null;
           })}
         </View>
         <View style={styles.footer}>
@@ -492,13 +357,11 @@ export default function Engg_Layout_1({ details }: any) {
           </View>
           <View style={styles.majorCGPA}>
             <Text>
-              Major CGPA : <Text style={styles.highlight}>{details.ENGG_RECORDS && details.ENGG_RECORDS.length>0?  details.ENGG_RECORDS[details.ENGG_RECORDS.length - 1].CGPA:""}</Text>
+              Major CGPA : <Text style={styles.highlight}>{cgpa[7].toFixed(2)}</Text>
             </Text>
           </View>
           <View>
-            {barcodeBase64 && (
-              <Image style={styles.barCode} src={barcodeBase64} />
-            )}
+            {barcodeBase64 && <Image style={styles.barCode} src={barcodeBase64} />}
           </View>
         </View>
       </View>

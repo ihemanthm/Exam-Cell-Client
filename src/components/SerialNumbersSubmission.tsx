@@ -9,6 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { StyleSheet } from "@react-pdf/renderer";
 
 export default function SerialNumbersSubmission() {
+  const [file, setFile] = useState<File | null>(null);
   const [details, setDetails] = useState<any | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -29,7 +30,6 @@ export default function SerialNumbersSubmission() {
     PROVISIONAL_CERTIFICATE_NO: string;
     ORIGINAL_DEGREE_CERTIFICATE_NO: string;
     ISSUED_SEM_CARDS_NUMBER: number;
-    SCANNED_COPY: Blob | null;
   }
 
   interface PUCDetails {
@@ -51,7 +51,6 @@ export default function SerialNumbersSubmission() {
     PROVISIONAL_CERTIFICATE_NO: "",
     ORIGINAL_DEGREE_CERTIFICATE_NO: "",
     ISSUED_SEM_CARDS_NUMBER: 0,
-    SCANNED_COPY: null,
   };
 
   const validate = (values: FormValues) => {
@@ -96,13 +95,42 @@ export default function SerialNumbersSubmission() {
             ISSUED_SEM_CARDS_NUMBER: values.ISSUED_SEM_CARDS_NUMBER,
           };
         }
-        data.SCANNED_COPY = values.SCANNED_COPY ? values.SCANNED_COPY : null;
-        console.log(data);
         const url =
           values.type === "puc" ? updatePUCCertificate : updateEnggCertificate;
-        
-          const response = await axios.put(url, data);
-        
+
+        const response = await axios.put(url, data);
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("SCANNED_COPY", file);
+          
+          const params = {
+    		ID: values.ID,
+    		type: values.type,
+	  };
+
+          setLoader(true);
+          
+          try {
+            const uploadPdf = process.env.REACT_APP_UPLOAD_SCANNED_COPY || "";
+            const response = await axios.post(uploadPdf, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              },
+              params:params,
+            });
+          } catch (error) {
+            setLoader(false);
+            dispatch(
+              setSnackBar({
+                message: "Faied to upload file",
+                variant: "error",
+              })
+            );
+            setFile(null);
+          }
+        }
+
         setLoader(true);
         dispatch(
           setSnackBar({
@@ -123,6 +151,11 @@ export default function SerialNumbersSubmission() {
       }
     },
   });
+
+  const handleFileChange = (event: any) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+  };
 
   const handleSearchSubmit = async () => {
     setLoader(true);
@@ -157,10 +190,6 @@ export default function SerialNumbersSubmission() {
           engineeringData.ISSUED_SEM_CARDS_NUMBER
         );
       }
-      formik.setFieldValue(
-        "SCANNED_COPY",
-        (response.data as any).SCANNED_COPY
-      );
 
       setDetails(response.data);
       dispatch(
@@ -288,6 +317,7 @@ export default function SerialNumbersSubmission() {
                 id="consolidateCertificateNumber"
                 onChange={formik.handleChange}
                 value={formik.values.CONSOLIDATE_CERTIFICATE_NO}
+                required
               />
             </div>
             <div className="input-box" style={styles.inputField}>
@@ -305,6 +335,7 @@ export default function SerialNumbersSubmission() {
                 id="provisionalCertificateNumber"
                 onChange={formik.handleChange}
                 value={formik.values.PROVISIONAL_CERTIFICATE_NO}
+                required
               />
             </div>
             <div className="input-box" style={styles.inputField}>
@@ -319,6 +350,7 @@ export default function SerialNumbersSubmission() {
                 id="originalCertificateNumber"
                 onChange={formik.handleChange}
                 value={formik.values.ORIGINAL_DEGREE_CERTIFICATE_NO}
+                required
 
               />
             </div>
@@ -334,6 +366,7 @@ export default function SerialNumbersSubmission() {
                 id="semCardsIssued"
                 onChange={formik.handleChange}
                 value={formik.values.ISSUED_SEM_CARDS_NUMBER}
+                required
               />
             </div>
             <div className="input-box" style={styles.inputField}>
@@ -346,7 +379,7 @@ export default function SerialNumbersSubmission() {
                 name="SCANNED_COPY"
                 className="input-field"
                 id="scannedCopy"
-                onChange={formik.handleChange}
+                onChange={handleFileChange}
                 required={false}
               />
             </div>
@@ -367,6 +400,7 @@ export default function SerialNumbersSubmission() {
                 id="candidateCertificateNumber"
                 onChange={formik.handleChange}
                 value={formik.values.CERTIFICATE_NUMBER}
+                required
               />
             </div>
             <div className="input-box" style={styles.inputField}>
@@ -379,7 +413,7 @@ export default function SerialNumbersSubmission() {
                 name="SCANNED_COPY"
                 className="input-field"
                 id="scannedCopy"
-                onChange={formik.handleChange}
+                onChange={handleFileChange}
               />
             </div>
           </>

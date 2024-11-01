@@ -169,7 +169,7 @@ export default function XLSXFileSelection() {
           },
         }}
         endIcon={!loader ? <CloudUploadIcon /> : ""}
-        disabled={file == null}
+        disabled={file === null}
         onClick={handleClickOpen}
       >
         {loader ? (

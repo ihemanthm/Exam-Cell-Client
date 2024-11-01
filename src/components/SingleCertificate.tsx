@@ -61,6 +61,7 @@ export default function SingleCertificate() {
     validate,
     onSubmit: (values) => { },
   });
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setDetails(null);
@@ -75,6 +76,14 @@ export default function SingleCertificate() {
           setSnackBar({
             message: `Remedial Records found`,
             variant: "warning",
+          })
+        );
+      }
+      else if(formik.values.type==="engg" && formik.values.layout==="L2" && response.data.CURRENT_REMS>0){
+        dispatch(
+          setSnackBar({
+            message: `Remedial Records found`,
+            variant:"warning",
           })
         );
       }
