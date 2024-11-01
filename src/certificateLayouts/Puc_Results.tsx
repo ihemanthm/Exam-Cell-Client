@@ -86,7 +86,7 @@ const PucResults = ({ details }: PucResultsProps) => {
 
                 cumulativeTGRP += semTGRP;
                 cumulativeCR += semCR;
-                CGPA = CGPA + parseFloat(SGPA);
+               
                 sCount = record.SEM_NO;
         const year = Math.floor(index / 2) + 1;
        
@@ -101,18 +101,19 @@ const PucResults = ({ details }: PucResultsProps) => {
               <TableHead>
                 <TableRow>
                   <TableCell
-                    colSpan={4}
+                    colSpan={6}
                     align="center"
                     sx={{
                       borderBottom: '2px solid black',
                       fontWeight: 'bold',
-                      fontSize: '14px',
+                      fontSize: '18px',
                       textAlign: 'center',
                       padding: '5px',
                     }}
                   >
                     {year === 1 ? "I" : "II"}{" "}
                     {index % 2 === 0 ? "Year I Semester" : "Year II Semester"}
+                   
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -135,7 +136,8 @@ const PucResults = ({ details }: PucResultsProps) => {
                       {subject.PNAME}
                       </TableCell>
                     <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{subject.CR.toFixed(1)}</TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px',
+                       backgroundColor: subject.GR === "R" || subject.GR === "MP" || subject.GR === "Ab" ? 'red' : 'transparent' }}>
                       {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase() : subject.GR}
                     </TableCell>
                     <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
@@ -146,7 +148,7 @@ const PucResults = ({ details }: PucResultsProps) => {
                 ))}
                 <TableRow>
                   <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px', textAlign: "center" }}><strong>SGPA: {SGPA}</strong></TableCell>
-                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px' }}><strong>CGPA:{(cumulativeTGRP / cumulativeCR).toFixed(2)}</strong></TableCell>
+                  <TableCell colSpan={4} align="center" sx={{padding: '3px' ,textAlign: "center"}}><strong>CGPA:{(cumulativeTGRP / cumulativeCR).toFixed(2)}</strong></TableCell>
                 </TableRow>
               </TableBody>
             </Table>

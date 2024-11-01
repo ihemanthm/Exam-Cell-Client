@@ -43,17 +43,26 @@ export default function ResultsPage() {
             variant: "info",
           })
         );
-      } catch (error: any) {
-        dispatch(
-          setSnackBar({
-            message: "Failed to fetch student details",
-            variant: "error",
-          })
-        );
-      } finally {
         setLoader(false);
+      } catch (error: any) {
+        setLoader(false);
+        if (error.status === 404) {
+          dispatch(
+            setSnackBar({
+              message: "User not found",
+              variant: "warning",
+            })
+          );
+        } else {
+          dispatch(
+            setSnackBar({
+              message: "Failed to search student",
+              variant: "error",
+            })
+          );
+        }
       }
-    },
+    }
   });
 
   return (
@@ -160,3 +169,4 @@ export default function ResultsPage() {
     </>
   );
 }
+ 
