@@ -1,19 +1,18 @@
 import React from "react";
 import {
-  PDFViewer,
-  PDFDownloadLink,
-  Document,
-  Page,
+  Font,
   Text,
   Image,
   View,
   StyleSheet,
 } from "@react-pdf/renderer";
-import image from "./O170422.jpg";
+import image from "./O170384.jpg";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
+import RobotoRegular from '../fonts/RobotoCondensed-Regular.ttf';
+import RobotoBold from '../fonts/RobotoCondensed-Bold.ttf';
 
 const generateQRCodeBase64 = async (text: string): Promise<string> => {
   try {
@@ -39,10 +38,19 @@ export default function Engg_Layout_1({ details }: any) {
   const [qrCodeBase64, setQrCodeBase64] = useState("");
   const [barcodeBase64, setBarcodeBase64] = useState("");
 
+  Font.register({
+    family: "RobotoRegular",
+    src: RobotoRegular,
+  });
+  Font.register({
+    family: "RobotoBold",
+    src: RobotoBold,
+  });
+
   const styles = StyleSheet.create({
     image: {
-      height: 50,
-      width: 50,
+      height: 60,
+      width: 60,
       position: "absolute",
       top: -40,
       right: 50,
@@ -50,6 +58,8 @@ export default function Engg_Layout_1({ details }: any) {
     details: {
       display: "flex",
       flexDirection: "row",
+      // position:"absolute",
+      paddingBottom:48,
     },
     leftDetails: {
       lineHeight: 1.5,
@@ -57,22 +67,22 @@ export default function Engg_Layout_1({ details }: any) {
     rightDetails: {
       lineHeight: 1.5,
     },
-    name: { fontSize: 8, fontWeight: "bold", marginLeft: 80 },
-    DOB: { fontSize: 8, fontWeight: "bold", marginLeft: 95 },
-    degree: { fontSize: 8, fontWeight: "bold", marginLeft: 85 },
-    major: { fontSize: 8, fontWeight: "bold", marginLeft: 85 },
-    ID: { fontSize: 8, fontWeight: "bold", marginLeft: 120 },
-    admission: { fontSize: 8, fontWeight: "bold", marginLeft: 170 },
-    completion: { fontSize: 8, fontWeight: "bold", marginLeft: 170 },
-    grade: { fontSize: 8, fontWeight: "bold", marginLeft: 140 },
+    name: { fontSize: 9, fontWeight: "bold", marginLeft: 55 ,marginTop:2,fontFamily:"RobotoBold"},
+    DOB: { fontSize: 9, fontWeight: "bold", marginLeft: 80,fontFamily:"RobotoBold" },
+    degree: { fontSize: 9, fontWeight: "bold", marginLeft: 55 ,marginBottom:3,fontFamily:"RobotoBold"},
+    major: { fontSize: 9, fontWeight: "bold", marginLeft: 55,marginBottom:3,fontFamily:"RobotoBold" },
+    ID: { fontSize: 9, fontWeight: "bold", marginLeft: 137 ,marginTop:3,fontFamily:"RobotoBold"},
+    admission: { fontSize: 9, fontWeight: "bold", marginLeft: 235,fontFamily:"RobotoBold" },
+    completion: { fontSize: 9, fontWeight: "bold", marginLeft: 235,marginBottom:1,fontFamily:"RobotoBold" },
+    grade: { fontSize: 9, fontWeight: "bold", marginLeft: 180 ,marginBottom:3,fontFamily:"RobotoBold"},
     table: {
       border: "0.8px solid black",
       borderTop: "none",
       borderBottom: "none",
       marginLeft:10,
       marginRight: 50,
-      marginTop:20,
-      rowGap:3,
+      marginTop:-30,
+      rowGap:7,
     },
     tableRow: {
       display: "flex",
@@ -80,12 +90,10 @@ export default function Engg_Layout_1({ details }: any) {
     },
     subTable: {
       width: "50%",
-      // marginBottom: 2,
     },
     semName: {
       backgroundColor:"#AAB396",
       fontSize: 8,
-      fontWeight: "bold",
       height: 11,
       justifyContent: "center",
       width: "100%",
@@ -93,15 +101,17 @@ export default function Engg_Layout_1({ details }: any) {
       borderTop: "0.8px solid black",
       borderBottom: "0.8px solid black",
       borderRight: "0.8px solid black",
+      fontFamily:"RobotoBold",
     },
     header: {
-      height: 11,
+      height: 12,
       display: "flex",
       flexDirection: "row",
       borderBottom: "0.8px solid black",
+      fontFamily:"RobotoBold",
     },
     Hcode: {
-      fontSize: 8,
+      fontSize: 9,
       fontWeight: "bold",
       width: "15%",
       textAlign: "center",
@@ -109,16 +119,16 @@ export default function Engg_Layout_1({ details }: any) {
       borderRight: "0.5px solid black",
     },
     Htitle: {
-      fontSize: 8,
+      fontSize: 9,
       fontWeight: "bold",
       width: "75%",
       textAlign: "center",
       justifyContent: "center",
       borderRight: "0.5px solid black",
-      paddingBottom: 1,
+      paddingBottom: 0.6,
     },
     HCr: {
-      fontSize: 8,
+      fontSize: 9,
       fontWeight: "bold",
       width: "5%",
       textAlign: "center",
@@ -126,7 +136,7 @@ export default function Engg_Layout_1({ details }: any) {
       borderRight: "0.5px solid black",
     },
     HGr: {
-      fontSize: 8,
+      fontSize: 9,
       fontWeight: "bold",
       width: "5%",
       textAlign: "center",
@@ -134,69 +144,77 @@ export default function Engg_Layout_1({ details }: any) {
       borderRight: "0.8px solid black",
     },
     row: {
-      height: 10,
+      height: 11,
       display: "flex",
       flexDirection: "row",
     },
     code: {
-      fontSize: 7,
+      fontSize: 9,
       fontWeight: "bold",
       width: "15%",
       textAlign: "center",
       justifyContent: "center",
       borderRight: "0.5px solid black",
+      fontFamily:"RobotoRegular",
     },
     title: {
-      fontSize: 7,
+      fontSize: 9,
       fontWeight: "bold",
       width: "75%",
       textAlign: "left",
       justifyContent: "center",
       borderRight: "0.5px solid black",
       paddingLeft: 4,
+      fontFamily:"RobotoRegular",
     },
     Cr: {
-      fontSize: 7,
+      fontSize: 9,
       fontWeight: "bold",
       width: "5%",
       textAlign: "center",
       justifyContent: "center",
       borderRight: "0.5px solid black",
+      fontFamily:"RobotoRegular",
     },
     Gr: {
-      fontSize: 7,
+      fontSize: 9,
       fontWeight: "bold",
       width: "5%",
       textAlign: "center",
       justifyContent: "center",
       borderRight: "0.8px solid black",
+      fontFamily:"RobotoRegular",
     },
     gpa: {
       display: "flex",
       flexDirection: "row",
       width: "100%",
-      height: 10,
+      height: 11,
       borderTop: "0.8px solid black",
       borderBottom: "0.8px solid black",
+      fontFamily:"RobotoRegular",
     },
     sgpa: {
-      fontSize: 7,
+      fontSize: 8,
       width: "50%",
       justifyContent: "center",
       textAlign: "center",
       borderRight: "0.8px solid black",
       fontWeight: "bold",
+      fontFamily:"RobotoBold",
     },
     qrCode: {
-      width: 30,
-      height: 30,
+      width: 37,
+      height: 37,
+      paddingBottom:5,
       // position: "absolute",
       // bottom: -50,
       // left: 150,
     },
     barCode: {
-      width: 80,
-      height: 25,
+      width: 100,
+      height: 35,
+      paddingBottom:5,
       // position: "absolute",
       // bottom: -50,
       // left: 350,
@@ -210,6 +228,7 @@ export default function Engg_Layout_1({ details }: any) {
     majorCGPA: {
       fontSize: 10,
       fontWeight: "bold",
+      fontFamily:"RobotoBold",
     },
     highlight: {
       fontSize: 10,
@@ -240,26 +259,101 @@ export default function Engg_Layout_1({ details }: any) {
     return `${day}-${monthName}-${year}`;
   }
 
-  const recentEXAMMY = details.ENGG_RECORDS.reduce(
-    (latest: Date | null, sem: any) => {
+  // const recentEXAMMY = details.ENGG_RECORDS.reduce(
+  //   (latest: Date | null, sem: any) => {
+  //     sem.SUBJECTS.forEach((subject: any) => {
+  //       const subjectDate = new Date(subject.EXAMMY);
+  //       if (!latest || subjectDate > latest) {
+  //         latest = subjectDate;
+  //       }
+  //     });
+  //     return latest;
+  //   },
+  //   null
+  // );
+  const recentEXAMMY = () => {
+    let latest: Date = new Date(0); 
+    
+    // Iterate over ENGG_RECORDS
+    for (const sem of details.ENGG_RECORDS) {
       sem.SUBJECTS.forEach((subject: any) => {
         const subjectDate = new Date(subject.EXAMMY);
-        if (!latest || subjectDate > latest) {
+        if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
           latest = subjectDate;
         }
       });
-      return latest;
-    },
-    null
-  );
-  const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
+    }
+    
+    
+    for (const remedials of details.REMEDIAL_RECORDS) {
+      for (const subjects of remedials.REMEDIAL_DATES) {
+        const subjectDate = new Date(subjects.EXAMMY);
+        if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
+          latest = subjectDate;
+        }
+      }
+    }
+  
+    return latest;
+  };
+  
+  const recentExamDate = recentEXAMMY(); // Call the function to get the most recent date
+  const formattedEXAMMY = recentExamDate ? format(recentExamDate, "MMM-yyyy") : "N/A"; 
+
+
+
+  const sgpa = Array(8).fill(0);
+  const cgpa = Array(8).fill(0);
+  let prevObtained = 0;
+  let prevTotal = 0;
+
+  
+  for (let i = 0; i < 8; i++) {
+    if (details.TOTAL_CREDITS[i] > 0) {
+      prevObtained += details.OBTAINED_CREDITS[i];
+      prevTotal += details.TOTAL_CREDITS[i];
+      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
+      cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
+    } else {
+      sgpa[i] = 0; // Handle division by zero
+      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
+    }
+  }
+
+
+  const subjectHandle=(sub:any)=>
+  {
+    
+    const grade=sub.GR.toLowerCase();
+
+    if(grade==="r" || grade==="ab"|| grade==="mp")
+    {
+      for(const remedials of details.REMEDIAL_RECORDS)
+      {
+        for(const subjects of remedials.REMEDIAL_DATES)
+        {
+          for(const subject of subjects.SUBJECTS)
+          {
+            const remGrade=subject.GR.toLowerCase();
+            if(subject.PCODE===sub.PCODE && (remGrade!=="r"&& remGrade!=="ab"&&remGrade!=="mp")) 
+            {
+              return subject;
+            }
+          }
+        }
+      }
+    }
+    else{
+      return sub;
+    }
+  }
 
   useEffect(() => {
     const generateQR = async () => {
       const qrText = `${details.ID} \n${details.SNAME} \n ${details.GRP} `;
       const qrBase64 = await generateQRCodeBase64(qrText);
       setQrCodeBase64(qrBase64);
-      let date=new Date(recentEXAMMY);
+      let date=new Date(recentEXAMMY());
       const qrMonth= (date.getMonth() + 1).toString().padStart(2, '0');
       const qrYear=date.getFullYear();
       const barcodeText = `${qrMonth}${details.ID.slice(1)}${qrYear}`;
@@ -267,7 +361,7 @@ export default function Engg_Layout_1({ details }: any) {
       setBarcodeBase64(barcodeImage);
     };
     generateQR();
-  }, [details]);
+  }, [details,recentEXAMMY]);
 
   return (
     <>
@@ -282,7 +376,7 @@ export default function Engg_Layout_1({ details }: any) {
           </View>
           <View style={styles.rightDetails}>
             <Text style={styles.ID}>{details.ID}</Text>
-            <Text style={styles.admission}>December-2020</Text>
+            <Text style={styles.admission}>{new Date(details.DOJ).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</Text>
             <Text style={styles.completion}>{formattedEXAMMY}</Text>
             <Text style={styles.grade}>First Class with Distinction</Text>
           </View>
@@ -290,7 +384,7 @@ export default function Engg_Layout_1({ details }: any) {
         <View style={styles.table}>
           {details.ENGG_RECORDS.map((record: any, index: number) => {
             const nextRecord = details.ENGG_RECORDS[index + 1];
-            if (index % 2 == 0 && details.ENGG_RECORDS[index + 1]) {
+            if (index % 2 === 0 && details.ENGG_RECORDS[index + 1]) {
               const maxLength =
                 record.SUBJECTS.length > nextRecord.SUBJECTS.length
                   ? record.SUBJECTS.length
@@ -301,11 +395,11 @@ export default function Engg_Layout_1({ details }: any) {
                   <View style={styles.subTable}>
                     <View style={styles.semName}>
                       <Text>
-                        {year == 1
+                        {year === 1
                           ? "I"
-                          : year == 2
+                          : year === 2
                           ? "II"
-                          : year == 3
+                          : year === 3
                           ? "III"
                           : "IV"}{" "}
                         YEAR I SEMESTER
@@ -326,11 +420,12 @@ export default function Engg_Layout_1({ details }: any) {
                           <Text>Gr.</Text>
                         </View>
                       </View>
-                      {Array(maxLength)
+                      {Array(maxLength+1)
                         .fill(0)
                         .map((sub: any, index: number) => {
-                          const subject = record.SUBJECTS[index];
+                          let subject = record.SUBJECTS[index];
                           if (subject) {
+                           subject=subjectHandle(subject);
                             return (
                               <View style={styles.row}>
                                 <View style={styles.code}>
@@ -343,7 +438,7 @@ export default function Engg_Layout_1({ details }: any) {
                                   <Text>{subject.CR.toFixed(1)}</Text>
                                 </View>
                                 <View style={styles.Gr}>
-                                  <Text>{subject.GR}</Text>
+                                  <Text> {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase() : subject.GR}</Text>
                                 </View>
                               </View>
                             );
@@ -368,10 +463,10 @@ export default function Engg_Layout_1({ details }: any) {
                         })}
                       <View style={styles.gpa}>
                         <View style={styles.sgpa}>
-                          <Text>SGPA : {record.SGPA}</Text>
+                          <Text>SGPA :  {sgpa[index].toFixed(2)}</Text>
                         </View>
                         <View style={styles.sgpa}>
-                          <Text>CGPA : {record.CGPA}</Text>
+                          <Text>CGPA :{cgpa[index].toFixed(2)}</Text>
                         </View>
                       </View>
                     </View>
@@ -381,11 +476,11 @@ export default function Engg_Layout_1({ details }: any) {
                       style={[styles.semName, { borderRightWidth: "none" }]}
                     >
                       <Text>
-                        {year == 1
+                        {year === 1
                           ? "I"
-                          : year == 2
+                          : year === 2
                           ? "II"
-                          : year == 3
+                          : year === 3
                           ? "III"
                           : "IV"}{" "}
                         YEAR II SEMESTER
@@ -408,11 +503,12 @@ export default function Engg_Layout_1({ details }: any) {
                           <Text>Gr.</Text>
                         </View>
                       </View>
-                      {Array(maxLength)
+                      {Array(maxLength+1)
                         .fill(0)
                         .map((sub: any, index: number) => {
-                          const subject = nextRecord.SUBJECTS[index];
+                          let subject = nextRecord.SUBJECTS[index];
                           if (subject) {
+                            subject=subjectHandle(subject);
                             return (
                               <View style={styles.row}>
                                 <View style={styles.code}>
@@ -430,7 +526,7 @@ export default function Engg_Layout_1({ details }: any) {
                                     { borderRightWidth: "none" },
                                   ]}
                                 >
-                                  <Text>{subject.GR}</Text>
+                                  <Text> {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase() : subject.GR}</Text>
                                 </View>
                               </View>
                             );
@@ -460,12 +556,12 @@ export default function Engg_Layout_1({ details }: any) {
                         })}
                       <View style={styles.gpa}>
                         <View style={styles.sgpa}>
-                          <Text>SGPA : {nextRecord.SGPA}</Text>
+                          <Text>SGPA : {sgpa[index+1].toFixed(2)}</Text>
                         </View>
                         <View
                           style={[styles.sgpa, { borderRightWidth: "none" }]}
                         >
-                          <Text>CGPA : {nextRecord.CGPA}</Text>
+                          <Text>CGPA :  {cgpa[index+1].toFixed(2)}</Text>
                         </View>
                       </View>
                     </View>
