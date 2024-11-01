@@ -1,8 +1,13 @@
 //Engg layout
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import MerriweatherRegular from "../fonts/Merriweather-Regular.ttf";
+import MerriweatherLight from "../fonts/Merriweather-Light.ttf";
+import MerriweatherBold from "../fonts/Merriweather-Bold.ttf";
+import MerriweatherBlack from "../fonts/Merriweather-Black.ttf";
 
 import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
 import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
+import { format } from "date-fns";
 import JsBarcode from "jsbarcode";
 
 import {
@@ -13,6 +18,38 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 
+interface Subject {
+  PCODE: string;
+  PNAME: string;
+  CR: number;
+  GR: string;
+  EXAMMY:Date,
+}
+
+interface Record {
+  SUBJECTS: Subject[];
+  SGPA: number;
+  CGPA: number;
+}
+interface RemeidalSubjects{
+  SUBJECTS:Subject[],
+}
+interface RemedialRecord{
+  REMEDIAL_DATES:RemeidalSubjects[],
+}
+
+interface Details {
+  SNAME: string;
+  GRP: string;
+  ID: string;
+  DOJ:Date,
+  ENGG_RECORDS: Record[];
+  REMEDIAL_RECORDS:RemedialRecord[],
+}
+
+interface TranscriptLayoutProps {
+  details: Details;
+}
 
 const generateBarcodeBase64 = (text: string): string => {
   const canvas = document.createElement("canvas");
@@ -25,12 +62,28 @@ const generateBarcodeBase64 = (text: string): string => {
   return canvas.toDataURL("image/png");
 };
 
-export default function Transcript_Layout({ details }:any) {
+export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
+  Font.register({
+    family: "Merriweather",
+    src: MerriweatherRegular,
+  });
+  Font.register({
+    family: "MerriweatherLight",
+    src: MerriweatherLight,
+  });
+  Font.register({
+    family: "MerriweatherBold",
+    src: MerriweatherBold,
+  });
+  Font.register({
+    family: "MerriweatherBlack",
+    src: MerriweatherBlack,
+  });
+
   Font.register({
     family: "RobotoBold",
     src: RobotoBold,
   });
-  
   Font.register({
     family: "RobotoRegular",
     src: RobotoRegular,
@@ -38,36 +91,38 @@ export default function Transcript_Layout({ details }:any) {
 
   const [barcodeBase64, setBarcodeBase64] = useState("");
 
-  const recentEXAMMY = details.ENGG_RECORDS.reduce(
-    (latest: Date | null, sem: any) => {
+  const recentEXAMMY = () => {
+    let latest: Date = new Date(0); 
+    
+    for (const sem of details.ENGG_RECORDS) {
       sem.SUBJECTS.forEach((subject: any) => {
         const subjectDate = new Date(subject.EXAMMY);
-        if (!latest || subjectDate > latest) {
+        if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
           latest = subjectDate;
         }
       });
-      return latest;
-    },
-    null
-  );
-
-  // cgpa and sgpa calculation
-  var sgpa=new Array(8).fill(0);
-  var cgpa=new Array(8).fill(0);
-  let prevObtained=0;
-  let prevTotal=0;
+    }
+    
+    
+    for (const remedials of details.REMEDIAL_RECORDS) {
+      for (const subjects of remedials.REMEDIAL_DATES) {
+        for(const subject of subjects.SUBJECTS)
+        {
+          const subjectDate = new Date(subject.EXAMMY);
+          if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
+            latest = subjectDate;
+          }
+        }
+      }
+    }
+    return latest;
+  };
   
-  for (let i=0;i<8;i++){
-    prevObtained+=details.OBTAINED_CREDITS[i];
-    prevTotal+=details.TOTAL_CREDITS[i];
-    sgpa[i]=parseFloat((details.OBTAINED_CREDITS[i]/details.TOTAL_CREDITS[i]).toFixed(2));
-    cgpa[i]=parseFloat((prevObtained/prevTotal).toFixed(2));
-  }
-
+  const recentExamDate = recentEXAMMY(); // Call the function to get the most recent date
   useEffect(() => {
     const generateBarcode = async () => {
       if (recentEXAMMY) {
-        const date = new Date(recentEXAMMY);
+        const date = new Date(recentEXAMMY());
         const qrMonth = (date.getMonth() + 1).toString().padStart(2, "0");
         const qrYear = date.getFullYear();
         const barcodeText = `${qrMonth}${details.ID.slice(1)}${qrYear}`;
@@ -80,8 +135,28 @@ export default function Transcript_Layout({ details }:any) {
 
 
   
-  
+  const subjectHandle = (sub: Subject) => {
+    const grade = sub.GR.toLowerCase();
 
+    if (grade === "r" || grade === "ab" || grade === "mp") {
+      for (const remedials of details.REMEDIAL_RECORDS) {
+        for (const remedialSubjects of remedials.REMEDIAL_DATES) {
+          for(const remedialSubject of remedialSubjects.SUBJECTS)
+          {
+            const remGrade=remedialSubject.GR.toLowerCase();
+
+            if(remedialSubject.PCODE===sub.PCODE && (remGrade!=="r"&& remGrade!=="ab"&&remGrade!=="mp")) 
+              {
+                return remedialSubject;
+              }
+            
+          }
+        }
+      }
+    } 
+    return sub;
+  };
+  
   const styles = StyleSheet.create({
     headDetails: {
       display: "flex",
@@ -298,7 +373,7 @@ export default function Transcript_Layout({ details }:any) {
             </View>
             <View style={styles.item}>
               <Text>Year of Admission : </Text>
-              <Text style={styles.admission}>December-2020</Text>
+              <Text style={styles.admission}>{new Date(details.DOJ).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</Text>
             </View>
           </View>
         </View>
@@ -307,7 +382,7 @@ export default function Transcript_Layout({ details }:any) {
         </View>
       </View>
       <View style={styles.table}>
-        {details.ENGG_RECORDS.map((_:any, index: number) => {
+        {details.ENGG_RECORDS.map((_, index: number) => {
           if (index % 3 === 0) {
             const record = details.ENGG_RECORDS[index];
             const secondRecord = details.ENGG_RECORDS[index + 1];
@@ -364,11 +439,13 @@ export default function Transcript_Layout({ details }:any) {
                           {Array(maxLength) 
                             .fill(0)
                             .map((sub: any, index: number) => {
-                              const subject = currentRecord.SUBJECTS[index];
+                              let subject = currentRecord.SUBJECTS[index];
                               if (subject) {
+                                subject=subjectHandle(subject);
                                 const formattedGrade = subject.GR === "EX" 
                                   ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase()
                                   : subject.GR;
+                                  
 
                                 return (
                                   <View style={styles.row}>
@@ -409,12 +486,12 @@ export default function Transcript_Layout({ details }:any) {
                           <View style={styles.gpa}>
                             <View style={styles.sgpa}>
                               <Text>
-                                SGPA : {sgpa[currentRecord.SEM-1].toFixed(2)}
+                                SGPA : {currentRecord.SGPA.toFixed(2)}
                               </Text>
                             </View>
                             <View style={styles.cgpa}>
                               <Text>
-                                CGPA : {cgpa[currentRecord.SEM-1].toFixed(2)}
+                                CGPA : {currentRecord.CGPA.toFixed(2)}
                               </Text>
                             </View>
                           </View>
@@ -430,7 +507,9 @@ export default function Transcript_Layout({ details }:any) {
                           <Text style={styles.highlight}>
                             {details.ENGG_RECORDS &&
                             details.ENGG_RECORDS.length > 0
-                              ? cgpa[7].toFixed(2)
+                              ? details.ENGG_RECORDS[
+                                  details.ENGG_RECORDS.length - 1
+                                ].CGPA
                               : ""}
                           </Text>
                         </Text>

@@ -27,18 +27,9 @@ export default function ResultsPage() {
     type: "puc",
   };
 
-  const validate = (values: FormValues) => {
-    const errors: Partial<FormValues> = {};
-    const pattern = /^R\d{6}$/;
-    if (!pattern.test(values.ID)) {
-      errors.ID = "Invalid ID";
-    }
-    return errors;
-  };
 
   const formik = useFormik<FormValues>({
     initialValues,
-    validate,
     onSubmit: async (values) => {
       setLoader(true);
       setDetails(null);

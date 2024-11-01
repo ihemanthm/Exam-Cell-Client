@@ -30,7 +30,10 @@ interface Details {
   DOB: string;
   GRP: string;
   ID: string;
+  DOJ:Date,
   ENGG_RECORDS: Record[];
+  TOTAL_CREDITS:[],
+  OBTAINED_CREDITS:[]
 }
 
 interface EnggResultsProps {
@@ -51,6 +54,28 @@ const EnggResults = ({ details }: EnggResultsProps) => {
     null
   );
   const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
+
+
+
+  const sgpa = Array(8).fill(0);
+  const cgpa = Array(8).fill(0);
+  let prevObtained = 0;
+  let prevTotal = 0;
+
+  
+  for (let i = 0; i < 8; i++) {
+    if (details.TOTAL_CREDITS[i] > 0) {
+      prevObtained += details.OBTAINED_CREDITS[i];
+      prevTotal += details.TOTAL_CREDITS[i];
+      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
+      cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
+    } else {
+      sgpa[i] = 0; // Handle division by zero
+      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
+    }
+  }
+
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '70%', marginTop: '70px',fontWeight:"bold" }}>
@@ -80,7 +105,7 @@ const EnggResults = ({ details }: EnggResultsProps) => {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{ minWidth: "80px" }}>Admission</p>
             <p style={{ margin: "0 10px" }}>:</p>
-            <p>{formattedEXAMMY}</p>
+            <p>{new Date(details.DOJ).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{ minWidth: "80px" }}>Result</p>
@@ -146,8 +171,8 @@ const EnggResults = ({ details }: EnggResultsProps) => {
                   </TableRow>
                 ))}
                 <TableRow>
-                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px',textAlign:"center" }}><strong>SGPA: {record.SGPA.toFixed(2)}</strong></TableCell>
-                  <TableCell colSpan={4} align="center" sx={{textAlign:"center", padding: '3px' }}><strong>CGPA: {record.CGPA.toFixed(2)}</strong></TableCell>
+                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px',textAlign:"center" }}><strong>SGPA: {record.SGPA}</strong></TableCell>
+                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px' }}><strong>CGPA: {record.CGPA}</strong></TableCell>
                 </TableRow>
               </TableBody>
             </Table>
