@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Font,
   Text,
@@ -23,6 +22,7 @@ const generateQRCodeBase64 = async (text: string): Promise<string> => {
     return "";
   }
 };
+
 const generateBarcodeBase64 = (text: string): string => {
   const canvas = document.createElement("canvas");
   JsBarcode(canvas, text, {
@@ -79,7 +79,7 @@ export default function Engg_Layout_1({ details }: any) {
       border: "0.8px solid black",
       borderTop: "none",
       borderBottom: "none",
-      marginLeft:10,
+      marginLeft: 10,
       marginRight: 50,
       marginTop:-30,
       rowGap:7,
@@ -92,7 +92,7 @@ export default function Engg_Layout_1({ details }: any) {
       width: "50%",
     },
     semName: {
-      backgroundColor:"#AAB396",
+      backgroundColor: "#AAB396",
       fontSize: 8,
       height: 11,
       justifyContent: "center",
@@ -223,7 +223,7 @@ export default function Engg_Layout_1({ details }: any) {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-around",
-      marginTop:25,
+      marginTop: 25,
     },
     majorCGPA: {
       fontSize: 10,
@@ -235,29 +235,17 @@ export default function Engg_Layout_1({ details }: any) {
       color: "red",
     },
   });
-  function formatDate(dateString: string) {
+
+  const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
-    const year = date.getFullYear();
-
     const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December",
     ];
     const monthName = monthNames[date.getMonth()];
-
-    return `${day}-${monthName}-${year}`;
-  }
+    return `${day}-${monthName}-${date.getFullYear()}`;
+  };
 
   // const recentEXAMMY = details.ENGG_RECORDS.reduce(
   //   (latest: Date | null, sem: any) => {
@@ -350,7 +338,7 @@ export default function Engg_Layout_1({ details }: any) {
 
   useEffect(() => {
     const generateQR = async () => {
-      const qrText = `${details.ID} \n${details.SNAME} \n ${details.GRP} `;
+      const qrText = `${details.ID} \n${details.SNAME} \n${details.GRP}`;
       const qrBase64 = await generateQRCodeBase64(qrText);
       setQrCodeBase64(qrBase64);
       let date=new Date(recentEXAMMY());
@@ -360,6 +348,7 @@ export default function Engg_Layout_1({ details }: any) {
       const barcodeImage = generateBarcodeBase64(barcodeText);
       setBarcodeBase64(barcodeImage);
     };
+
     generateQR();
   }, [details,recentEXAMMY]);
 
@@ -407,18 +396,10 @@ export default function Engg_Layout_1({ details }: any) {
                     </View>
                     <View>
                       <View style={styles.header}>
-                        <View style={styles.Hcode}>
-                          <Text>Code</Text>
-                        </View>
-                        <View style={styles.Htitle}>
-                          <Text>Subject Title</Text>
-                        </View>
-                        <View style={styles.HCr}>
-                          <Text>Cr.</Text>
-                        </View>
-                        <View style={styles.HGr}>
-                          <Text>Gr.</Text>
-                        </View>
+                        <View style={styles.Hcode}><Text>Code</Text></View>
+                        <View style={styles.Htitle}><Text>Subject Title</Text></View>
+                        <View style={styles.HCr}><Text>Cr.</Text></View>
+                        <View style={styles.HGr}><Text>Gr.</Text></View>
                       </View>
                       {Array(maxLength+1)
                         .fill(0)
@@ -488,20 +469,10 @@ export default function Engg_Layout_1({ details }: any) {
                     </View>
                     <View>
                       <View style={styles.header}>
-                        <View style={styles.Hcode}>
-                          <Text>Code</Text>
-                        </View>
-                        <View style={styles.Htitle}>
-                          <Text>Subject Title</Text>
-                        </View>
-                        <View style={styles.HCr}>
-                          <Text>Cr.</Text>
-                        </View>
-                        <View
-                          style={[styles.HGr, { borderRightWidth: "none" }]}
-                        >
-                          <Text>Gr.</Text>
-                        </View>
+                        <View style={styles.Hcode}><Text>Code</Text></View>
+                        <View style={styles.Htitle}><Text>Subject Title</Text></View>
+                        <View style={styles.HCr}><Text>Cr.</Text></View>
+                        <View style={[styles.HGr, { borderRightWidth: "none" }]}><Text>Gr.</Text></View>
                       </View>
                       {Array(maxLength+1)
                         .fill(0)
@@ -568,9 +539,8 @@ export default function Engg_Layout_1({ details }: any) {
                   </View>
                 </View>
               );
-            } else {
-              return null;
             }
+            return null;
           })}
         </View>
         <View style={styles.footer}>
@@ -579,13 +549,11 @@ export default function Engg_Layout_1({ details }: any) {
           </View>
           <View style={styles.majorCGPA}>
             <Text>
-              Major CGPA : <Text style={styles.highlight}>{details.ENGG_RECORDS && details.ENGG_RECORDS.length>0?  details.ENGG_RECORDS[details.ENGG_RECORDS.length - 1].CGPA:""}</Text>
+              Major CGPA : <Text style={styles.highlight}>{cgpa[7].toFixed(2)}</Text>
             </Text>
           </View>
           <View>
-            {barcodeBase64 && (
-              <Image style={styles.barCode} src={barcodeBase64} />
-            )}
+            {barcodeBase64 && <Image style={styles.barCode} src={barcodeBase64} />}
           </View>
         </View>
       </View>

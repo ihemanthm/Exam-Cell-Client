@@ -9,6 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { StyleSheet } from "@react-pdf/renderer";
 
 export default function SerialNumbersSubmission() {
+  const [file, setFile] = useState<File | null>(null);
   const [details, setDetails] = useState<any | null>(null);
   const [loader, setLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -96,8 +97,40 @@ export default function SerialNumbersSubmission() {
         }
         const url =
           values.type === "puc" ? updatePUCCertificate : updateEnggCertificate;
+
         const response = await axios.put(url, data);
-        console.log("URL:", response);
+
+        if (file) {
+          const formData = new FormData();
+          formData.append("SCANNED_COPY", file);
+          
+          const params = {
+    		ID: values.ID,
+    		type: values.type,
+	  };
+
+          setLoader(true);
+          
+          try {
+            const uploadPdf = process.env.REACT_APP_UPLOAD_SCANNED_COPY || "";
+            const response = await axios.post(uploadPdf, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              },
+              params:params,
+            });
+          } catch (error) {
+            setLoader(false);
+            dispatch(
+              setSnackBar({
+                message: "Faied to upload file",
+                variant: "error",
+              })
+            );
+            setFile(null);
+          }
+        }
+
         setLoader(true);
         dispatch(
           setSnackBar({
@@ -118,6 +151,11 @@ export default function SerialNumbersSubmission() {
       }
     },
   });
+
+  const handleFileChange = (event: any) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+  };
 
   const handleSearchSubmit = async () => {
     setLoader(true);
@@ -239,7 +277,7 @@ export default function SerialNumbersSubmission() {
           />
           <button
             className="submit-btn"
-            disabled={loader||details}
+            disabled={loader || details}
             onClick={handleSearchSubmit}
           >
             {loader ? (
@@ -269,7 +307,7 @@ export default function SerialNumbersSubmission() {
                 htmlFor="consolidateCertificateNumber"
                 style={styles.label}
               >
-                Consolidate Certificate Number
+                Consolidate Certificate Number *
               </label>
               <input
                 type="text"
@@ -279,6 +317,7 @@ export default function SerialNumbersSubmission() {
                 id="consolidateCertificateNumber"
                 onChange={formik.handleChange}
                 value={formik.values.CONSOLIDATE_CERTIFICATE_NO}
+                required
               />
             </div>
             <div className="input-box" style={styles.inputField}>
@@ -286,7 +325,7 @@ export default function SerialNumbersSubmission() {
                 htmlFor="provisionalCertificateNumber"
                 style={styles.label}
               >
-                Provisional Certificate Number
+                Provisional Certificate Number *
               </label>
               <input
                 type="text"
@@ -296,11 +335,12 @@ export default function SerialNumbersSubmission() {
                 id="provisionalCertificateNumber"
                 onChange={formik.handleChange}
                 value={formik.values.PROVISIONAL_CERTIFICATE_NO}
+                required
               />
             </div>
             <div className="input-box" style={styles.inputField}>
               <label htmlFor="originalCertificateNumber" style={styles.label}>
-                Original Certificate Number
+                Original Certificate Number *
               </label>
               <input
                 type="text"
@@ -310,12 +350,13 @@ export default function SerialNumbersSubmission() {
                 id="originalCertificateNumber"
                 onChange={formik.handleChange}
                 value={formik.values.ORIGINAL_DEGREE_CERTIFICATE_NO}
+                required
 
               />
             </div>
             <div className="input-box" style={styles.inputField}>
               <label htmlFor="semCardsIssued" style={styles.label}>
-                No of Sem Cards Issued
+                No of Sem Cards Issued *
               </label>
               <input
                 type="text"
@@ -325,26 +366,57 @@ export default function SerialNumbersSubmission() {
                 id="semCardsIssued"
                 onChange={formik.handleChange}
                 value={formik.values.ISSUED_SEM_CARDS_NUMBER}
+                required
+              />
+            </div>
+            <div className="input-box" style={styles.inputField}>
+              <label htmlFor="scannedCopy" style={styles.label}>
+                Scanned Copy
+              </label>
+              <input
+                type="file"
+                accept=".pdf"
+                name="SCANNED_COPY"
+                className="input-field"
+                id="scannedCopy"
+                onChange={handleFileChange}
+                required={false}
               />
             </div>
           </>
         )}
 
         {details && formik.values.type === "puc" && (
-          <div className="input-box" style={styles.inputField}>
-            <label htmlFor="candidateCertificateNumber" style={styles.label}>
-              PUC Certificate Number
-            </label>
-            <input
-              type="text"
-              placeholder="Enter PUC Certificate Number"
-              name="CERTIFICATE_NUMBER"
-              className="input-field"
-              id="candidateCertificateNumber"
-              onChange={formik.handleChange}
-              value={formik.values.CERTIFICATE_NUMBER}
-            />
-          </div>
+          <>
+            <div className="input-box" style={styles.inputField}>
+              <label htmlFor="candidateCertificateNumber" style={styles.label}>
+                PUC Certificate Number *
+              </label>
+              <input
+                type="text"
+                placeholder="Enter PUC Certificate Number"
+                name="CERTIFICATE_NUMBER"
+                className="input-field"
+                id="candidateCertificateNumber"
+                onChange={formik.handleChange}
+                value={formik.values.CERTIFICATE_NUMBER}
+                required
+              />
+            </div>
+            <div className="input-box" style={styles.inputField}>
+              <label htmlFor="scannedCopy" style={styles.label}>
+                Scanned Copy
+              </label>
+              <input
+                type="file"
+                accept=".pdf"
+                name="SCANNED_COPY"
+                className="input-field"
+                id="scannedCopy"
+                onChange={handleFileChange}
+              />
+            </div>
+          </>
         )}
 
         {details && (

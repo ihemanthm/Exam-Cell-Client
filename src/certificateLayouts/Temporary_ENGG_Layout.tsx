@@ -1,16 +1,10 @@
-import React from "react";
 import {
-  PDFViewer,
-  PDFDownloadLink,
-  Document,
-  Page,
   Image,
   Text,
   View,
   StyleSheet,
 } from "@react-pdf/renderer";
 
-import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import rgukt_logo from './rgukt.jpg'
 

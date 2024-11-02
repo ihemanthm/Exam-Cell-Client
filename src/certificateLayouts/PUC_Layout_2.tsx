@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from "react";
-import MerriweatherRegular from "../fonts/Merriweather-Regular.ttf";
-import MerriweatherLight from "../fonts/Merriweather-Light.ttf";
-import MerriweatherBold from "../fonts/Merriweather-Bold.ttf";
-import MerriweatherBlack from "../fonts/Merriweather-Black.ttf";
+import { useState, useEffect } from "react";
 
 import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
 import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
@@ -12,14 +8,12 @@ import { format } from "date-fns";
 import JsBarcode from "jsbarcode";
 
 import {
-  Page,
   Image,
   Text,
   View,
   Font,
   Document,
   StyleSheet,
-  PDFViewer,
 } from "@react-pdf/renderer";
 import image from "./O170384.jpg";
 // import "../styles/ENGGpdfFile.css";
@@ -49,24 +43,7 @@ const generateBarcodeBase64 = (text: string): string => {
 export default function PUC_Layout_2({ student }: any) {
   const [qrCodeBase64, setQrCodeBase64] = useState("");
   const [barcodeBase64, setBarcodeBase64] = useState("");
-
-  Font.register({
-    family: "Merriweather",
-    src: MerriweatherRegular,
-  });
-  Font.register({
-    family: "MerriweatherLight",
-    src: MerriweatherLight,
-  });
-  Font.register({
-    family: "MerriweatherBold",
-    src: MerriweatherBold,
-  });
-  Font.register({
-    family: "MerriweatherBlack",
-    src: MerriweatherBlack,
-  });
-
+  
   Font.register({
     family: "RobotoBold",
     src: RobotoBold,
