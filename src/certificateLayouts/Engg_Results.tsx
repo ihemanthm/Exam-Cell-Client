@@ -16,7 +16,7 @@ interface Subject {
   CR: number;
   GR: string;
   EXAMMY: string;
-  ATTEMPT:string;
+  ATTEMPT: string;
 }
 
 interface Record {
@@ -25,15 +25,24 @@ interface Record {
   CGPA: number;
 }
 
+interface RemeidalSubjects {
+  SUBJECTS: Subject[];
+}
+
+interface RemedialRecord {
+  REMEDIAL_DATES: RemeidalSubjects[];
+}
+
 interface Details {
   SNAME: string;
   DOB: string;
   GRP: string;
   ID: string;
-  DOJ:Date,
+  DOJ: Date;
   ENGG_RECORDS: Record[];
-  TOTAL_CREDITS:[],
-  OBTAINED_CREDITS:[]
+  REMEDIAL_RECORDS: RemedialRecord[];
+  TOTAL_CREDITS: [];
+  OBTAINED_CREDITS: [];
 }
 
 interface EnggResultsProps {
@@ -41,28 +50,39 @@ interface EnggResultsProps {
 }
 
 const EnggResults = ({ details }: EnggResultsProps) => {
-  const recentEXAMMY = details.ENGG_RECORDS.reduce(
-    (latest: Date | null, sem: any) => {
+  const recentEXAMMY = () => {
+    let latest: Date = new Date(0);
+
+    for (const sem of details.ENGG_RECORDS) {
       sem.SUBJECTS.forEach((subject: any) => {
         const subjectDate = new Date(subject.EXAMMY);
-        if (!latest || subjectDate > latest) {
+        if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
           latest = subjectDate;
         }
       });
-      return latest;
-    },
-    null
-  );
-  const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
+    }
 
+    const recentExamDate = recentEXAMMY();
+    const formattedEXAMMY = recentExamDate ? format(recentExamDate, "MMM-yyyy") : "N/A";
 
+    for (const remedials of details.REMEDIAL_RECORDS) {
+      for (const subjects of remedials.REMEDIAL_DATES) {
+        for (const subject of subjects.SUBJECTS) {
+          const subjectDate = new Date(subject.EXAMMY);
+          if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
+            latest = subjectDate;
+          }
+        }
+      }
+    }
+    return latest;
+  };
 
   const sgpa = Array(8).fill(0);
   const cgpa = Array(8).fill(0);
   let prevObtained = 0;
   let prevTotal = 0;
 
-  
   for (let i = 0; i < 8; i++) {
     if (details.TOTAL_CREDITS[i] > 0) {
       prevObtained += details.OBTAINED_CREDITS[i];
@@ -75,10 +95,29 @@ const EnggResults = ({ details }: EnggResultsProps) => {
     }
   }
 
+  const subjectHandle = (sub: Subject) => {
+    const grade = sub.GR.toLowerCase();
+    if (grade === "r" || grade === "ab" || grade === "mp") {
+      for (const remedials of details.REMEDIAL_RECORDS) {
+        for (const remedialSubjects of remedials.REMEDIAL_DATES) {
+          for (const remedialSubject of remedialSubjects.SUBJECTS) {
+            const remGrade = remedialSubject.GR.toLowerCase();
+
+            if (remedialSubject.PCODE === sub.PCODE && (remGrade !== "r" && remGrade !== "ab" && remGrade !== "mp")) {
+              return remedialSubject;
+            }
+          }
+        }
+      }
+    } else {
+      return sub;
+    }
+    return sub;
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '70%', marginTop: '70px',fontWeight:"bold" }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '70%', marginTop: '70px', fontWeight: "bold" }}>
         <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 0, marginLeft: "40px" }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{ minWidth: "55px" }}>Name</p>
@@ -96,7 +135,7 @@ const EnggResults = ({ details }: EnggResultsProps) => {
             <p>{details.GRP}</p>
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 0,marginRight:"15px"}}>
+        <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 0, marginRight: "15px" }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p style={{ minWidth: "80px" }}>ID</p>
             <p style={{ margin: "0 10px" }}>:</p>
@@ -143,36 +182,50 @@ const EnggResults = ({ details }: EnggResultsProps) => {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px',width:'10%' }}><strong>SUBCODE</strong></TableCell>
-                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px',width:'50%' }}><strong>SUBNAME</strong></TableCell>
-                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px',width:'10%' }}><strong>CREDITS</strong></TableCell>
-                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px',width:'10%'}}><strong>GRADE</strong></TableCell>
-                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px',width:'10%' }}><strong>EXAM DATE</strong></TableCell>
-                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px',width:'10%' }}><strong>ATTEMPT</strong></TableCell>
+                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', width: '10%' }}><strong>SUBCODE</strong></TableCell>
+                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', width: '50%' }}><strong>SUBNAME</strong></TableCell>
+                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', width: '10%' }}><strong>CREDITS</strong></TableCell>
+                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', width: '10%' }}><strong>GRADE</strong></TableCell>
+                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', width: '10%' }}><strong>EXAM DATE</strong></TableCell>
+                  <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', width: '10%' }}><strong>ATTEMPT</strong></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {record.SUBJECTS.map((subject, idx) => (
-                  <TableRow key={`subject-${idx}`}>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
-                      {subject.PCODE}
+                {record.SUBJECTS.map((subject, idx) => {
+                  subject = subjectHandle(subject);
+                  return (
+                    <TableRow key={`subject-${idx}`}>
+                      <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                        {subject.PCODE}
                       </TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', textAlign:"left",paddingLeft:"80px"}}>
-                      {subject.PNAME}
+                      <TableCell align="center" sx={{ border: '2px solid black', padding: '3px', textAlign: "left", paddingLeft: "20px" }}>
+                        {subject.PNAME}
                       </TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
-                      {subject.CR.toFixed(1)}
-                    </TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' ,backgroundColor: subject.GR === "R" || subject.GR === "MP" || subject.GR === "Ab" ? 'red' : 'transparent' }} >
-                      {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase(): subject.GR}
-                    </TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{new Date(subject.EXAMMY).toLocaleDateString('en-GB').replace(/\//g, '-')}</TableCell>
-                    <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>{subject.ATTEMPT}</TableCell>
-                  </TableRow>
-                ))}
+                      <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                        {subject.CR.toFixed(1)}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          border: '2px solid black',
+                          padding: '3px',
+                          backgroundColor: subject.GR.toUpperCase() === "R" || subject.GR.toUpperCase() === "MP" || subject.GR.toUpperCase() === "AB" ? '#F95454' : 'transparent'
+                        }}
+                      >
+                        {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase() : subject.GR.toUpperCase()}
+                      </TableCell>
+                      <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                        {new Date(subject.EXAMMY).toLocaleDateString('en-GB').replace(/\//g, '-')}
+                      </TableCell>
+                      <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
+                        {subject.ATTEMPT}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
                 <TableRow>
-                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px',textAlign:"center" }}><strong>SGPA: {record.SGPA}</strong></TableCell>
-                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px' }}><strong>CGPA: {record.CGPA}</strong></TableCell>
+                  <TableCell colSpan={2} align="center" sx={{ border: '2px solid black', padding: '3px', textAlign: "center" }}><strong>SGPA: {sgpa[index].toFixed(2)}</strong></TableCell>
+                  <TableCell colSpan={4} align="center" sx={{ padding: '3px', textAlign: "center" }}><strong>CGPA: {cgpa[index].toFixed(2)}</strong></TableCell>
                 </TableRow>
               </TableBody>
             </Table>

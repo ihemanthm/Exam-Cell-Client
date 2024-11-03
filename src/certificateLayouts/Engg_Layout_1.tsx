@@ -1,17 +1,11 @@
-import {
-  Font,
-  Text,
-  Image,
-  View,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { Font, Text, Image, View, StyleSheet } from "@react-pdf/renderer";
 import image from "./O170384.jpg";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import RobotoRegular from '../fonts/RobotoCondensed-Regular.ttf';
-import RobotoBold from '../fonts/RobotoCondensed-Bold.ttf';
+import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
+import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
 
 const generateQRCodeBase64 = async (text: string): Promise<string> => {
   try {
@@ -59,30 +53,112 @@ export default function Engg_Layout_1({ details }: any) {
       display: "flex",
       flexDirection: "row",
       // position:"absolute",
-      paddingBottom:48,
+      paddingBottom: 48,
     },
     leftDetails: {
       lineHeight: 1.5,
+      width:"100%",
+      marginBottom:60,
     },
     rightDetails: {
       lineHeight: 1.5,
+      width:"100%",
+      marginBottom:60,
+
     },
-    name: { fontSize: 9, fontWeight: "bold", marginLeft: 55 ,marginTop:2,fontFamily:"RobotoBold"},
-    DOB: { fontSize: 9, fontWeight: "bold", marginLeft: 80,fontFamily:"RobotoBold" },
-    degree: { fontSize: 9, fontWeight: "bold", marginLeft: 55 ,marginBottom:3,fontFamily:"RobotoBold"},
-    major: { fontSize: 9, fontWeight: "bold", marginLeft: 55,marginBottom:3,fontFamily:"RobotoBold" },
-    ID: { fontSize: 9, fontWeight: "bold", marginLeft: 137 ,marginTop:3,fontFamily:"RobotoBold"},
-    admission: { fontSize: 9, fontWeight: "bold", marginLeft: 235,fontFamily:"RobotoBold" },
-    completion: { fontSize: 9, fontWeight: "bold", marginLeft: 235,marginBottom:1,fontFamily:"RobotoBold" },
-    grade: { fontSize: 9, fontWeight: "bold", marginLeft: 180 ,marginBottom:3,fontFamily:"RobotoBold"},
+    // name: { fontSize: 9, fontWeight: "bold", marginLeft: 55 ,marginTop:2,fontFamily:"RobotoBold"},
+    // DOB: { fontSize: 9, fontWeight: "bold", marginLeft: 80,fontFamily:"RobotoBold" },
+    // degree: { fontSize: 9, fontWeight: "bold", marginLeft: 55 ,marginBottom:3,fontFamily:"RobotoBold"},
+    // major: { fontSize: 9, fontWeight: "bold", marginLeft: 55,marginBottom:3,fontFamily:"RobotoBold" },
+    // ID: { fontSize: 9, fontWeight: "bold", marginLeft: 137 ,marginTop:3,fontFamily:"RobotoBold"},
+    // admission: { fontSize: 9, fontWeight: "bold", marginLeft: 235,fontFamily:"RobotoBold" },
+    // completion: { fontSize: 9, fontWeight: "bold", marginLeft: 235,marginBottom:1,fontFamily:"RobotoBold" },
+    // grade: { fontSize: 9, fontWeight: "bold", marginLeft: 180 ,marginBottom:3,fontFamily:"RobotoBold"},
+    name: {
+      fontSize: 9,
+      fontWeight: "bold",
+      position: "absolute",
+      top: -5,
+      paddingBottom:2,
+      left: 60,
+      margin:0,
+      fontFamily: "RobotoBold",
+    },
+    DOB: {
+      margin:0,
+      fontSize: 9,
+      fontWeight: "bold",
+      position: "absolute",
+      top: 9,
+      paddingBottom:2,
+      left: 78,
+      fontFamily: "RobotoBold",
+    },
+    degree: {
+      margin:0,
+      fontSize: 9,
+      fontWeight: "bold",
+      position: "absolute",
+      top: 20,
+      left: 60,
+      fontFamily: "RobotoBold",
+    },
+    major: {
+      margin:0,
+      fontSize: 9,
+      fontWeight: "bold",
+      position: "absolute",
+      top: 30,
+      left: 60,
+      fontFamily: "RobotoBold",
+    },
+    ID: {
+      margin:0,
+      fontSize: 9,
+      fontWeight: "bold",
+      position: "absolute",
+      top: -1,
+      left: 35,
+      paddingBottom:2,
+      fontFamily: "RobotoBold",
+    },
+    admission: {
+      fontSize: 9,
+      fontWeight: "bold",
+      position: "absolute",
+      top: 9,
+      left: 115,
+      paddingLeft:4,
+      paddingBottom:2,
+      fontFamily: "RobotoBold",
+    },
+    completion: {
+      margin:0,
+      fontSize: 9,
+      fontWeight: "bold",
+      position: "absolute",
+      top: 20,
+      paddingLeft:4,
+      left: 115,
+      fontFamily: "RobotoBold",
+    },
+    grade: {
+      margin:0,
+      fontSize: 9,
+      fontWeight: "bold",
+      position: "absolute",
+      top: 30,
+      left: 55,
+      fontFamily: "RobotoBold",
+    },
     table: {
       border: "0.8px solid black",
       borderTop: "none",
       borderBottom: "none",
       marginLeft: 10,
       marginRight: 50,
-      marginTop:-30,
-      rowGap:7,
+      marginTop: -30,
+      rowGap: 7,
     },
     tableRow: {
       display: "flex",
@@ -101,14 +177,14 @@ export default function Engg_Layout_1({ details }: any) {
       borderTop: "0.8px solid black",
       borderBottom: "0.8px solid black",
       borderRight: "0.8px solid black",
-      fontFamily:"RobotoBold",
+      fontFamily: "RobotoBold",
     },
     header: {
       height: 12,
       display: "flex",
       flexDirection: "row",
       borderBottom: "0.8px solid black",
-      fontFamily:"RobotoBold",
+      fontFamily: "RobotoBold",
     },
     Hcode: {
       fontSize: 9,
@@ -155,7 +231,7 @@ export default function Engg_Layout_1({ details }: any) {
       textAlign: "center",
       justifyContent: "center",
       borderRight: "0.5px solid black",
-      fontFamily:"RobotoRegular",
+      fontFamily: "RobotoRegular",
     },
     title: {
       fontSize: 9,
@@ -165,7 +241,7 @@ export default function Engg_Layout_1({ details }: any) {
       justifyContent: "center",
       borderRight: "0.5px solid black",
       paddingLeft: 4,
-      fontFamily:"RobotoRegular",
+      fontFamily: "RobotoRegular",
     },
     Cr: {
       fontSize: 9,
@@ -174,7 +250,7 @@ export default function Engg_Layout_1({ details }: any) {
       textAlign: "center",
       justifyContent: "center",
       borderRight: "0.5px solid black",
-      fontFamily:"RobotoRegular",
+      fontFamily: "RobotoRegular",
     },
     Gr: {
       fontSize: 9,
@@ -183,7 +259,7 @@ export default function Engg_Layout_1({ details }: any) {
       textAlign: "center",
       justifyContent: "center",
       borderRight: "0.8px solid black",
-      fontFamily:"RobotoRegular",
+      fontFamily: "RobotoRegular",
     },
     gpa: {
       display: "flex",
@@ -192,7 +268,7 @@ export default function Engg_Layout_1({ details }: any) {
       height: 11,
       borderTop: "0.8px solid black",
       borderBottom: "0.8px solid black",
-      fontFamily:"RobotoRegular",
+      fontFamily: "RobotoRegular",
     },
     sgpa: {
       fontSize: 8,
@@ -201,12 +277,12 @@ export default function Engg_Layout_1({ details }: any) {
       textAlign: "center",
       borderRight: "0.8px solid black",
       fontWeight: "bold",
-      fontFamily:"RobotoBold",
+      fontFamily: "RobotoBold",
     },
     qrCode: {
-      width: 37,
-      height: 37,
-      paddingBottom:5,
+      width: 45,
+      height: 45,
+      paddingBottom: 10,
       // position: "absolute",
       // bottom: -50,
       // left: 150,
@@ -214,7 +290,7 @@ export default function Engg_Layout_1({ details }: any) {
     barCode: {
       width: 100,
       height: 35,
-      paddingBottom:5,
+      paddingBottom: 10,
       // position: "absolute",
       // bottom: -50,
       // left: 350,
@@ -228,7 +304,7 @@ export default function Engg_Layout_1({ details }: any) {
     majorCGPA: {
       fontSize: 10,
       fontWeight: "bold",
-      fontFamily:"RobotoBold",
+      fontFamily: "RobotoBold",
     },
     highlight: {
       fontSize: 10,
@@ -240,8 +316,18 @@ export default function Engg_Layout_1({ details }: any) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
     const monthNames = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December",
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
     const monthName = monthNames[date.getMonth()];
     return `${day}-${monthName}-${date.getFullYear()}`;
@@ -260,8 +346,8 @@ export default function Engg_Layout_1({ details }: any) {
   //   null
   // );
   const recentEXAMMY = () => {
-    let latest: Date = new Date(0); 
-    
+    let latest: Date = new Date(0);
+
     // Iterate over ENGG_RECORDS
     for (const sem of details.ENGG_RECORDS) {
       sem.SUBJECTS.forEach((subject: any) => {
@@ -271,8 +357,7 @@ export default function Engg_Layout_1({ details }: any) {
         }
       });
     }
-    
-    
+
     for (const remedials of details.REMEDIAL_RECORDS) {
       for (const subjects of remedials.REMEDIAL_DATES) {
         const subjectDate = new Date(subjects.EXAMMY);
@@ -281,76 +366,75 @@ export default function Engg_Layout_1({ details }: any) {
         }
       }
     }
-  
+
     return latest;
   };
-  
+
   const recentExamDate = recentEXAMMY(); // Call the function to get the most recent date
-  const formattedEXAMMY = recentExamDate ? format(recentExamDate, "MMM-yyyy") : "N/A"; 
-
-
+  const formattedEXAMMY = recentExamDate
+    ? format(recentExamDate, "MMM-yyyy")
+    : "N/A";
 
   const sgpa = Array(8).fill(0);
   const cgpa = Array(8).fill(0);
   let prevObtained = 0;
   let prevTotal = 0;
 
-  
   for (let i = 0; i < 8; i++) {
     if (details.TOTAL_CREDITS[i] > 0) {
       prevObtained += details.OBTAINED_CREDITS[i];
       prevTotal += details.TOTAL_CREDITS[i];
-      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
+      sgpa[i] = parseFloat(
+        (details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2)
+      );
       cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
     } else {
       sgpa[i] = 0; // Handle division by zero
-      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
+      cgpa[i] =
+        prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
     }
   }
 
+  const subjectHandle = (sub: any) => {
+    const grade = sub.GR.toLowerCase();
 
-  const subjectHandle=(sub:any)=>
-  {
-    
-    const grade=sub.GR.toLowerCase();
-
-    if(grade==="r" || grade==="ab"|| grade==="mp")
-    {
-      for(const remedials of details.REMEDIAL_RECORDS)
-      {
-        for(const subjects of remedials.REMEDIAL_DATES)
-        {
-          for(const subject of subjects.SUBJECTS)
-          {
-            const remGrade=subject.GR.toLowerCase();
-            if(subject.PCODE===sub.PCODE && (remGrade!=="r"&& remGrade!=="ab"&&remGrade!=="mp")) 
-            {
+    if (grade === "r" || grade === "ab" || grade === "mp") {
+      for (const remedials of details.REMEDIAL_RECORDS) {
+        for (const subjects of remedials.REMEDIAL_DATES) {
+          for (const subject of subjects.SUBJECTS) {
+            const remGrade = subject.GR.toLowerCase();
+            if (
+              subject.PCODE === sub.PCODE &&
+              remGrade !== "r" &&
+              remGrade !== "ab" &&
+              remGrade !== "mp"
+            ) {
               return subject;
             }
           }
         }
       }
-    }
-    else{
+    } else {
       return sub;
     }
-  }
+    return sub;
+  };
 
   useEffect(() => {
     const generateQR = async () => {
       const qrText = `${details.ID} \n${details.SNAME} \n${details.GRP}`;
       const qrBase64 = await generateQRCodeBase64(qrText);
       setQrCodeBase64(qrBase64);
-      let date=new Date(recentEXAMMY());
-      const qrMonth= (date.getMonth() + 1).toString().padStart(2, '0');
-      const qrYear=date.getFullYear();
+      let date = new Date(recentEXAMMY());
+      const qrMonth = (date.getMonth() + 1).toString().padStart(2, "0");
+      const qrYear = date.getFullYear();
       const barcodeText = `${qrMonth}${details.ID.slice(1)}${qrYear}`;
       const barcodeImage = generateBarcodeBase64(barcodeText);
       setBarcodeBase64(barcodeImage);
     };
 
     generateQR();
-  }, [details,recentEXAMMY]);
+  }, [details, recentEXAMMY]);
 
   return (
     <>
@@ -365,9 +449,25 @@ export default function Engg_Layout_1({ details }: any) {
           </View>
           <View style={styles.rightDetails}>
             <Text style={styles.ID}>{details.ID}</Text>
-            <Text style={styles.admission}>{new Date(details.DOJ).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</Text>
+            <Text style={styles.admission}>
+              {new Date(details.DOJ).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+              })}
+            </Text>
             <Text style={styles.completion}>{formattedEXAMMY}</Text>
-            <Text style={styles.grade}>First Class with Distinction</Text>
+            <Text style={styles.grade}>
+              {" "}
+              {details.TOTAL_REMS === 0 && parseFloat(cgpa[7].toFixed(2)) >= 7.5
+                ? "First Class with Distinction"
+                : (details.TOTAL_REMS > 0 &&
+                    parseFloat(cgpa[7].toFixed(2)) >= 7.5) ||
+                  parseFloat(cgpa[7].toFixed(2)) >= 6.5
+                ? "First Division"
+                : parseFloat(cgpa[7].toFixed(2)) >= 5.5
+                ? "Second Division"
+                : "Pass Division"}
+            </Text>
           </View>
         </View>
         <View style={styles.table}>
@@ -396,17 +496,25 @@ export default function Engg_Layout_1({ details }: any) {
                     </View>
                     <View>
                       <View style={styles.header}>
-                        <View style={styles.Hcode}><Text>Code</Text></View>
-                        <View style={styles.Htitle}><Text>Subject Title</Text></View>
-                        <View style={styles.HCr}><Text>Cr.</Text></View>
-                        <View style={styles.HGr}><Text>Gr.</Text></View>
+                        <View style={styles.Hcode}>
+                          <Text>Code</Text>
+                        </View>
+                        <View style={styles.Htitle}>
+                          <Text>Subject Title</Text>
+                        </View>
+                        <View style={styles.HCr}>
+                          <Text>Cr.</Text>
+                        </View>
+                        <View style={styles.HGr}>
+                          <Text>Gr.</Text>
+                        </View>
                       </View>
-                      {Array(maxLength+1)
+                      {Array(maxLength + 1)
                         .fill(0)
                         .map((sub: any, index: number) => {
                           let subject = record.SUBJECTS[index];
                           if (subject) {
-                           subject=subjectHandle(subject);
+                            subject = subjectHandle(subject);
                             return (
                               <View style={styles.row}>
                                 <View style={styles.code}>
@@ -419,7 +527,13 @@ export default function Engg_Layout_1({ details }: any) {
                                   <Text>{subject.CR.toFixed(1)}</Text>
                                 </View>
                                 <View style={styles.Gr}>
-                                  <Text> {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase() : subject.GR}</Text>
+                                  <Text>
+                                    {" "}
+                                    {subject.GR === "EX"
+                                      ? subject.GR.charAt(0).toUpperCase() +
+                                        subject.GR.slice(1).toLowerCase()
+                                      : subject.GR}
+                                  </Text>
                                 </View>
                               </View>
                             );
@@ -444,7 +558,7 @@ export default function Engg_Layout_1({ details }: any) {
                         })}
                       <View style={styles.gpa}>
                         <View style={styles.sgpa}>
-                          <Text>SGPA :  {sgpa[index].toFixed(2)}</Text>
+                          <Text>SGPA : {sgpa[index].toFixed(2)}</Text>
                         </View>
                         <View style={styles.sgpa}>
                           <Text>CGPA :{cgpa[index].toFixed(2)}</Text>
@@ -469,17 +583,27 @@ export default function Engg_Layout_1({ details }: any) {
                     </View>
                     <View>
                       <View style={styles.header}>
-                        <View style={styles.Hcode}><Text>Code</Text></View>
-                        <View style={styles.Htitle}><Text>Subject Title</Text></View>
-                        <View style={styles.HCr}><Text>Cr.</Text></View>
-                        <View style={[styles.HGr, { borderRightWidth: "none" }]}><Text>Gr.</Text></View>
+                        <View style={styles.Hcode}>
+                          <Text>Code</Text>
+                        </View>
+                        <View style={styles.Htitle}>
+                          <Text>Subject Title</Text>
+                        </View>
+                        <View style={styles.HCr}>
+                          <Text>Cr.</Text>
+                        </View>
+                        <View
+                          style={[styles.HGr, { borderRightWidth: "none" }]}
+                        >
+                          <Text>Gr.</Text>
+                        </View>
                       </View>
-                      {Array(maxLength+1)
+                      {Array(maxLength + 1)
                         .fill(0)
                         .map((sub: any, index: number) => {
                           let subject = nextRecord.SUBJECTS[index];
                           if (subject) {
-                            subject=subjectHandle(subject);
+                            subject = subjectHandle(subject);
                             return (
                               <View style={styles.row}>
                                 <View style={styles.code}>
@@ -497,7 +621,13 @@ export default function Engg_Layout_1({ details }: any) {
                                     { borderRightWidth: "none" },
                                   ]}
                                 >
-                                  <Text> {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase() : subject.GR}</Text>
+                                  <Text>
+                                    {" "}
+                                    {subject.GR === "EX"
+                                      ? subject.GR.charAt(0).toUpperCase() +
+                                        subject.GR.slice(1).toLowerCase()
+                                      : subject.GR}
+                                  </Text>
                                 </View>
                               </View>
                             );
@@ -527,12 +657,12 @@ export default function Engg_Layout_1({ details }: any) {
                         })}
                       <View style={styles.gpa}>
                         <View style={styles.sgpa}>
-                          <Text>SGPA : {sgpa[index+1].toFixed(2)}</Text>
+                          <Text>SGPA : {sgpa[index + 1].toFixed(2)}</Text>
                         </View>
                         <View
                           style={[styles.sgpa, { borderRightWidth: "none" }]}
                         >
-                          <Text>CGPA :  {cgpa[index+1].toFixed(2)}</Text>
+                          <Text>CGPA : {cgpa[index + 1].toFixed(2)}</Text>
                         </View>
                       </View>
                     </View>
@@ -549,11 +679,14 @@ export default function Engg_Layout_1({ details }: any) {
           </View>
           <View style={styles.majorCGPA}>
             <Text>
-              Major CGPA : <Text style={styles.highlight}>{cgpa[7].toFixed(2)}</Text>
+              Major CGPA :{" "}
+              <Text style={styles.highlight}>{cgpa[7].toFixed(2)}</Text>
             </Text>
           </View>
           <View>
-            {barcodeBase64 && <Image style={styles.barCode} src={barcodeBase64} />}
+            {barcodeBase64 && (
+              <Image style={styles.barCode} src={barcodeBase64} />
+            )}
           </View>
         </View>
       </View>
