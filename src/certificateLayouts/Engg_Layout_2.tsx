@@ -30,6 +30,8 @@ interface Record {
   SUBJECTS: Subject[];
   SGPA: number;
   CGPA: number;
+  TOTAL_CREDITS:[],
+  OBTAINED_CREDITS:[]
 }
 interface RemeidalSubjects{
   SUBJECTS:Subject[],
@@ -45,6 +47,8 @@ interface Details {
   DOJ:Date,
   ENGG_RECORDS: Record[];
   REMEDIAL_RECORDS:RemedialRecord[],
+  TOTAL_CREDITS: [],
+  OBTAINED_CREDITS:[]
 }
 
 interface TranscriptLayoutProps {
@@ -133,6 +137,23 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     generateBarcode();
   }, [details]);
 
+  const sgpa = Array(8).fill(0);
+  const cgpa = Array(8).fill(0);
+  let prevObtained = 0;
+  let prevTotal = 0;
+
+  for (let i = 0; i < 8; i++) {
+    if (details.TOTAL_CREDITS[i] > 0) {
+      console.log(details.TOTAL_CREDITS[i])
+      prevObtained += details.OBTAINED_CREDITS[i];
+      prevTotal += details.TOTAL_CREDITS[i];
+      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
+      cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
+    } else {
+      sgpa[i] = 0; // Handle division by zero
+      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
+    }
+  }
 
   
   const subjectHandle = (sub: Subject) => {
@@ -486,12 +507,12 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
                           <View style={styles.gpa}>
                             <View style={styles.sgpa}>
                               <Text>
-                                SGPA : {currentRecord.SGPA.toFixed(2)}
+                                SGPA : {sgpa[index+rowIndex].toFixed(2)}
                               </Text>
                             </View>
                             <View style={styles.cgpa}>
                               <Text>
-                                CGPA : {currentRecord.CGPA.toFixed(2)}
+                                CGPA :  {cgpa[index+rowIndex].toFixed(2)}
                               </Text>
                             </View>
                           </View>

@@ -76,7 +76,7 @@ export default function ResultsPage() {
         >
           <div
             className="radio-buttons"
-            style={{ display: "flex", marginBottom: "10px" }}
+            style={{ display: "flex", marginBottom: "10px",alignItems:"center",justifyContent:"center" }}
           >
             <RadioGroup
               row

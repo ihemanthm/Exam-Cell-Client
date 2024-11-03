@@ -46,7 +46,7 @@ export default function Engg_Layout_1({ details }: any) {
     family: "RobotoBold",
     src: RobotoBold,
   });
-
+  
   const styles = StyleSheet.create({
     image: {
       height: 60,
@@ -311,7 +311,6 @@ export default function Engg_Layout_1({ details }: any) {
 
   const subjectHandle=(sub:any)=>
   {
-    
     const grade=sub.GR.toLowerCase();
 
     if(grade==="r" || grade==="ab"|| grade==="mp")
