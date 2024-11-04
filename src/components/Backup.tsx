@@ -48,7 +48,7 @@ export default function Backup() {
       const link = document.createElement('a');
       link.href = url;
       const today=new Date();
-      link.setAttribute('download', `${formik.values.type}_${today.getDate()+'-'+today.getMonth()+'-'+today.getUTCFullYear()}.xlsx`);
+      link.setAttribute('download', `${formik.values.type}_${today.getDate()+'-'+today.getMonth()+'-'+today.getUTCFullYear()}.zip`);
       document.body.appendChild(link);
       link.click();
       link.remove();
