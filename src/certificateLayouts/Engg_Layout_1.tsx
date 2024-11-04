@@ -333,18 +333,6 @@ export default function Engg_Layout_1({ details }: any) {
     return `${day}-${monthName}-${date.getFullYear()}`;
   };
 
-  // const recentEXAMMY = details.ENGG_RECORDS.reduce(
-  //   (latest: Date | null, sem: any) => {
-  //     sem.SUBJECTS.forEach((subject: any) => {
-  //       const subjectDate = new Date(subject.EXAMMY);
-  //       if (!latest || subjectDate > latest) {
-  //         latest = subjectDate;
-  //       }
-  //     });
-  //     return latest;
-  //   },
-  //   null
-  // );
   const recentEXAMMY = () => {
     let latest: Date = new Date(0);
 
@@ -371,10 +359,9 @@ export default function Engg_Layout_1({ details }: any) {
   };
 
   const recentExamDate = recentEXAMMY(); // Call the function to get the most recent date
-  const formattedEXAMMY = recentExamDate
-    ? format(recentExamDate, "MMM-yyyy")
-    : "N/A";
+  const formattedEXAMMY = recentExamDate ? format(recentExamDate, "MMM-yyyy") : "N/A"; 
 
+  //callculate SGPA and CGPA
   const sgpa = Array(8).fill(0);
   const cgpa = Array(8).fill(0);
   let prevObtained = 0;

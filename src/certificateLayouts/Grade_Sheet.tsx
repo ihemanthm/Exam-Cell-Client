@@ -1,10 +1,11 @@
+import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
+import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
 import {
+    Font,
     Text,
     View,
     StyleSheet,
 } from "@react-pdf/renderer";
-import QRCode from "qrcode";
-import JsBarcode from "jsbarcode";
 import { format } from "date-fns";
 
 
@@ -14,55 +15,67 @@ interface GradeSheetProps {
 }
 const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
 
+    Font.register({
+        family: "RobotoBold",
+        src: RobotoBold,
+      });
+      Font.register({
+        family: "RobotoRegular",
+        src: RobotoRegular,
+      });
+
     const styles = StyleSheet.create({
         details: {
             display: "flex",
             flexDirection: "column",
-            marginTop: 60,
+            marginTop: 87,
             width: "100%",
+            fontFamily:"RobotoRegular",
         },
         detailsRow: {
             display: "flex",
             flexDirection: "row",
-            height: 30,
+            height: 20,
             width: "100%",
             justifyContent: "space-between",
         },
         name: {
             fontSize: 12,
-            marginLeft: 30,
+            marginLeft: 45,
         },
         dob: {
             fontSize: 12,
-            marginRight: 30,
+            marginTop:-1,
+            marginRight: 45,
             alignContent: "center",
         },
         year: {
             fontSize: 12,
-            marginLeft: 60,
+            marginLeft: 110,
         },
         rollNo: {
             fontSize: 12,
-            marginRight: 15,
+            marginRight: 35,
         },
         branch: {
             fontSize: 12,
-            marginLeft: 75,
+            marginLeft: 160,
         },
         examYear: {
             fontSize: 12,
-            marginLeft: 90,
+            marginLeft: 190,
         },
         tableData: {
             width: "100%",
             height: 460,
-            marginTop: 40,
+            marginTop: 53,
             flexDirection: "column",
             justifyContent: "flex-start",
+            fontFamily:"RobotoRegular",
         },
         data:{
             width:"100%",
-            height:400,
+            height:330,
             flexDirection: "column",
             justifyContent: "flex-start",
         },
@@ -73,13 +86,13 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
             flexDirection: "row",
         },
         subCode: {
-            width: "15%",
+            width: "18%",
             height: 20,
             textAlign: "center",
             alignItems: "center",
         },
         subName: {
-            width: "65%",
+            width: "62%",
             height: 20,
             textAlign: "left",
             alignItems: "flex-start",
@@ -93,7 +106,7 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
         totalRow: {
             flexDirection: "row",
             width: "100%",
-            height: 20,
+            height: 30,
             fontSize: 12,
         },
         empty: {
@@ -114,8 +127,9 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
         },
         conclusionText: {
             fontSize: 12,
-            marginTop: 5,
-            marginLeft: 50,
+            marginTop:-45,
+            marginLeft: 30,
+            fontFamily:"RobotoRegular",
         },
     });
     function formatDate() {
@@ -172,7 +186,6 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
                     <View style={styles.dob}>
                         <Text>{formattedDate}</Text>
                     </View>
-
                 </View>
                 <View style={styles.detailsRow}>
                     <View style={styles.year}>
@@ -217,16 +230,15 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
                 </View>
                 <View style={styles.totalRow}>
                     <View style={styles.empty}></View>
-                    <View style={styles.totalCred}><Text>{maxSgpaCredits.toFixed(1)}</Text></View>
-                    <View style={styles.credits}></View>
+                    <View style={styles.totalsgpa}><Text>{maxSgpaCredits.toFixed(1)}</Text></View>
                 </View>
                 <View style={styles.totalRow}>
                     <View style={styles.empty}></View>
-                    <View style={styles.totalsgpa}><Text>{details.RECORDS[index].SGPA}</Text></View>
+                    <View style={styles.totalsgpa}><Text>{details.RECORDS[index].SGPA.toFixed(2)}</Text></View>
                 </View>
                 <View style={styles.totalRow}>
                     <View style={styles.empty}></View>
-                    <View style={styles.totalsgpa}><Text>{details.RECORDS[index].CGPA}</Text></View>
+                    <View style={styles.totalsgpa}><Text>{details.RECORDS[index].CGPA.toFixed(2)}</Text></View>
                 </View>
             </View>
             <View style={styles.conclusionText}>

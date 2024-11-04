@@ -66,7 +66,7 @@ const generateBarcodeBase64 = (text: string): string => {
   return canvas.toDataURL("image/png");
 };
 
-export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
+export default function Transcript_Layout({ details }: any) {
   Font.register({
     family: "Merriweather",
     src: MerriweatherRegular,
@@ -92,6 +92,25 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     family: "RobotoRegular",
     src: RobotoRegular,
   });
+
+  //callculate SGPA and CGPA
+  const sgpa = Array(8).fill(0);
+  const cgpa = Array(8).fill(0);
+  let prevObtained = 0;
+  let prevTotal = 0;
+
+  
+  for (let i = 0; i < 8; i++) {
+    if (details.TOTAL_CREDITS[i] > 0) {
+      prevObtained += details.OBTAINED_CREDITS[i];
+      prevTotal += details.TOTAL_CREDITS[i];
+      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
+      cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
+    } else {
+      sgpa[i] = 0; // Handle division by zero
+      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
+    }
+  }
 
   const [barcodeBase64, setBarcodeBase64] = useState("");
 
@@ -170,7 +189,6 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
               {
                 return remedialSubject;
               }
-            
           }
         }
       }
@@ -373,6 +391,7 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
     
   });
 
+
   return (
     <View>
       <View style={styles.headDetails}>
@@ -403,7 +422,7 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
         </View>
       </View>
       <View style={styles.table}>
-        {details.ENGG_RECORDS.map((_, index: number) => {
+        {details.ENGG_RECORDS.map((_:any, index: number) => {
           if (index % 3 === 0) {
             const record = details.ENGG_RECORDS[index];
             const secondRecord = details.ENGG_RECORDS[index + 1];
@@ -507,12 +526,12 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
                           <View style={styles.gpa}>
                             <View style={styles.sgpa}>
                               <Text>
-                                SGPA : {sgpa[index+rowIndex].toFixed(2)}
+                                SGPA : {sgpa[currentRecord.SEM-1].toFixed(2)}
                               </Text>
                             </View>
                             <View style={styles.cgpa}>
                               <Text>
-                                CGPA :  {cgpa[index+rowIndex].toFixed(2)}
+                                CGPA : {cgpa[currentRecord.SEM-1].toFixed(2)}
                               </Text>
                             </View>
                           </View>
@@ -526,12 +545,7 @@ export default function Transcript_Layout({ details }: TranscriptLayoutProps) {
                         <Text>
                           CGPA :{" "}
                           <Text style={styles.highlight}>
-                            {details.ENGG_RECORDS &&
-                            details.ENGG_RECORDS.length > 0
-                              ? details.ENGG_RECORDS[
-                                  details.ENGG_RECORDS.length - 1
-                                ].CGPA
-                              : ""}
+                            {cgpa[7]}
                           </Text>
                         </Text>
                       </View>
