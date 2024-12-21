@@ -136,7 +136,10 @@ export default function Transcript_Layout({ details }: any) {
     generateBarcode();
   }, [details]);
 
-
+  let prevObtained = 0;
+  let prevTotal = 0;
+  let sgpa = Array(8).fill(0);
+  let cgpa = Array(8).fill(0);
   for (let i = 0; i < 8; i++) {
     if (details.TOTAL_CREDITS[i] > 0) {
       console.log(details.TOTAL_CREDITS[i])
