@@ -122,7 +122,6 @@ export default function Transcript_Layout({ details }: any) {
     return latest;
   };
   
-  const recentExamDate = recentEXAMMY(); // Call the function to get the most recent date
   useEffect(() => {
     const generateBarcode = async () => {
       if (recentEXAMMY) {
@@ -137,10 +136,6 @@ export default function Transcript_Layout({ details }: any) {
     generateBarcode();
   }, [details]);
 
-  const sgpa = Array(8).fill(0);
-  const cgpa = Array(8).fill(0);
-  let prevObtained = 0;
-  let prevTotal = 0;
 
   for (let i = 0; i < 8; i++) {
     if (details.TOTAL_CREDITS[i] > 0) {
