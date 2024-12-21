@@ -128,8 +128,8 @@ export default function SingleCertificate() {
     engg_page: {
       marginTop: 80,
       textAlign: "justify",
-      marginLeft: 20,
-      marginRight: 40,
+      marginLeft: 10,
+      marginRight: 25,
       backgroundColor: "transparent",
     },
     PUC_Layout_2_page: {
