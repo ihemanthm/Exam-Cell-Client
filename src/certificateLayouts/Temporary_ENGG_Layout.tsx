@@ -4,8 +4,6 @@ import {
   View,
   StyleSheet,
 } from "@react-pdf/renderer";
-
-import { format } from "date-fns";
 import rgukt_logo from './rgukt.jpg'
 
 export default function Temporary_Grade({ details }: any) {
@@ -224,42 +222,6 @@ export default function Temporary_Grade({ details }: any) {
       fontSize:12,
     },
   });
-  function formatDate(dateString: string) {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const year = date.getFullYear();
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const monthName = monthNames[date.getMonth()];
-
-    return `${day}-${monthName}-${year}`;
-  }
-
-  const recentEXAMMY = details.ENGG_RECORDS.reduce(
-    (latest: Date | null, sem: any) => {
-      sem.SUBJECTS.forEach((subject: any) => {
-        const subjectDate = new Date(subject.EXAMMY);
-        if (!latest || subjectDate > latest) {
-          latest = subjectDate;
-        }
-      });
-      return latest;
-    },
-    null
-  );
-  const formattedEXAMMY = recentEXAMMY ? format(recentEXAMMY, "MMM-yyyy") : "N/A"; 
   const today = new Date();
   const day = String(today.getDate()).padStart(2, '0');
   const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
