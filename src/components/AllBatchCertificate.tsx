@@ -220,7 +220,6 @@ export default function AllBatchCertificate() {
               onChange={formik.handleChange}
               value={formik.values.REGULATION}
               required
-              pattern="R\d{2}"
               disabled={details}
             />
             <button

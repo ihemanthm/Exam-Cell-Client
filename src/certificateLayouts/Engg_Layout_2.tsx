@@ -1,5 +1,5 @@
 //Engg layout
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import MerriweatherRegular from "../fonts/Merriweather-Regular.ttf";
 import MerriweatherLight from "../fonts/Merriweather-Light.ttf";
 import MerriweatherBold from "../fonts/Merriweather-Bold.ttf";
@@ -7,7 +7,6 @@ import MerriweatherBlack from "../fonts/Merriweather-Black.ttf";
 
 import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
 import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
-import { format } from "date-fns";
 import JsBarcode from "jsbarcode";
 
 import {
@@ -93,6 +92,25 @@ export default function Transcript_Layout({ details }: any) {
     src: RobotoRegular,
   });
 
+  //callculate SGPA and CGPA
+  const sgpa = Array(8).fill(0);
+  const cgpa = Array(8).fill(0);
+  let prevObtained = 0;
+  let prevTotal = 0;
+
+  
+  for (let i = 0; i < 8; i++) {
+    if (details.TOTAL_CREDITS[i] > 0) {
+      prevObtained += details.OBTAINED_CREDITS[i];
+      prevTotal += details.TOTAL_CREDITS[i];
+      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
+      cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
+    } else {
+      sgpa[i] = 0; // Handle division by zero
+      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
+    }
+  }
+
   const [barcodeBase64, setBarcodeBase64] = useState("");
 
   const recentEXAMMY = () => {
@@ -135,23 +153,6 @@ export default function Transcript_Layout({ details }: any) {
     };
     generateBarcode();
   }, [details]);
-
-  let prevObtained = 0;
-  let prevTotal = 0;
-  let sgpa = Array(8).fill(0);
-  let cgpa = Array(8).fill(0);
-  for (let i = 0; i < 8; i++) {
-    if (details.TOTAL_CREDITS[i] > 0) {
-      console.log(details.TOTAL_CREDITS[i])
-      prevObtained += details.OBTAINED_CREDITS[i];
-      prevTotal += details.TOTAL_CREDITS[i];
-      sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
-      cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
-    } else {
-      sgpa[i] = 0; // Handle division by zero
-      cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
-    }
-  }
 
   
   const subjectHandle = (sub: Subject) => {
