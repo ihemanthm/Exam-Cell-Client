@@ -45,20 +45,9 @@ export default function SingleCertificate() {
     type: "puc",
     layout: "L1",
   };
-  const validate = (values: FormValues) => {
-    const errors: Partial<FormValues> = {};
-    const pattern = /^R\d{6}$/;
-    if (!pattern.test(values.ID)) {
-      errors.ID = "Invalid ID";
-    } else {
-      errors.ID = "";
-    }
-    return errors;
-  };
 
   const formik = useFormik<FormValues>({
     initialValues,
-    validate,
     onSubmit: (values) => { },
   });
   
@@ -346,14 +335,13 @@ export default function SingleCertificate() {
           <div className="input-box">
             <input
               type="text"
-              placeholder="ID (RXXXXXX)"
+              placeholder="ID"
               name="ID"
               className="input-field"
               id="ID"
               onChange={formik.handleChange}
               value={formik.values.ID}
               required
-              pattern="R\d{6}"
             />
             <button type="submit" className="submit-btn">
               {loader ? (

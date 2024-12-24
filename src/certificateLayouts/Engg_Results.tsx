@@ -154,7 +154,7 @@ const EnggResults = ({ details }: EnggResultsProps) => {
         </div>
       </div>
 
-      {details.ENGG_RECORDS.map((record, index) => {
+      {details.ENGG_RECORDS.map((record:any, index:any) => {
         const year = Math.floor(index / 2) + 1;
         return (
           <TableContainer
@@ -191,7 +191,7 @@ const EnggResults = ({ details }: EnggResultsProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {record.SUBJECTS.map((subject, idx) => {
+                {record.SUBJECTS.map((subject:any, idx:any) => {
                   subject = subjectHandle(subject);
                   return (
                     <TableRow key={`subject-${idx}`}>
@@ -215,7 +215,7 @@ const EnggResults = ({ details }: EnggResultsProps) => {
                         {subject.GR === "EX" ? subject.GR.charAt(0).toUpperCase() + subject.GR.slice(1).toLowerCase() : subject.GR.toUpperCase()}
                       </TableCell>
                       <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
-                        {new Date(subject.EXAMMY).toLocaleDateString('en-GB').replace(/\//g, '-')}
+                        {new Date(record.EXAMMY).toLocaleDateString('en-GB').replace(/\//g, '-')}
                       </TableCell>
                       <TableCell align="center" sx={{ border: '2px solid black', padding: '3px' }}>
                         {subject.ATTEMPT}

@@ -53,15 +53,6 @@ export default function SerialNumbersSubmission() {
     ISSUED_SEM_CARDS_NUMBER: 0,
   };
 
-  const validate = (values: FormValues) => {
-    const errors: Partial<FormValues> = {};
-    const pattern = /^R\d{6}$/;
-    if (!pattern.test(values.ID)) {
-      errors.ID = "Invalid ID";
-    }
-    return errors;
-  };
-
   const styles = StyleSheet.create({
     inputField: {
       display: "flex",
@@ -75,7 +66,6 @@ export default function SerialNumbersSubmission() {
 
   const formik = useFormik<FormValues>({
     initialValues,
-    validate,
     onSubmit: async (values) => {
       try {
         let data: any; // Declare the data variable

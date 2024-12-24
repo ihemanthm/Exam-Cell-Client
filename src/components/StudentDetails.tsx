@@ -23,11 +23,6 @@ export default function RankListByBatch() {
     const formik = useFormik<FormValues>({
         initialValues,
         onSubmit: async (values) => {
-            const pattern = /^R\d{6}$/;
-            if (!pattern.test(values.ID)) {
-                dispatch(setSnackBar({ message: "Invalid ID", variant: "error", }));
-                return;
-            }
             await handleSubmit(values.ID);
         }
     });
@@ -76,7 +71,7 @@ const StudentComponent = ({ data }: { data: any }) => {
                     <div className="input-box" style={{ marginBottom: "30px" }}>
                         <input
                             type="text"
-                            placeholder="Enter student ID (RXXXXXX)"
+                            placeholder="Enter student ID"
                             name="ID"
                             className="input-field"
                             id="ID"

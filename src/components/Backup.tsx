@@ -1,7 +1,6 @@
 import React from "react";
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
-
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -26,7 +25,7 @@ export default function Backup() {
 
   const formik = useFormik<FormValues>({
     initialValues,
-    onSubmit: (values) => { },
+    onSubmit: (values) => {},
   });
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

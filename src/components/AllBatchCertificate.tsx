@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import AllbatchPDFFIle from "../certificateLayouts/AllbatchPDFFIle";
-import Button from "@mui/material/Button";
 import { PDFViewer, Document, PDFDownloadLink } from "@react-pdf/renderer";
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
@@ -41,19 +40,8 @@ export default function AllBatchCertificate() {
     type: "",
     layout: "L1",
   };
-  const validate = (values: FormValues) => {
-    const errors: Partial<FormValues> = {};
-    const pattern = /^R\d{2}$/;
-    if (!pattern.test(values.REGULATION)) {
-      errors.REGULATION = "Invalid ID";
-    } else {
-      errors.REGULATION = "";
-    }
-    return errors;
-  };
   const formik = useFormik<FormValues>({
     initialValues,
-    validate,
     onSubmit: (values) => {},
   });
 
@@ -64,8 +52,7 @@ export default function AllBatchCertificate() {
       ((details && parseInt(details[details.length - 1].ID.slice(-4), 10)) -
         (details && parseInt(details[0].ID.slice(-4), 10))) /
         100
-    ); // Calculate number of rangesd
-    const remaining = details && details.length % 100;
+    );
     for (let i = 0; i < numberOfRanges; i++) {
       const start = i * 100 + 1;
       const end = Math.min((i + 1) * 100, details.length);
@@ -75,14 +62,6 @@ export default function AllBatchCertificate() {
         value: `${start}-${end}`, // Range value as a string
       });
     }
-    // if (remaining) {
-    //   const start = numberOfRanges * 100 + 1;
-    //   const end = details && details.length;
-    //   options.push({
-    //     label: `${start}-${end}`,
-    //     value: `${start}-${end}`,
-    //   });
-    // }
     return options;
   };
 
@@ -241,7 +220,6 @@ export default function AllBatchCertificate() {
               onChange={formik.handleChange}
               value={formik.values.REGULATION}
               required
-              pattern="R\d{2}"
               disabled={details}
             />
             <button

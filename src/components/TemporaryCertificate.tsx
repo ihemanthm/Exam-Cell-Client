@@ -1,22 +1,15 @@
 import React from "react";
-// import PUC_Layout_1 from "../certificateLayouts/PUC_Layout_1";
-// import Engg_Layout_1 from "../certificateLayouts/Engg_Layout_1";
-// import PUC_Layout_2 from "../certificateLayouts/PUC_Layout_2";
 import Temporary_PUC_Layout from "../certificateLayouts/Temporary_PUC_Layout";
 import Temporary_ENGG_Layout from "../certificateLayouts/Temporary_ENGG_Layout";
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
 import {
     PDFViewer,
-    PDFDownloadLink,
     Document,
     Page,
     StyleSheet,
 } from "@react-pdf/renderer";
 
-import background from "../certificateLayouts/background.jpg";
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -33,9 +26,6 @@ export default function SingleCertificate() {
     const getPUCDetailsById = process.env.REACT_APP_GET_PUC_DETAILS_BY_ID;
     const getEnggDetailsById = process.env.REACT_APP_GET_ENGG_DETAILS_BY_ID;
 
-    interface ResponseData {
-        message?: string;
-    }
     interface FormValues {
         ID: string;
         type: string;
@@ -44,22 +34,12 @@ export default function SingleCertificate() {
         ID: "",
         type: "puc",
     };
-    const validate = (values: FormValues) => {
-        const errors: Partial<FormValues> = {};
-        const pattern = /^R\d{6}$/;
-        if (!pattern.test(values.ID)) {
-            errors.ID = "Invalid ID";
-        } else {
-            errors.ID = "";
-        }
-        return errors;
-    };
 
     const formik = useFormik<FormValues>({
         initialValues,
-        validate,
         onSubmit: (values) => { },
     });
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setDetails(null);
@@ -173,14 +153,13 @@ export default function SingleCertificate() {
                     <div className="input-box">
                         <input
                             type="text"
-                            placeholder="ID (RXXXXXX)"
+                            placeholder="Enter ID"
                             name="ID"
                             className="input-field"
                             id="ID"
                             onChange={formik.handleChange}
                             value={formik.values.ID}
                             required
-                            pattern="R\d{6}"
                         />
                         <button type="submit" className="submit-btn">
                             {loader ? (

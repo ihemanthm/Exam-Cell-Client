@@ -34,20 +34,8 @@ export default function GradeSheet() {
     const initialValues: FormValues = {
         ID: "",
     };
-    const validate = (values: FormValues) => {
-        const errors: Partial<FormValues> = {};
-        const pattern = /^R\d{6}$/;
-        if (!pattern.test(values.ID)) {
-            errors.ID = "Invalid ID";
-        } else {
-            errors.ID = "";
-        }
-        return errors;
-    };
-
     const formik = useFormik<FormValues>({
         initialValues,
-        validate,
         onSubmit: (values) => { },
     });
     const handleSubmit = async (e: React.FormEvent) => {
@@ -57,6 +45,7 @@ export default function GradeSheet() {
         try {
 
             const response = await axios.get(getEnggDetailsById + formik.values.ID);
+            console.log(response.data);
             setDetails(response.data);
             dispatch(
                 setSnackBar({
@@ -86,7 +75,7 @@ export default function GradeSheet() {
     };
     const styles = StyleSheet.create({
         gradeSheet: {
-            marginTop: 80,
+            marginTop: 78,
             paddingBottom: 30,
             paddingLeft: 50,
             paddingRight: 50,
@@ -110,6 +99,8 @@ export default function GradeSheet() {
         SGPA: number,
         CGPA: number,
         TCR: number,
+        OBTAINED_CR : number,
+        EXAMMY:number,
         SUBJECTS: Subjects[]
     }
     interface StudentRecord {
@@ -124,17 +115,6 @@ export default function GradeSheet() {
         TOTAL_CREDITS: number[],
         RECORDS: Record[]
     }
-    interface Subject {
-        PNO: number;
-        PCODE: string;
-        PNAME: string;
-        CR: number;
-        GR: string;
-        GRPTS: number;
-        TGRP: number;
-        ATTEMPT: string;
-        EXAMMY: Date | null;
-    }
     return (
         <>
             <div className="home-pdf-container">
@@ -142,7 +122,6 @@ export default function GradeSheet() {
                 <form
                     onSubmit={handleSubmit}
                     className="search-form"
-                    style={{ display: "flex", flexDirection: "column" }}
                 >
                     <div className="input-box">
                         <input
@@ -154,7 +133,6 @@ export default function GradeSheet() {
                             onChange={formik.handleChange}
                             value={formik.values.ID}
                             required
-                            pattern="R\d{6}"
                         />
                         <button type="submit" className="submit-btn">
                             {loader ? (
@@ -181,6 +159,7 @@ export default function GradeSheet() {
                     <PDFViewer style={{ width: "80%", height: "100vh", }}>
                         <Document>
                             {(() => {
+
                                 //centralized student structure
                                 const student: StudentRecord = {
                                     REGULATION: details.REGULATION,
@@ -201,6 +180,8 @@ export default function GradeSheet() {
                                         SGPA: sem.SGPA,
                                         CGPA: sem.CGPA,
                                         TCR: sem.TCR,
+                                        EXAMMY:sem.EXAMMY,
+                                        OBTAINED_CR : sem.OBTAINED_CR,
                                         SUBJECTS: sem.SUBJECTS || [] ,
                                     };
 
@@ -212,11 +193,17 @@ export default function GradeSheet() {
                                     if (record) {
                                         record.REMEDIAL_DATES.forEach((attempt: any) => {
                                             if (attempt.SUBJECTS.length > 0) {
+                                                let OBTAINED_CR =0;
+                                                attempt.SUBJECTS.forEach((sub:any)=>{
+                                                    OBTAINED_CR += sub.TGRP;
+                                                })
                                                 const remRecord: Record = {
                                                     SEM: record.SEM,
                                                     SGPA: attempt.SGPA,
                                                     CGPA: attempt.CGPA,
-                                                    TCR: record.TCR,
+                                                    TCR:0,
+                                                    EXAMMY:attempt.EXAMMY,
+                                                    OBTAINED_CR,
                                                     SUBJECTS: attempt.SUBJECTS
                                                 };
                                                 student.RECORDS.push(remRecord);
