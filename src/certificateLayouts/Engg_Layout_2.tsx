@@ -117,12 +117,10 @@ export default function Transcript_Layout({ details }: any) {
     let latest: Date = new Date(0); 
     
     for (const sem of details.ENGG_RECORDS) {
-      sem.SUBJECTS.forEach((subject: any) => {
-        const subjectDate = new Date(subject.EXAMMY);
+        const subjectDate = new Date(sem.EXAMMY);
         if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
           latest = subjectDate;
         }
-      });
     }
     
     

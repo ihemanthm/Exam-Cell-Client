@@ -66,14 +66,7 @@ export default function Engg_Layout_1({ details }: any) {
       marginBottom:60,
 
     },
-    // name: { fontSize: 9, fontWeight: "bold", marginLeft: 55 ,marginTop:2,fontFamily:"RobotoBold"},
-    // DOB: { fontSize: 9, fontWeight: "bold", marginLeft: 80,fontFamily:"RobotoBold" },
-    // degree: { fontSize: 9, fontWeight: "bold", marginLeft: 55 ,marginBottom:3,fontFamily:"RobotoBold"},
-    // major: { fontSize: 9, fontWeight: "bold", marginLeft: 55,marginBottom:3,fontFamily:"RobotoBold" },
-    // ID: { fontSize: 9, fontWeight: "bold", marginLeft: 137 ,marginTop:3,fontFamily:"RobotoBold"},
-    // admission: { fontSize: 9, fontWeight: "bold", marginLeft: 235,fontFamily:"RobotoBold" },
-    // completion: { fontSize: 9, fontWeight: "bold", marginLeft: 235,marginBottom:1,fontFamily:"RobotoBold" },
-    // grade: { fontSize: 9, fontWeight: "bold", marginLeft: 180 ,marginBottom:3,fontFamily:"RobotoBold"},
+
     name: {
       fontSize: 9,
       fontWeight: "bold",
@@ -291,9 +284,6 @@ export default function Engg_Layout_1({ details }: any) {
       width: 100,
       height: 35,
       paddingBottom: 10,
-      // position: "absolute",
-      // bottom: -50,
-      // left: 350,
     },
     footer: {
       display: "flex",
@@ -338,12 +328,10 @@ export default function Engg_Layout_1({ details }: any) {
 
     // Iterate over ENGG_RECORDS
     for (const sem of details.ENGG_RECORDS) {
-      sem.SUBJECTS.forEach((subject: any) => {
-        const subjectDate = new Date(subject.EXAMMY);
+        const subjectDate = new Date(sem.EXAMMY);
         if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
           latest = subjectDate;
         }
-      });
     }
 
     for (const remedials of details.REMEDIAL_RECORDS) {

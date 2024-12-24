@@ -35,10 +35,11 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
     name: {
       fontSize: 12,
       marginLeft: 45,
+      marginTop:1,
     },
     dob: {
       fontSize: 12,
-      marginTop: -1,
+      marginTop: 1,
       marginRight: 45,
       alignContent: "center",
     },
@@ -116,6 +117,7 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
     totalsgpa: {
       width: "30%",
       height: 20,
+      marginBottom:2,
       alignItems: "center",
       justifyContent: "center",
     },

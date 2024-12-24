@@ -75,7 +75,7 @@ export default function GradeSheet() {
     };
     const styles = StyleSheet.create({
         gradeSheet: {
-            marginTop: 80,
+            marginTop: 78,
             paddingBottom: 30,
             paddingLeft: 50,
             paddingRight: 50,

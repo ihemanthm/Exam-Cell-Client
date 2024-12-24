@@ -1,5 +1,3 @@
-import React from 'react';
-import { parseISO, format } from "date-fns";
 import {
   Table,
   TableBody,
@@ -43,7 +41,6 @@ const PucResults = ({ details }: PucResultsProps) => {
  
   let cumulativeTGRP = 0; // cumulative total grade points for CGPA
   let cumulativeCR = 0;
-  let CGPA = 0;
   let sCount:number=0;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }}>
