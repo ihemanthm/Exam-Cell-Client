@@ -22,7 +22,8 @@ import { useDispatch } from "react-redux";
 import {  loggedStatus } from "./store/features/user/user";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/Store";
-// import Footer from "./components/footer";
+import Footer from "./components/footer";
+import Faq from "./components/faq";
 function App() {
 
   const dispatch=useDispatch();
@@ -73,7 +74,10 @@ function App() {
 
         <Routes>
           <Route path="/" element={!logged?<Login/>:<Navigate to="/home"/>}  />
-
+          <Route
+            path="/home"
+            element={logged?<Faq />:<Navigate to="/"/>}
+          />
           <Route
             path="/EnggUpload"
             element={logged?<EnggXlsxSelection />:<Navigate to="/"/>}
@@ -91,7 +95,7 @@ function App() {
             element={logged?<ZipSelection />:<Navigate to="/"/>}
           />
           <Route
-            path="/home"
+            path="/PUCUpload"
             element={logged?<PucXlsxSelection />:<Navigate to="/"/>}
           />
           <Route
@@ -124,7 +128,7 @@ function App() {
           />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-       {/* {logged? <Footer/>:""} */}
+       {logged? <Footer/>:""}
       </SnackbarProvider>
     </div>
   );
