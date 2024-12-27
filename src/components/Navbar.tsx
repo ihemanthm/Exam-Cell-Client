@@ -28,6 +28,7 @@ import { loggedStatus } from "../store/features/user/user";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/Store";
 import { navbarStatus } from "../store/features/navbar/navbar";
+import { setSnackBar } from "../store/features/snackbar/snackbar";
 const drawerWidth = 300;
 
 export default function DrawerAppBar() {
@@ -36,10 +37,10 @@ export default function DrawerAppBar() {
   const logged = useSelector((state: RootState) => state.logStatus.logged);
   const navIndex = useSelector((state: RootState) => state.navStatus.index);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [lopen, setLOpen] = React.useState<number | null>(null); 
+  const [lopen, setLOpen] = React.useState<number | null>(null);
 
   const handleLClick = (index: number | null) => {
-    setLOpen(lopen === index ? null : index); 
+    setLOpen(lopen === index ? null : index);
   };
 
   const handleDrawerToggle = () => {
@@ -56,7 +57,10 @@ export default function DrawerAppBar() {
     );
 
     localStorage.removeItem("authToken");
-
+    dispatch(setSnackBar({
+      message: "Logged out!!!",
+      variant: "success"
+    }))
     navigate("/");
 
     window.history.pushState(null, "", window.location.href);
@@ -220,15 +224,18 @@ export default function DrawerAppBar() {
               <MenuIcon />
             </IconButton>
             <Typography
+              onClick={() => { navigate("/home") }}
               variant="h6"
               component="div"
               sx={{
                 flexGrow: 1,
                 color: "black",
                 textAlign: "center",
+                marginLeft: 15,
+                cursor:""
               }}
             >
-              Examination Cell
+              Examination Cell RK Valley
             </Typography>
             <Avatar
               alt="Logo"
@@ -257,14 +264,14 @@ export default function DrawerAppBar() {
             open={mobileOpen}
             onClose={handleDrawerToggle}
             ModalProps={{
-              keepMounted: true, 
+              keepMounted: true,
             }}
             sx={{
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
                 position: "relative",
-                overflowY: "hidden", 
+                overflowY: "hidden",
               },
             }}
           >

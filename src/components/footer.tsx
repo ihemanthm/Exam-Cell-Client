@@ -2,32 +2,36 @@ import React from "react";
 import { Box, Typography, Stack } from "@mui/material";
 import src_logo from "../assets/src_logo.png";
 
-export default function  Footer () {
+export default function Footer() {
   return (
-    <Box textAlign={"center"} sx={{position:"relative",bottom:5}}>
+    <Box
+      sx={{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        textAlign: "center",
+        backgroundColor: "#fff", // Optional: Set a background color for better visibility
+        padding: "10px 0", // Optional: Adds padding for spacing
+      }}
+    >
       <Stack
-        display="flex"
-        flexDirection="column"
+        direction="row"
         justifyContent="center"
         alignItems="center"
       >
-        <Typography variant="body1" color="primary">
-          Made by
+        <Typography variant="body1" color="gray">
+          Designed by Team SRC@CSE
         </Typography>
-        <Stack direction={"row"} alignItems={"center"}>
-          <Typography variant="h6" fontWeight={"bold"}>
-            TEAM SRC
-          </Typography>
-          <Box
-            component="img"
-            src={src_logo}
-            alt="SRC Logo"
-            sx={{
-              height: "50px",
-            }}
-          />
-        </Stack>
+        <Box
+          component="img"
+          src={src_logo}
+          alt="SRC Logo"
+          sx={{
+            height: "30px", // Adjust size to fit well with text
+          }}
+        />
       </Stack>
     </Box>
   );
-};
+}
