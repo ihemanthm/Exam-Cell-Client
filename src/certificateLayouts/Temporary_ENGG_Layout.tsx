@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
 } from "@react-pdf/renderer";
-import rgukt_logo from './rgukt.jpg'
+import rgukt_logo from '../assets/rgukt.jpg';
 
 export default function Temporary_Grade({ details }: any) {
   
@@ -270,7 +270,7 @@ export default function Temporary_Grade({ details }: any) {
         <View style={styles.table}>
           {details.ENGG_RECORDS.map((record: any, index: number) => {
             const nextRecord = details.ENGG_RECORDS[index + 1];
-            if (index % 2 == 0 && details.ENGG_RECORDS[index + 1]) {
+            if (index % 2 === 0 && details.ENGG_RECORDS[index + 1]) {
               const maxLength =
                 record.SUBJECTS.length > nextRecord.SUBJECTS.length
                   ? record.SUBJECTS.length
@@ -281,11 +281,11 @@ export default function Temporary_Grade({ details }: any) {
                   <View style={styles.subTable}>
                     <View style={styles.semName}>
                       <Text>
-                        {year == 1
+                        {year === 1
                           ? "I"
-                          : year == 2
+                          : year === 2
                           ? "II"
-                          : year == 3
+                          : year === 3
                           ? "III"
                           : "IV"}{" "}
                         YEAR I SEMESTER
@@ -361,11 +361,11 @@ export default function Temporary_Grade({ details }: any) {
                       style={[styles.semName, { borderRightWidth: "none" }]}
                     >
                       <Text>
-                        {year == 1
+                        {year === 1
                           ? "I"
-                          : year == 2
+                          : year === 2
                           ? "II"
-                          : year == 3
+                          : year === 3
                           ? "III"
                           : "IV"}{" "}
                         YEAR II SEMESTER

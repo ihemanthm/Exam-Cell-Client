@@ -1,6 +1,6 @@
 import React from "react";
-import Temporary_PUC_Layout from "../certificateLayouts/Temporary_PUC_Layout";
-import Temporary_ENGG_Layout from "../certificateLayouts/Temporary_ENGG_Layout";
+import TemporaryPucLayout from "../certificateLayouts/Temporary_PUC_Layout";
+import TemporaryEnggLayout from "../certificateLayouts/Temporary_ENGG_Layout";
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
 import {
@@ -45,7 +45,7 @@ export default function SingleCertificate() {
         setDetails(null);
         setLoader(true);
         try {
-            const url = formik.values.type == "puc" ? getPUCDetailsById : getEnggDetailsById;
+            const url = formik.values.type === "puc" ? getPUCDetailsById : getEnggDetailsById;
             const response = await axios.get(url + formik.values.ID);
 
             setDetails(response.data);
@@ -58,7 +58,7 @@ export default function SingleCertificate() {
             setLoader(false);
         } catch (error: any) {
             setLoader(false);
-            if (error.status == 404) {
+            if (error.status === 404) {
                 dispatch(
                     setSnackBar({
                         message: "User not found",
@@ -194,11 +194,11 @@ export default function SingleCertificate() {
                             <Document>
                                 {formik.values.type === "puc" ? (
                                     <Page style={styles.puc_temp_page}>
-                                        <Temporary_PUC_Layout student={details} />
+                                        <TemporaryPucLayout student={details} />
                                     </Page>
                                 ) : (
                                     <Page style={styles.engg_temp_page}>
-                                        <Temporary_ENGG_Layout details={details} />
+                                        <TemporaryEnggLayout details={details} />
                                     </Page>
                                 )}
                             </Document>

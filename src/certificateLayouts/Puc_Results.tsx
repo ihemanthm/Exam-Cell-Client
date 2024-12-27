@@ -39,9 +39,8 @@ interface PucResultsProps {
 
 const PucResults = ({ details }: PucResultsProps) => {
  
-  let cumulativeTGRP = 0; // cumulative total grade points for CGPA
+  let cumulativeTGRP = 0; 
   let cumulativeCR = 0;
-  let sCount:number=0;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '70%', marginTop: '70px', fontWeight: "bold" }}>
@@ -83,8 +82,6 @@ const PucResults = ({ details }: PucResultsProps) => {
 
                 cumulativeTGRP += semTGRP;
                 cumulativeCR += semCR;
-               
-                sCount = record.SEM_NO;
         const year = Math.floor(index / 2) + 1;
        
         return (

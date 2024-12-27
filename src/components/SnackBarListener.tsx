@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/Store'; 
@@ -12,7 +12,7 @@ export default function SnackBarListener() {
     useEffect(() => {
         if (message && variant) {
             enqueueSnackbar(message, { variant });
-            dispatch(resetSnackbar()); // Clear the snackbar state after showing
+            dispatch(resetSnackbar()); 
         }
     }, [message, variant, enqueueSnackbar, dispatch]);
 

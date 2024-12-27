@@ -1,5 +1,4 @@
 import { Font, Text, Image, View, StyleSheet } from "@react-pdf/renderer";
-import image from "./O170384.jpg";
 import QRCode from "qrcode";
 import JsBarcode from "jsbarcode";
 import { useState, useEffect } from "react";
@@ -52,7 +51,6 @@ export default function Engg_Layout_1({ details }: any) {
     details: {
       display: "flex",
       flexDirection: "row",
-      // position:"absolute",
       paddingBottom: 48,
     },
     leftDetails: {
@@ -275,9 +273,6 @@ export default function Engg_Layout_1({ details }: any) {
       width: 45,
       height: 45,
       paddingBottom: 10,
-      // position: "absolute",
-      // bottom: -50,
-      // left: 150,
     },
     barCode: {
       width: 100,
@@ -321,11 +316,10 @@ export default function Engg_Layout_1({ details }: any) {
     const monthName = monthNames[date.getMonth()];
     return `${day}-${monthName}-${date.getFullYear()}`;
   };
-
+// eslint-disable-next-line 
   const recentEXAMMY = () => {
     let latest: Date = new Date(0);
 
-    // Iterate over ENGG_RECORDS
     for (const sem of details.ENGG_RECORDS) {
         const subjectDate = new Date(sem.EXAMMY);
         if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
@@ -345,10 +339,9 @@ export default function Engg_Layout_1({ details }: any) {
     return latest;
   };
 
-  const recentExamDate = recentEXAMMY(); // Call the function to get the most recent date
+  const recentExamDate = recentEXAMMY(); 
   const formattedEXAMMY = recentExamDate ? format(recentExamDate, "MMM-yyyy") : "N/A"; 
 
-  //callculate SGPA and CGPA
   const sgpa = Array(8).fill(0);
   const cgpa = Array(8).fill(0);
   let prevObtained = 0;
@@ -363,7 +356,7 @@ export default function Engg_Layout_1({ details }: any) {
       );
       cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
     } else {
-      sgpa[i] = 0; // Handle division by zero
+      sgpa[i] = 0; 
       cgpa[i] =
         prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
     }
@@ -412,7 +405,7 @@ export default function Engg_Layout_1({ details }: any) {
 
   return (
     <>
-      <Image style={styles.image} src={image} />
+      <Image style={styles.image} src={`http://localhost:8000/uploads/images/${details.ID}.jpg`} />
       <View>
         <View style={styles.details}>
           <View style={styles.leftDetails}>

@@ -14,49 +14,80 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import logo from '../assets/logo.png';
 import MenuIcon from "@mui/icons-material/Menu";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
-
+import Button from "@mui/material/Button";
+import { LogoutOutlined } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loggedStatus } from "../store/features/user/user";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/Store";
+import { navbarStatus } from "../store/features/navbar/navbar";
 const drawerWidth = 300;
 
 export default function DrawerAppBar() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const logged = useSelector((state: RootState) => state.logStatus.logged);
+  const navIndex = useSelector((state: RootState) => state.navStatus.index);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [lopen, setLOpen] = React.useState<number | null>(null);  // Handle expanded sections
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null); // Handle active sub-section
+  const [lopen, setLOpen] = React.useState<number | null>(null); 
 
   const handleLClick = (index: number | null) => {
-    setLOpen(lopen === index ? null : index); // Toggle dropdown
-  };
-
-  const handleListItemClick = (index: number) => {
-    setSelectedIndex(index); // Set active sub-section
+    setLOpen(lopen === index ? null : index); 
   };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+  const logout = () => {
+    dispatch(
+      loggedStatus({
+        logged: false,
+        authToken: "",
+        name: "",
+        email: "",
+      })
+    );
 
+    localStorage.removeItem("authToken");
+
+    navigate("/");
+
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", () => {
+      window.history.pushState(null, "", window.location.href);
+    });
+  };
   // Drawer item style
   const getDrawerItemStyle = (index: number) => ({
-    textAlign: "center",
+    textAlign: "left",
     backgroundColor: lopen === index ? "black" : "#F9F5F6",
     color: lopen === index ? "#F9F5F6" : "black",
     marginBottom: "0.2rem",
     "&:hover": { backgroundColor: lopen === index ? "black" : "#F9F5F6" },
   });
+  const setNavbarIndex = (num: number) => {
+    dispatch(
+      navbarStatus({
+        index: num,
+      })
+    );
+  };
 
-  // Drawer menu items with sub-links
   const drawerItems = [
     {
       name: "Upload Regular Details",
       links: [
-        { name: "PUC Details", to: "/" },
+        { name: "PUC Details", to: "/home" },
         { name: "Engg Details", to: "/EnggUpload" },
       ],
-      isCollapsible: true, // This section has sub-links
+      isCollapsible: true,
     },
     {
       name: "Certificates",
@@ -69,12 +100,12 @@ export default function DrawerAppBar() {
     {
       name: "Temporary Certificates",
       links: [{ name: "Temporary", to: "/temporaryCertificate" }],
-      isCollapsible: false, // No sub-links, no collapse
+      isCollapsible: false,
     },
     {
       name: "Student Info",
       links: [{ name: "Student Info", to: "/Results" }],
-      isCollapsible: false, // No sub-links, no collapse
+      isCollapsible: false,
     },
     {
       name: "Rank List",
@@ -121,7 +152,6 @@ export default function DrawerAppBar() {
       <List component="nav" aria-label="secondary mailbox folder">
         {drawerItems.map((item, index) => (
           <div key={index}>
-            {/* Handle collapsible sections */}
             {item.isCollapsible ? (
               <div>
                 <ListItemButton
@@ -138,10 +168,11 @@ export default function DrawerAppBar() {
                         <ListItemButton
                           sx={{
                             pl: 6,
-                            fontWeight: selectedIndex === linkIndex ? "bold" : "normal", // Bold font for active sub-section
+                            fontWeight:
+                              navIndex === linkIndex ? "bold" : "normal", // Bold font for active sub-section
                           }}
-                          selected={selectedIndex === linkIndex}
-                          onClick={() => handleListItemClick(linkIndex)}
+                          selected={navIndex === linkIndex}
+                          onClick={() => setNavbarIndex(linkIndex)}
                         >
                           <ListItemText primary={link.name} />
                         </ListItemButton>
@@ -151,7 +182,6 @@ export default function DrawerAppBar() {
                 </Collapse>
               </div>
             ) : (
-              // Directly handle non-collapsible sections with Link
               item.links.map((link, linkIndex) => (
                 <Link to={link.to} className="link" key={linkIndex}>
                   <ListItemButton sx={getDrawerItemStyle(index + 1)}>
@@ -166,7 +196,7 @@ export default function DrawerAppBar() {
     </Box>
   );
 
-  return (
+  return logged ? (
     <div className="navbar-div">
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
@@ -202,7 +232,7 @@ export default function DrawerAppBar() {
             </Typography>
             <Avatar
               alt="Logo"
-              src="https://th.bing.com/th/id/R.5f4a536e09c111530b7aaae0f3181db3?rik=BvkIzGduEF%2foEw&riu=http%3a%2f%2fwww.rgukt.in%2fimages%2fLogonew.png&ehk=233hO90aIpxhCitQWTAzX2WCze82Sl8ZNNKF956t%2f8Q%3d&risl=&pid=ImgRaw&r=0"
+              src={logo}
               sx={{
                 width: 40,
                 height: 40,
@@ -210,6 +240,14 @@ export default function DrawerAppBar() {
                 img: { objectFit: "contain" },
               }}
             />
+            <Button
+              variant="outlined"
+              onClick={logout}
+              endIcon={<LogoutOutlined />}
+              sx={{ color: "black", borderColor: "black" }}
+            >
+              Logout
+            </Button>
           </Toolbar>
         </AppBar>
 
@@ -219,14 +257,14 @@ export default function DrawerAppBar() {
             open={mobileOpen}
             onClose={handleDrawerToggle}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true, 
             }}
             sx={{
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
                 position: "relative",
-                overflowY:"hidden", // To prevent scroll issues
+                overflowY: "hidden", 
               },
             }}
           >
@@ -235,5 +273,7 @@ export default function DrawerAppBar() {
         </nav>
       </Box>
     </div>
+  ) : (
+    <div></div>
   );
 }

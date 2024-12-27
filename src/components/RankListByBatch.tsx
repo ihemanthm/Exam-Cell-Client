@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import { setSnackBar } from "../store/features/snackbar/snackbar";
@@ -37,7 +37,7 @@ export default function RankListByBatch() {
             const fullUrl=`${getRankList}${REGULATION}`;
             console.log(fullUrl);
             const response: Record<string, any> = await axios.get(fullUrl, {
-                responseType: 'blob', // Important for downloading files
+                responseType: 'blob', 
             });
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');

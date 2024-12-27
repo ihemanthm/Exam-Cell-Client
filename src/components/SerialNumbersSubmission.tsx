@@ -88,7 +88,7 @@ export default function SerialNumbersSubmission() {
         const url =
           values.type === "puc" ? updatePUCCertificate : updateEnggCertificate;
 
-        const response = await axios.put(url, data);
+        await axios.put(url, data);
 
         if (file) {
           const formData = new FormData();
@@ -103,7 +103,7 @@ export default function SerialNumbersSubmission() {
           
           try {
             const uploadPdf = process.env.REACT_APP_UPLOAD_SCANNED_COPY || "";
-            const response = await axios.post(uploadPdf, formData, {
+            await axios.post(uploadPdf, formData, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               },
