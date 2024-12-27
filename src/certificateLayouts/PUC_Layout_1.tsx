@@ -12,7 +12,6 @@ import {
   Font,
   StyleSheet,
 } from "@react-pdf/renderer";
-import image from "./O170422.jpg";
 import "../styles/PDFFile.css";
 const generateQRCodeBase64 = async (text: string): Promise<string> => {
   try {
@@ -24,7 +23,6 @@ const generateQRCodeBase64 = async (text: string): Promise<string> => {
   }
 };
 export default function PDFFile({ student }: any) {
-  const [ind, setInd] = useState<any>(0);
   Font.register({
     family: "RobotoRegular",
     src: RobotoRegular,
@@ -36,7 +34,6 @@ export default function PDFFile({ student }: any) {
 
   const styles = StyleSheet.create({
     image: {
-      // marginTop:5,
       marginRight: 40,
       height: 35,
       width: 35,
@@ -47,7 +44,6 @@ export default function PDFFile({ student }: any) {
       textAlign: "justify",
     },
     section1: {
-      // letterSpacing: 0.7,
       fontSize: 9,
       fontFamily: "RobotoRegular",
     },
@@ -229,10 +225,9 @@ export default function PDFFile({ student }: any) {
       left: 176,
     },
   });
-  let cumulativeTGRP = 0; // cumulative total grade points for CGPA
+  let cumulativeTGRP = 0;
   let cumulativeCR = 0;
   let CGPA = 0;
-  let sCount = 0;
   const recentCCMY = student.PUC_RECORDS.reduce(
     (latest: Date | null, sem: any) => {
       sem.SUBJECTS.forEach((subject: any) => {
@@ -267,9 +262,7 @@ export default function PDFFile({ student }: any) {
 
   return (
     <>
-      {/* <Document> */}
-      {/* <Page size="A4" style={styles.page}> */}
-      <Image style={styles.image} src={image} />
+      <Image style={styles.image} src={`http://localhost:8000/uploads/images/${student.ID}.jpg`} />
       <Text style={styles.textCard}>
         <Text style={styles.section1}>This is to certify that </Text>
         <Text style={styles.highlight}> {student.SNAME} </Text>
@@ -331,7 +324,6 @@ export default function PDFFile({ student }: any) {
             cumulativeTGRP += semTGRP;
             cumulativeCR += semCR;
             CGPA = CGPA + parseFloat(SGPA);
-            sCount = parseFloat(sem.SEM_NO);
             return (
               <View style={styles.card}>
                 <View style={styles.greyRow}>
@@ -419,8 +411,8 @@ export default function PDFFile({ student }: any) {
           <Text style={styles.conclusionBold}>
             {student.TOTAL_REMS === 0 && parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 7.5
               ? "First Class with Distinction"
-              : student.TOTAL_REMS > 0 && parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 7.5 ||
-                parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 6.5
+              :((student.TOTAL_REMS > 0) &&( parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 7.5)) ||
+               ( parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 6.5)
                 ? "First Division"
                 : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 5.5
                   ? "Second Division"
@@ -433,8 +425,6 @@ export default function PDFFile({ student }: any) {
         </Text>
         {qrCodeBase64 && <Image style={styles.qrCode} src={qrCodeBase64} />}
       </View>
-      {/* </Page> */}
-      {/* </Document> */}
     </>
   );
 }

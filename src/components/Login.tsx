@@ -1,141 +1,171 @@
-import React, { useState } from 'react';
-import { Avatar, Button, TextField, Link, Box, Typography, Container } from '@mui/material';
+import React, { useState } from "react";
+import {
+  Avatar,
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
+import logo from '../assets/logo.png';
 import { useFormik } from "formik";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { setSnackBar } from "../store/features/snackbar/snackbar";
+import { useDispatch } from "react-redux";
+import {  loggedStatus } from "../store/features/user/user";
 
-export default function Login({setLogin}:{setLogin:React.Dispatch<React.SetStateAction<boolean>>} ): React.JSX.Element {
-
-  const navigate = useNavigate()
+export default function Login() {
+  const login: string = process.env.REACT_APP_LOGIN ?? "";
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loader, setLoader] = useState(false);
-  const [error, setError] = useState("");
-  const [emailValid, setEmailValid] = useState(false)
-  const [passwordValid, setPasswordValid] = useState(false)
+  
   interface FormValues {
     email: string;
     password: string;
-  };
+  }
 
   const initialValues: FormValues = {
     email: "",
-    password: ""
+    password: "",
   };
-
-  const validate = (values: FormValues) => {
-
-    const errors: Partial<FormValues> = {};
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@rguktrkv\.ac\.in$/;
-    const passwordLength = 8;
-
-    if (!emailPattern.test(values.email)) {
-      console.log("email error")
-      setEmailValid(true)
-      setError("*Invalid Email Address")
-      errors.email = ""
-    }
-    else {
-      errors.email = "true";
-      console.log("no email error")
-      setEmailValid(false)
-      setError("")
-    }
-    if (errors.email !== "") {
-      if (passwordLength <= values.password.length) {
-        setPasswordValid(false)
-        setError("")
-      }
-      else {
-        setPasswordValid(true)
-        setError("*Password must be atleast 8 characters")
-      }
-    }
-    return errors;
-  }
 
   const formik = useFormik<FormValues>({
     initialValues,
-    validate,
-    onSubmit: (values) => { }
+    onSubmit: (values) => {},
   });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    setLoader(true);
     try {
-      // send an api request
-      //  const response= await fetch("",{
-      //    method : 'post',
-      //    headers : {
-      //      "Content-Type" : "application/json",
-      //    },
-      //  });
-      if(formik.values.email === "admin@rguktrkv.ac.in" && formik.values.password === "Admin@123"){
-        setLogin(true);
-        navigate("/PucUpload")
+      const response = await axios.post(login, formik.values) as any;
+      if (response?.data) {
+        const { token ,user} = response.data;
+        dispatch(
+          loggedStatus({
+            logged: true,
+            token: token ?? '',
+            name: user?.name ?? 'Unknown', 
+            email: user?.email ?? 'Unknown'
+          })
+        );
+      localStorage.setItem("authToken", JSON.stringify(token));
+      navigate("/home");
+      } else {
+        console.error('No data received from server');
       }
-      else{setError("*Wrong Credentials")}
-    }
-    catch (e) {
-      setError("error");
+      dispatch(
+        setSnackBar({
+          message: `Logged in successfully`,
+          variant: "success",
+        })
+      );
+    } catch (e:any) {
+      if(e.response && e.response.status === 404)
+      {
+        dispatch(
+          setSnackBar({
+            message:"User not found",
+            variant: "warning",
+          })
+        );
+      }
+      else if(e.response && e.response.status === 401)
+      {
+        dispatch(
+          setSnackBar({
+            message:"Invalid Credentiais",
+            variant: "warning",
+          })
+        );
+      }
+      else{
+        dispatch(
+          setSnackBar({
+            message:"Internal error",
+            variant: "error",
+          })
+        );
+      }
+    }finally{
+      setLoader(false);
     }
   };
-
-
-  const inputs: React.JSX.Element = (
-    <>
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        id="email"
-        type="email"
-        label="Email Address"
-        name="email"
-        autoComplete="email"
-        autoFocus
-        onChange={formik.handleChange}
-        value={formik.values.email}
-        color={emailValid ? "error" : "primary"}
-      />
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        name="password"
-        label="Password"
-        type="password"
-        id="password"
-        autoComplete="current-password"
-        onChange={formik.handleChange}
-        value={formik.values.password}
-        color={passwordValid ? "error" : "primary"}
-      />
-    </>
-  )
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
           marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'primary', height: 50, width: 50 }}>
-        </Avatar>
+        <Avatar
+          sx={{ m: 1, bgcolor: "primary", height: 100, width: 100 ,objectFit:"fill"}}
+          src={logo}
+        ></Avatar>
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 0.5 }}>
-          {inputs}
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 0.5 }}>
+          <TextField
+            margin="normal"
+            fullWidth
+            id="email"
+            type="email"
+            label="Email Address"
+            name="email"
+            autoFocus
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "black",
+                },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "black",
+              },
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            sx={{
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "black",
+                },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "black",
+              },
+            }}
+          />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-
+            sx={{
+              mt: 3,
+              mb: 2,
+              color: "white",
+              backgroundColor: "black",
+              height: 50,
+              fontSize: 18,
+            }}
           >
             {loader ? (
               <CircularProgress size={27} sx={{ color: "white" }} />
@@ -143,21 +173,8 @@ export default function Login({setLogin}:{setLogin:React.Dispatch<React.SetState
               "Login"
             )}
           </Button>
-          <Box >
-            <Box >
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Box>
-            {error && (
-              <Typography color="error" style={{ marginTop: 16, textAlign: 'left' }}>
-                {error}
-              </Typography>
-            )}
-          </Box>
         </Box>
       </Box>
     </Container>
   );
-};
-
+}

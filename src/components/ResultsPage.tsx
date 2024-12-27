@@ -5,8 +5,8 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setSnackBar } from "../store/features/snackbar/snackbar";
-import Puc_Results from "../certificateLayouts/Puc_Results"; // Import Puc_Results
-import Engg_Results from "../certificateLayouts/Engg_Results"; // Import Engg_Results
+import PucResults from "../certificateLayouts/Puc_Results"; 
+import EnggResults from "../certificateLayouts/Engg_Results";
 import "../styles/FileSelection.css";
 
 export default function ResultsPage() {
@@ -159,9 +159,9 @@ export default function ResultsPage() {
         {details && (
           <div>
             {formik.values.type === "puc" ? (
-              <Puc_Results details={details} />
+              <PucResults details={details} />
             ) : (
-              <Engg_Results details={details} />
+              <EnggResults details={details} />
             )}
           </div>
         )}

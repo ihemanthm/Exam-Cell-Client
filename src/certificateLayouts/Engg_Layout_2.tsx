@@ -25,34 +25,8 @@ interface Subject {
   EXAMMY:Date,
 }
 
-interface Record {
-  SUBJECTS: Subject[];
-  SGPA: number;
-  CGPA: number;
-  TOTAL_CREDITS:[],
-  OBTAINED_CREDITS:[]
-}
-interface RemeidalSubjects{
-  SUBJECTS:Subject[],
-}
-interface RemedialRecord{
-  REMEDIAL_DATES:RemeidalSubjects[],
-}
 
-interface Details {
-  SNAME: string;
-  GRP: string;
-  ID: string;
-  DOJ:Date,
-  ENGG_RECORDS: Record[];
-  REMEDIAL_RECORDS:RemedialRecord[],
-  TOTAL_CREDITS: [],
-  OBTAINED_CREDITS:[]
-}
 
-interface TranscriptLayoutProps {
-  details: Details;
-}
 
 const generateBarcodeBase64 = (text: string): string => {
   const canvas = document.createElement("canvas");
@@ -92,7 +66,6 @@ export default function Transcript_Layout({ details }: any) {
     src: RobotoRegular,
   });
 
-  //callculate SGPA and CGPA
   const sgpa = Array(8).fill(0);
   const cgpa = Array(8).fill(0);
   let prevObtained = 0;
@@ -106,13 +79,13 @@ export default function Transcript_Layout({ details }: any) {
       sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
       cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
     } else {
-      sgpa[i] = 0; // Handle division by zero
+      sgpa[i] = 0; 
       cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
     }
   }
 
   const [barcodeBase64, setBarcodeBase64] = useState("");
-
+// eslint-disable-next-line 
   const recentEXAMMY = () => {
     let latest: Date = new Date(0); 
     
@@ -150,7 +123,7 @@ export default function Transcript_Layout({ details }: any) {
       }
     };
     generateBarcode();
-  }, [details]);
+  }, [recentEXAMMY,details]);
 
   
   const subjectHandle = (sub: Subject) => {
@@ -203,7 +176,7 @@ export default function Transcript_Layout({ details }: any) {
     headerTitle: {
       fontSize: 12,
       position: "relative",
-      textAlign: "center", // Add this line to center the text
+      textAlign: "center", 
      
     },
     reg: {
@@ -415,25 +388,25 @@ export default function Transcript_Layout({ details }: any) {
                 {[0, 1, 2].map((rowIndex) => {
                   const currentRecord = details.ENGG_RECORDS[index + rowIndex];
                   if (currentRecord) {
-                    const year = Math.floor((index + rowIndex) / 2) + 1; //year calculation
-                    const sem = (rowIndex + index) % 2 === 0 ? "I" : "II"; //semester calculation
+                    const year = Math.floor((index + rowIndex) / 2) + 1; 
+                    const sem = (rowIndex + index) % 2 === 0 ? "I" : "II"; 
                     return (
                       <View
                       style={[
                         styles.subTable,
                         year === 4 && (sem==="I" || sem === "II") 
-                          ? { width: '37%' } // Increase width for 7th and 8th semester
-                          : { width: '33%' } // Default width
+                          ? { width: '37%' } 
+                          : { width: '33%' } 
                       ]}
                       key={`sem-${index + rowIndex}`}
                       >
                         <View style={styles.semName}>
                           <Text>
-                            {year == 1
+                            {year === 1
                               ? "I"
-                              : year == 2
+                              : year === 2
                               ? "II"
-                              : year == 3
+                              : year === 3
                               ? "III"
                               : "IV"}{" "}
                             YEAR {sem} SEMESTER

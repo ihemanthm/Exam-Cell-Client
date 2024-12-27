@@ -32,10 +32,10 @@ export default function Backup() {
     setLoader(true);
     try {
       const fullUrl =
-        formik.values.type == "puc" ? pucBackup : enggBackup;
+        formik.values.type === "puc" ? pucBackup : enggBackup;
 
       const response: Record<string, any>= await axios.get(fullUrl || '', {
-        responseType: 'blob', // Important for downloading files
+        responseType: 'blob',
       });
       dispatch(
         setSnackBar({

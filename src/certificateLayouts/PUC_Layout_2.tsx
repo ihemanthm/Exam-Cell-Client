@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
-
 import RobotoRegular from "../fonts/RobotoCondensed-Regular.ttf";
 import RobotoBold from "../fonts/RobotoCondensed-Bold.ttf";
-
 import QRCode from "qrcode";
 import { format } from "date-fns";
 import JsBarcode from "jsbarcode";
-
 import {
   Image,
   Text,
@@ -15,8 +12,6 @@ import {
   Document,
   StyleSheet,
 } from "@react-pdf/renderer";
-import image from "./O170384.jpg";
-// import "../styles/ENGGpdfFile.css";
 
 
 const generateQRCodeBase64 = async (text: string): Promise<string> => {
@@ -313,14 +308,12 @@ export default function PUC_Layout_2({ student }: any) {
 
   const today = new Date();
   const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+  const month = String(today.getMonth() + 1).padStart(2, '0');
   const year = today.getFullYear();
   const todayDate = `${day}-${month}-${year}`;
 
   let cumulativeTGRP = 0;
   let cumulativeCR = 0;
-  let CGPA = 0;
-  let sCount = 0;
 
   const recentCCMY = student.PUC_RECORDS.reduce((latest: Date | null, sem: any) => {
     sem.SUBJECTS.forEach((subject: any) => {
@@ -355,12 +348,12 @@ export default function PUC_Layout_2({ student }: any) {
       setBarcodeBase64(barcodeImage);
     };
     generateQR();
-  }, [student]);
+  }, [recentCCMY,student]);
 
 
   return (
     <Document>
-      <Image style={styles.image} src={image} />
+      <Image style={styles.image} src={`http://localhost:8000/uploads/images/${student.ID}.jpg`} />
       <Text style={styles.textCard}>
         <Text style={styles.section1}>This is to certify that </Text>
         <Text style={styles.highlight}> {student.SNAME} </Text>

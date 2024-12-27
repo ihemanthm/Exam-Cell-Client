@@ -8,7 +8,6 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-import { format } from "date-fns";
 
 interface Subject {
   PCODE: string;
@@ -50,34 +49,6 @@ interface EnggResultsProps {
 }
 
 const EnggResults = ({ details }: EnggResultsProps) => {
-  const recentEXAMMY = () => {
-    let latest: Date = new Date(0);
-
-    for (const sem of details.ENGG_RECORDS) {
-      sem.SUBJECTS.forEach((subject: any) => {
-        const subjectDate = new Date(subject.EXAMMY);
-        if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
-          latest = subjectDate;
-        }
-      });
-    }
-
-    const recentExamDate = recentEXAMMY();
-    const formattedEXAMMY = recentExamDate ? format(recentExamDate, "MMM-yyyy") : "N/A";
-
-    for (const remedials of details.REMEDIAL_RECORDS) {
-      for (const subjects of remedials.REMEDIAL_DATES) {
-        for (const subject of subjects.SUBJECTS) {
-          const subjectDate = new Date(subject.EXAMMY);
-          if (!isNaN(subjectDate.getTime()) && subjectDate > latest) {
-            latest = subjectDate;
-          }
-        }
-      }
-    }
-    return latest;
-  };
-
   const sgpa = Array(8).fill(0);
   const cgpa = Array(8).fill(0);
   let prevObtained = 0;
@@ -90,7 +61,7 @@ const EnggResults = ({ details }: EnggResultsProps) => {
       sgpa[i] = parseFloat((details.OBTAINED_CREDITS[i] / details.TOTAL_CREDITS[i]).toFixed(2));
       cgpa[i] = parseFloat((prevObtained / prevTotal).toFixed(2));
     } else {
-      sgpa[i] = 0; // Handle division by zero
+      sgpa[i] = 0; 
       cgpa[i] = prevTotal > 0 ? parseFloat((prevObtained / prevTotal).toFixed(2)) : 0;
     }
   }

@@ -7,7 +7,7 @@ interface GradeSheetProps {
   details: any;
   index: any;
 }
-const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
+const GradeSheet = ({ details, index }: GradeSheetProps) => {
   Font.register({
     family: "RobotoBold",
     src: RobotoBold,
@@ -166,7 +166,7 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
       }
     });
     console.log('sem:',index+1,obtained,'/',total);
-    if (total == 0) return 0;
+    if (total === 0) return 0;
     return (obtained / total).toFixed(2);
   };
 
@@ -266,4 +266,4 @@ const Grade_Sheet = ({ details, index }: GradeSheetProps) => {
   );
 };
 
-export default Grade_Sheet;
+export default GradeSheet;

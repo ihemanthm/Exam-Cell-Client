@@ -1,15 +1,11 @@
 import React from "react";
-import Button from "@mui/material/Button";
-import Grade_Sheet from "../certificateLayouts/Grade_Sheet";
-
+import GradeSheets from "../certificateLayouts/Grade_Sheet";
 import {
     PDFViewer,
-    PDFDownloadLink,
     Document,
     Page,
     StyleSheet,
 } from "@react-pdf/renderer";
-import DownloadForOfflineRoundedIcon from "@mui/icons-material/DownloadForOfflineRounded";
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -25,9 +21,6 @@ export default function GradeSheet() {
 
     const getEnggDetailsById = process.env.REACT_APP_GET_ENGG_DETAILS_BY_ID;
 
-    interface ResponseData {
-        message?: string;
-    }
     interface FormValues {
         ID: string;
     }
@@ -56,7 +49,7 @@ export default function GradeSheet() {
             setLoader(false);
         } catch (error: any) {
             setLoader(false);
-            if (error.status == 404) {
+            if (error.status === 404) {
                 dispatch(
                     setSnackBar({
                         message: "User not found",
@@ -159,8 +152,6 @@ export default function GradeSheet() {
                     <PDFViewer style={{ width: "80%", height: "100vh", }}>
                         <Document>
                             {(() => {
-
-                                //centralized student structure
                                 const student: StudentRecord = {
                                     REGULATION: details.REGULATION,
                                     SNAME: details.SNAME,
@@ -185,10 +176,7 @@ export default function GradeSheet() {
                                         SUBJECTS: sem.SUBJECTS || [] ,
                                     };
 
-                                    // Push the current record into the student's records
                                     student.RECORDS.push(currentRecord);
-
-                                    // Check for remedial records
                                     let record = details.REMEDIAL_RECORDS.find((rem_sem: any) => rem_sem.SEM === sem.SEM);
                                     if (record) {
                                         record.REMEDIAL_DATES.forEach((attempt: any) => {
@@ -211,11 +199,9 @@ export default function GradeSheet() {
                                         });
                                     }
                                 });
-
-                                // Map over student.RECORDS to create pages
                                 return student.RECORDS.map((record: Record, idx: number) => (
                                     <Page size="A4" style={styles.gradeSheet} key={idx}>
-                                        <Grade_Sheet details={student} index={idx} />
+                                        <GradeSheets details={student} index={idx} />
                                     </Page>
                                 ));
                             })()}

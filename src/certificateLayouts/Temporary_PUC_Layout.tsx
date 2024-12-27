@@ -10,9 +10,9 @@ import {
   Font,
   StyleSheet,
 } from "@react-pdf/renderer";
-import rgukt_logo from "./rgukt.jpg";
+import rgukt_logo from '../assets/rgukt.jpg';
 
-export default function Temporary_PUC_Layout({ student }: any) {
+export default function temporaryPucLayout({ student }: any) {
 
   Font.register({
     family: "Merriweather",
@@ -278,10 +278,9 @@ export default function Temporary_PUC_Layout({ student }: any) {
   let cumulativeTGRP = 0;
   let cumulativeCR = 0;
   let CGPA = 0;
-  let sCount = 0;
   const today = new Date();
   const day = String(today.getDate()).padStart(2, '0');
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+  const month = String(today.getMonth() + 1).padStart(2, '0');
   const year = today.getFullYear();
   const todayDate = `${day}-${month}-${year}`;
   return (
@@ -336,7 +335,6 @@ export default function Temporary_PUC_Layout({ student }: any) {
             cumulativeTGRP += semTGRP;
             cumulativeCR += semCR;
             CGPA = CGPA + parseFloat(SGPA);
-            sCount = parseFloat(sem.SEM_NO);
             return (
               <View style={styles.card}>
                 <View style={styles.greyRow}>

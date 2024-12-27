@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AllbatchPDFFIle from "../certificateLayouts/AllbatchPDFFIle";
-import { PDFViewer, Document, PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFViewer, Document } from "@react-pdf/renderer";
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import "../styles/FileSelection.css";
@@ -58,8 +58,8 @@ export default function AllBatchCertificate() {
       const end = Math.min((i + 1) * 100, details.length);
 
       options.push({
-        label: `${start}-${end}`, // Range label
-        value: `${start}-${end}`, // Range value as a string
+        label: `${start}-${end}`,
+        value: `${start}-${end}`, 
       });
     }
     return options;
@@ -81,7 +81,7 @@ export default function AllBatchCertificate() {
     }
 
     if (array.length > 0) {
-      setLoader(true); // Show loader while processing the PDF details
+      setLoader(true); 
       setPDFDetails(array);
       setLoader(false);
       dispatch(
@@ -89,9 +89,8 @@ export default function AllBatchCertificate() {
           message: `${formik.values.REGULATION} batch pdf is generating please wait...`,
           variant: "info",
         })
-      ); // Stop loader when done
+      );
     } else {
-      // Handle case when no data matches the range
       dispatch(
         setSnackBar({
           message: "No students found in the selected range",
@@ -114,7 +113,7 @@ export default function AllBatchCertificate() {
       }
       setLoader(true);
       const url =
-        formik.values.type == "puc" ? getPUCBatchDetails : getEnggBatchDetails;
+        formik.values.type === "puc" ? getPUCBatchDetails : getEnggBatchDetails;
       const response = await axios.get<StudentData[]>(
         `${url}${formik.values.REGULATION}`
       );
@@ -130,7 +129,7 @@ export default function AllBatchCertificate() {
       setLoader(false);
     } catch (error) {
       setLoader(false);
-      const err = error as any; // Ensure error is cast to any
+      const err = error as any; 
       if (err.response?.status === 404) {
         dispatch(
           setSnackBar({
