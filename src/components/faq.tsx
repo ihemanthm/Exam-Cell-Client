@@ -51,7 +51,7 @@ export default function Faq() {
             <AccordionDetails>
                 The uploaded file should be in the following format:
               <Box component="img" src={faq.file} alt="File format" sx={{ height: "auto", maxWidth: "100%" }} />
-              This format is same for both refular and remedial records
+              This format is same for both regular and remedial records
             </AccordionDetails>
           )}
           {faq.answer && (
