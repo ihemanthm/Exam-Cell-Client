@@ -49,7 +49,7 @@ export default function ResultsPage() {
         if (error.status === 404) {
           dispatch(
             setSnackBar({
-              message: "User not found",
+              message: "Student not found",
               variant: "warning",
             })
           );
