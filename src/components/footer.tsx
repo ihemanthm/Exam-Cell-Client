@@ -6,12 +6,11 @@ export default function Footer() {
 
   return (
     <Box
-      sx={{
-        position: "absolute",
-        left: 0,
-        right: 0,
+     sx={{
+        marginTop:10,
         textAlign: "center",
         backgroundColor: "#fff",
+        padding: "8px 0"
       }}
     >
       <Stack
@@ -27,7 +26,7 @@ export default function Footer() {
           src={src_logo}
           alt="SRC Logo"
           sx={{
-            height: "30px",
+            height: "50px",
             marginLeft: "8px",
           }}
         />
