@@ -88,7 +88,7 @@ export default function DrawerAppBar() {
     {
       name: "Upload Regular Details",
       links: [
-        { name: "PUC Details", to: "/home" },
+        { name: "PUC Details", to: "/PUCUpload" },
         { name: "Engg Details", to: "/EnggUpload" },
       ],
       isCollapsible: true,
