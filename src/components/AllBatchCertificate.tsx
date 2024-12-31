@@ -1,8 +1,8 @@
 import React from "react";
 import AllbatchPDFFIle from "../certificateLayouts/AllbatchPDFFIle";
 import { PDFViewer, Document } from "@react-pdf/renderer";
-import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -59,7 +59,7 @@ export default function AllBatchCertificate() {
 
       options.push({
         label: `${start}-${end}`,
-        value: `${start}-${end}`, 
+        value: `${start}-${end}`,
       });
     }
     return options;
@@ -81,7 +81,7 @@ export default function AllBatchCertificate() {
     }
 
     if (array.length > 0) {
-      setLoader(true); 
+      setLoader(true);
       setPDFDetails(array);
       setLoader(false);
       dispatch(
@@ -129,7 +129,7 @@ export default function AllBatchCertificate() {
       setLoader(false);
     } catch (error) {
       setLoader(false);
-      const err = error as any; 
+      const err = error as any;
       if (err.response?.status === 404) {
         dispatch(
           setSnackBar({
@@ -259,6 +259,40 @@ export default function AllBatchCertificate() {
                   name="layout"
                 >
                   <FormControlLabel
+                    value="L2"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../landscape.png")}
+                            alt="Landscape Layout"
+                          />
+                        </Card>
+                        <span>R18 and before</span>
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
                     value="L1"
                     onChange={formik.handleChange}
                     control={
@@ -271,18 +305,108 @@ export default function AllBatchCertificate() {
                         }}
                       />
                     }
-                    label={<div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <Card variant="outlined">
-                      <CardMedia
-                        component="img"
-                        height="100"
-                        width="100"
-                        image={require("../portrait.png")}
-                        alt="Portrait Layout"
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../portrait.png")}
+                            alt="Portrait Layout"
+                          />
+                        </Card>
+                        <span></span>
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
+                    value="L3"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
                       />
-                    </Card>
-                    <span>Layout 1</span>
-                  </div>}
+                    }
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../portrait.png")}
+                            alt="Portrait Layout"
+                          />
+                        </Card>
+                        <span>R22</span>
+                      </div>
+                    }
+                  />
+                </RadioGroup>
+              </div>
+            )}
+
+          {rangeOptions.length > 0 &&
+            showRangeSelect &&
+            formik.values.type === "engg" && (
+              <div className="layouts" style={{ display: "flex" }}>
+                <RadioGroup
+                  defaultValue="L1"
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="layout"
+                >
+                  <FormControlLabel
+                    value="L1"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../assets/Engg_Layout_Portrait.png")}
+                            alt="Portrait Layout"
+                          />
+                        </Card>
+                        <span>Layout 1</span>
+                      </div>
+                    }
                   />
                   <FormControlLabel
                     value="L2"
@@ -297,18 +421,26 @@ export default function AllBatchCertificate() {
                         }}
                       />
                     }
-                    label={<div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <Card variant="outlined">
-                      <CardMedia
-                        component="img"
-                        height="100"
-                        width="100"
-                        image={require("../landscape.png")}
-                        alt="Landscape Layout"
-                      />
-                    </Card>
-                    <span>Layout 2</span>
-                  </div>}
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../assets/Engg_Layout_Landscape.png")}
+                            alt="Landscape Layout"
+                          />
+                        </Card>
+                        <span>Layout 2</span>
+                      </div>
+                    }
                   />
                 </RadioGroup>
               </div>
@@ -355,7 +487,11 @@ export default function AllBatchCertificate() {
             }}
           >
             <Document>
-              <AllbatchPDFFIle type={formik.values.type} details={pdfDetails} layout={formik.values.layout}/>
+              <AllbatchPDFFIle
+                type={formik.values.type}
+                details={pdfDetails}
+                layout={formik.values.layout}
+              />
             </Document>
           </PDFViewer>
         )}
