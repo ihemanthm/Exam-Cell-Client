@@ -7,7 +7,7 @@ import PucLayout2 from './PUC_Layout_2';
 export default function AllbatchPDFFIle({ details, type,layout }: any) {
   const styles = StyleSheet.create({
     PUC_Layout_1_page: {
-      marginTop: 60,
+      marginTop: 77,
       paddingBottom: 30,
       paddingLeft: 50,
       paddingRight: 50,
@@ -16,15 +16,22 @@ export default function AllbatchPDFFIle({ details, type,layout }: any) {
     engg_page: {
       marginTop: 80,
       textAlign: "justify",
-      marginLeft: 20,
-      marginRight: 40,
+      marginLeft: 10,
+      marginRight: 25,
       backgroundColor: "transparent",
     },
     PUC_Layout_2_page: {
-      marginTop: 130,
-      paddingBottom: 30,
-      paddingLeft: 50,
-      paddingRight: 50,
+      marginTop: 60,
+      paddingBottom: 57,
+      paddingLeft: 38,
+      paddingRight: 35,
+      backgroundColor: "transparent",
+    },
+    engg_page_2: {
+      marginTop: 30,
+      textAlign: "justify",
+      marginLeft: 20,
+      marginRight: 0,
       backgroundColor: "transparent",
     },
   });

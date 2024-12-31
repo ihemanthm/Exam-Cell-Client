@@ -139,7 +139,7 @@ export default function DrawerAppBar() {
   ];
 
   const drawer = (
-    <Box sx={{ textAlign: "center" }}>
+    <Box sx={{ textAlign: "center", overflowY:"scroll" }}>
       <Typography
         variant="h6"
         component="div"
@@ -172,8 +172,7 @@ export default function DrawerAppBar() {
                         <ListItemButton
                           sx={{
                             pl: 6,
-                            fontWeight:
-                              navIndex === linkIndex ? "bold" : "normal", // Bold font for active sub-section
+                            fontWeight:"normal",
                           }}
                           selected={navIndex === linkIndex}
                           onClick={() => setNavbarIndex(linkIndex)}

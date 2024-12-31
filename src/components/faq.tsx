@@ -3,16 +3,17 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import puc from '../assets/puc.png';
 import engg from '../assets/engg.png';
-
+import puc_sno from '../assets/engg_sno.png';
+import engg_sno from '../assets/puc_sno.png';
 const faqs = [
   {
     index: 1,
-    file: puc, // Placeholder for file
+    file: puc,
     question: "In which format does the PUC excel file should be uploaded?",
   },
   {
     index: 2,
-    file: engg, // Placeholder for file
+    file: engg,
     question: "In which format does the Engineering excel file should be uploaded?",
   },
   {
@@ -20,6 +21,16 @@ const faqs = [
     question: "How to upload the Remedial Records?",
     answer: "Upload the Regular attempt records at first. After then the Remedial attempt records can be uploaded at the same place where the regular records are uploaded. The format is same for both Regular records and records and also for both PUC and Engineering."
   },
+  {
+    index: 4,
+    file: engg_sno,
+    question: "What is the excel file format for uploading Serial Numbers for Engineering?",
+  },
+  {
+    index: 5,
+    file: puc_sno,
+    question: "What is the excel file format for uploading Serial Numbers for PUC?",
+  }
 ];
 
 export default function Faq() {
@@ -51,7 +62,6 @@ export default function Faq() {
             <AccordionDetails>
                 The uploaded file should be in the following format:
               <Box component="img" src={faq.file} alt="File format" sx={{ height: "auto", maxWidth: "100%" }} />
-              This format is same for both regular and remedial records
             </AccordionDetails>
           )}
           {faq.answer && (
