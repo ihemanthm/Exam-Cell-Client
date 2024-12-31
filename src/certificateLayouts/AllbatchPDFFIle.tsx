@@ -79,7 +79,7 @@ export default function AllbatchPDFFIle({ details, type, layout }: any) {
           }
           else  {
             return (
-              <Page style={styles.engg_page}>
+              <Page style={styles.engg_page_2} orientation="landscape">
                 <EnggLayout2 details={student} />
               </Page>
             );
