@@ -1,5 +1,6 @@
 import React from "react";
 import PucLayout1 from "../certificateLayouts/PUC_Layout_1";
+import PucLayout3 from "../certificateLayouts/PUC_Layout_3";
 import EnggLayout1 from "../certificateLayouts/Engg_Layout_1";
 import PucLayout2 from "../certificateLayouts/PUC_Layout_2";
 import Card from '@mui/material/Card';
@@ -106,6 +107,13 @@ export default function SingleCertificate() {
       paddingBottom: 30,
       paddingLeft: 50,
       paddingRight: 50,
+      backgroundColor: "transparent",
+    },
+    PUC_Layout_3_page: {
+      marginTop: 77,
+      paddingBottom: 30,
+      paddingLeft: 35,
+      paddingRight: 40,
       backgroundColor: "transparent",
     },
     engg_page: {
@@ -370,8 +378,11 @@ export default function SingleCertificate() {
               <Document>
                 {formik.values.type === "puc" &&
                   formik.values.layout === "L1" ? (
-                  <Page size="A4" style={styles.PUC_Layout_1_page}>
-                    <PucLayout1 student={details} />
+                  // <Page size="A4" style={styles.PUC_Layout_1_page}>
+                  //   <PucLayout1 student={details} />
+                  // </Page>
+                  <Page size="A4" style={styles.PUC_Layout_3_page}>
+                    <PucLayout3 student={details} />
                   </Page>
                 ) : formik.values.type === "puc" &&
                   formik.values.layout === "L2" ? (
