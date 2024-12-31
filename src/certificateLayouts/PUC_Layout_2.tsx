@@ -50,13 +50,15 @@ export default function PUC_Layout_2({ student }: any) {
 
   const styles = StyleSheet.create({
     image: {
-      marginRight: 40,
-      marginTop:10,
+      marginRight: 50,
+      marginLeft:675,
+      position:"absolute",
+      marginTop:13,
       height: 80,
       width: 70,
-      alignSelf: "flex-end",
     },
     textCard: {
+      marginTop:80,
       lineHeight:1.2,
       textAlign:"justify",
       marginBottom:2,
@@ -517,7 +519,7 @@ export default function PUC_Layout_2({ student }: any) {
             {cgpa[3]}
           </Text>
         </Text>
-        <Text style={{fontFamily:"RobotoRegular",fontSize:10}}>{"\n"}{"\n"}<Text style={styles.conclusionBold}>Date: </Text>{todayDate}</Text>
+        <Text style={{fontFamily:"RobotoRegular",fontSize:10,marginTop:-10}}>{"\n"}{"\n"}<Text style={styles.conclusionBold}>Date: </Text>{todayDate}</Text>
       </View>
       <View style={styles.footer}>
         <View>
