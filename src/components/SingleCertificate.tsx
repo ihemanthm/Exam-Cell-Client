@@ -1,18 +1,14 @@
 import React from "react";
 import PucLayout1 from "../certificateLayouts/PUC_Layout_1";
+import PucLayout3 from "../certificateLayouts/PUC_Layout_3";
 import EnggLayout1 from "../certificateLayouts/Engg_Layout_1";
 import PucLayout2 from "../certificateLayouts/PUC_Layout_2";
-import Card from '@mui/material/Card';
+import Card from "@mui/material/Card";
 import EnggLayout2 from "../certificateLayouts/Engg_Layout_2";
-import CardMedia from '@mui/material/CardMedia';
+import CardMedia from "@mui/material/CardMedia";
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
-import {
-  PDFViewer,
-  Document,
-  Page,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { PDFViewer, Document, Page, StyleSheet } from "@react-pdf/renderer";
 import "../styles/FileSelection.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -42,9 +38,9 @@ export default function SingleCertificate() {
 
   const formik = useFormik<FormValues>({
     initialValues,
-    onSubmit: (values) => { },
+    onSubmit: (values) => {},
   });
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setDetails(null);
@@ -53,24 +49,26 @@ export default function SingleCertificate() {
       const url =
         formik.values.type === "puc" ? getPUCDetailsById : getEnggDetailsById;
 
-      const response:any = await axios.get(url + formik.values.ID);
-      if(formik.values.type === "puc" && response.data.CURRENT_REMS>0){
+      const response: any = await axios.get(url + formik.values.ID);
+      if (formik.values.type === "puc" && response.data.CURRENT_REMS > 0) {
         dispatch(
           setSnackBar({
             message: `Remedial Records found`,
             variant: "warning",
           })
         );
-      }
-      else if(formik.values.type==="engg" && formik.values.layout==="L2" && response.data.CURRENT_REMS>0){
+      } else if (
+        formik.values.type === "engg" &&
+        formik.values.layout === "L2" &&
+        response.data.CURRENT_REMS > 0
+      ) {
         dispatch(
           setSnackBar({
             message: `Remedial Records found`,
-            variant:"warning",
+            variant: "warning",
           })
         );
-      }
-      else{
+      } else {
         setDetails(response.data);
         dispatch(
           setSnackBar({
@@ -95,8 +93,7 @@ export default function SingleCertificate() {
           })
         );
       }
-    }
-    finally{
+    } finally {
       setLoader(false);
     }
   };
@@ -106,6 +103,13 @@ export default function SingleCertificate() {
       paddingBottom: 30,
       paddingLeft: 50,
       paddingRight: 50,
+      backgroundColor: "transparent",
+    },
+    PUC_Layout_3_page: {
+      marginTop: 77,
+      paddingBottom: 30,
+      paddingLeft: 35,
+      paddingRight: 40,
       backgroundColor: "transparent",
     },
     engg_page: {
@@ -200,34 +204,6 @@ export default function SingleCertificate() {
                   name="layout"
                 >
                   <FormControlLabel
-                    value="L1"
-                    onChange={formik.handleChange}
-                    control={
-                      <Radio
-                        sx={{
-                          color: "gray",
-                          "&.Mui-checked": {
-                            color: "black",
-                          },
-                        }}
-                      />
-                    }
-                    label={
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <Card variant="outlined">
-                          <CardMedia
-                            component="img"
-                            height="100"
-                            width="100"
-                            image={require("../portrait.png")}
-                            alt="Portrait Layout"
-                          />
-                        </Card>
-                        <span>Layout 1</span>
-                      </div>
-                    }
-                  />
-                  <FormControlLabel
                     value="L2"
                     onChange={formik.handleChange}
                     control={
@@ -241,7 +217,13 @@ export default function SingleCertificate() {
                       />
                     }
                     label={
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
                         <Card variant="outlined">
                           <CardMedia
                             component="img"
@@ -251,7 +233,76 @@ export default function SingleCertificate() {
                             alt="Landscape Layout"
                           />
                         </Card>
-                        <span>Layout 2</span>
+                        <span>R18 and before</span>
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
+                    value="L1"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../portrait.png")}
+                            alt="Portrait Layout"
+                          />
+                        </Card>
+                        <span>R19,R20,R21</span>
+                      </div>
+                    }
+                  />
+
+                  <FormControlLabel
+                    value="L3"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../portrait.png")}
+                            alt="Portrait Layout"
+                          />
+                        </Card>
+                        <span>R22 and above</span>
                       </div>
                     }
                   />
@@ -280,7 +331,13 @@ export default function SingleCertificate() {
                       />
                     }
                     label={
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
                         <Card variant="outlined">
                           <CardMedia
                             component="img"
@@ -308,7 +365,13 @@ export default function SingleCertificate() {
                       />
                     }
                     label={
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
                         <Card variant="outlined">
                           <CardMedia
                             component="img"
@@ -369,7 +432,7 @@ export default function SingleCertificate() {
             >
               <Document>
                 {formik.values.type === "puc" &&
-                  formik.values.layout === "L1" ? (
+                formik.values.layout === "L1" ? (
                   <Page size="A4" style={styles.PUC_Layout_1_page}>
                     <PucLayout1 student={details} />
                   </Page>
@@ -382,19 +445,21 @@ export default function SingleCertificate() {
                   >
                     <PucLayout2 student={details} />
                   </Page>
+                ) : formik.values.type === "puc" &&
+                  formik.values.layout === "L3" ? (
+                  <Page size="A4" style={styles.PUC_Layout_3_page}>
+                    <PucLayout3 student={details} />
+                  </Page>
                 ) : formik.values.type === "engg" &&
-                formik.values.layout === "L1" ?(
-                  <Page style={styles.engg_page} size="A4"
-                 >
+                  formik.values.layout === "L1" ? (
+                  <Page style={styles.engg_page} size="A4">
                     <EnggLayout1 details={details} />
                   </Page>
-                ):(
-                  <Page style={styles.engg_page_2} 
-                  orientation="landscape">
+                ) : (
+                  <Page style={styles.engg_page_2} orientation="landscape">
                     <EnggLayout2 details={details} />
                   </Page>
-                  )
-                }
+                )}
               </Document>
             </PDFViewer>
           </>
