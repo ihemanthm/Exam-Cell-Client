@@ -30,8 +30,8 @@ export default function AllbatchPDFFIle({ details, type, layout }: any) {
       backgroundColor: "transparent",
     },
     PUC_Layout_2_page: {
-      marginTop: 70,
-      paddingBottom: 60,
+      marginTop: 60,
+      paddingBottom: 57,
       paddingLeft: 38,
       paddingRight: 35,
       backgroundColor: "transparent",
