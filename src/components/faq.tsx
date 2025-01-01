@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Accordion, AccordionDetails, AccordionSummary, Box, CircularProgress, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { SimpleTreeView } from '@mui/x-tree-view';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import puc from '../assets/puc.png';
 import engg from '../assets/engg.png';
-import puc_sno from '../assets/engg_sno.png';
-import engg_sno from '../assets/puc_sno.png';
+import engg_sno from '../assets/engg_sno.png';
+import puc_sno from '../assets/puc_sno.png';
 const faqs = [
   {
     index: 1,
@@ -34,43 +38,82 @@ const faqs = [
 ];
 
 export default function Faq() {
-  // State to track the index of the currently expanded accordion
+  const [regulationCount, setRegulationCounts]: any = useState(null);
+  const [regulationLoading, setRegulationLoading] = useState(false);
+  const regulationCountURI: string = process.env.REACT_APP_GET_REGULATION_COUNT || '';
+  useEffect(() => {
+    setRegulationLoading(true);
+    async function fetchRegulationCount() {
+      try {
+        const response = await axios.get(regulationCountURI);
+        console.log(response.data);
+        if (response.data) {
+          setRegulationCounts(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setRegulationLoading(false);
+      }
+    }
+    fetchRegulationCount();
+  }, []);
   const [expanded, setExpanded] = useState(null);
 
-  // Handle the expansion of an accordion
-  const handleChange = (panel:any) => (event:any, isExpanded:any) => {
-    setExpanded(isExpanded ? panel : false); // Toggle the expanded panel
+  const handleChange = (panel: any) => (event: any, isExpanded: any) => {
+    setExpanded(isExpanded ? panel : false);
   };
 
   return (
-    <Box sx={{ padding: "20px", maxWidth: "800px", margin: "auto" }}>
-      <Typography variant="h4" gutterBottom>
-        Frequently Asked Questions
-      </Typography>
+    <>
+      <Box sx={{ padding: "20px", maxWidth: "800px", margin: "auto" }}>
+        <Typography variant="h4" gutterBottom>
+          Frequently Asked Questions
+        </Typography>
 
-      {faqs.map((faq) => (
-        <Accordion
-          key={faq.index}
-          expanded={expanded === faq.index} // Set expanded based on the state
-          onChange={handleChange(faq.index)} // Change the expanded state
-          sx={{ marginBottom: 2 }}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`panel${faq.index}-header`}>
-            <Typography variant="h6">{faq.question}</Typography>
-          </AccordionSummary>
-          {faq.file && (
-            <AccordionDetails>
+        {faqs.map((faq) => (
+          <Accordion
+            key={faq.index}
+            expanded={expanded === faq.index}
+            onChange={handleChange(faq.index)}
+            sx={{ marginBottom: 2 }}
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`panel${faq.index}-header`}>
+              <Typography variant="h6">{faq.question}</Typography>
+            </AccordionSummary>
+            {faq.file && (
+              <AccordionDetails>
                 The uploaded file should be in the following format:
-              <Box component="img" src={faq.file} alt="File format" sx={{ height: "auto", maxWidth: "100%" }} />
-            </AccordionDetails>
+                <Box component="img" src={faq.file} alt="File format" sx={{ height: "auto", maxWidth: "100%" }} />
+              </AccordionDetails>
+            )}
+            {faq.answer && (
+              <AccordionDetails>
+                <Typography variant="body1">{faq.answer}</Typography>
+              </AccordionDetails>
+            )}
+          </Accordion>
+        ))}
+      </Box>
+      {regulationCount &&
+        (<SimpleTreeView sx={{ marginTop: "-450px", marginLeft: "1100px", top: 20 }}>
+          <h4>Data Available</h4>
+          {regulationCount && (
+            <>
+              <TreeItem itemId="1" label="Engineering Regulations">
+                {Object.entries(regulationCount.engg).map(([regulation, count], index) => (
+                  <TreeItem key={index} itemId={`engg-${index}`} label={`${regulation}: ${count}`} />
+                ))}
+              </TreeItem>
+              <TreeItem itemId="2" label="PUC Regulations">
+                {Object.entries(regulationCount.puc).map(([regulation, count], index) => (
+                  <TreeItem key={index} itemId={`puc-${index}`} label={`${regulation}: ${count}`} />
+                ))}
+              </TreeItem>
+            </>
           )}
-          {faq.answer && (
-            <AccordionDetails>
-              <Typography variant="body1">{faq.answer}</Typography>
-            </AccordionDetails>
-          )}
-        </Accordion>
-      ))}
-    </Box>
+        </SimpleTreeView>
+        )}
+    </>
   );
 }
