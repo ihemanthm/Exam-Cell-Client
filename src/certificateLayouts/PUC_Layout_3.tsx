@@ -227,6 +227,14 @@ export default function PUC_Layout_3({ student }: any) {
       bottom: -50,
       left: 176,
     },
+    place:{
+      position:"absolute",
+      top:693,
+      left:74,
+      fontSize:8,
+      fontWeight: "bold",
+      fontFamily: "RobotoBold",
+    }
   });
   let cumulativeTGRP = 0;
   let cumulativeCR = 0;
@@ -436,6 +444,9 @@ export default function PUC_Layout_3({ student }: any) {
           </Text>
         </Text>
         {qrCodeBase64 && <Image style={styles.qrCode} src={qrCodeBase64} />}
+      </View>
+      <View style={styles.place}>
+        <Text>R. K. Valley</Text>
       </View>
     </>
   );
