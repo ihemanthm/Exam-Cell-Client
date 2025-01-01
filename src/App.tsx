@@ -27,7 +27,6 @@ import Faq from "./components/faq";
 function App() {
   const dispatch = useDispatch();
   const logged = useSelector((state: RootState) => state.logStatus.logged);
-  console.log(`logged : ${logged}`);
   interface DecodedToken {
     exp?: number;
   }
