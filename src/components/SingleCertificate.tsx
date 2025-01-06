@@ -3,6 +3,7 @@ import PucLayout1 from "../certificateLayouts/PUC_Layout_1";
 import PucLayout3 from "../certificateLayouts/PUC_Layout_3";
 import EnggLayout1 from "../certificateLayouts/Engg_Layout_1";
 import PucLayout2 from "../certificateLayouts/PUC_Layout_2";
+import PucLayout0 from '../certificateLayouts/PUC_Layout_0';
 import Card from "@mui/material/Card";
 import EnggLayout2 from "../certificateLayouts/Engg_Layout_2";
 import CardMedia from "@mui/material/CardMedia";
@@ -33,7 +34,7 @@ export default function SingleCertificate() {
   const initialValues: FormValues = {
     ID: "",
     type: "puc",
-    layout: "L1",
+    layout: "L0",
   };
 
   const formik = useFormik<FormValues>({
@@ -204,6 +205,40 @@ export default function SingleCertificate() {
                   name="layout"
                 >
                   <FormControlLabel
+                    value="L0"
+                    onChange={formik.handleChange}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "gray",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Card variant="outlined">
+                          <CardMedia
+                            component="img"
+                            height="100"
+                            width="100"
+                            image={require("../assets/landscape.png")}
+                            alt="Landscape Layout"
+                          />
+                        </Card>
+                        <span>R08 to R10</span>
+                      </div>
+                    }
+                  />
+                  <FormControlLabel
                     value="L2"
                     onChange={formik.handleChange}
                     control={
@@ -229,11 +264,11 @@ export default function SingleCertificate() {
                             component="img"
                             height="100"
                             width="100"
-                            image={require("../landscape.png")}
+                            image={require("../assets/landscape.png")}
                             alt="Landscape Layout"
                           />
                         </Card>
-                        <span>R18 and before</span>
+                        <span>R11 to R18</span>
                       </div>
                     }
                   />
@@ -263,7 +298,7 @@ export default function SingleCertificate() {
                             component="img"
                             height="100"
                             width="100"
-                            image={require("../portrait.png")}
+                            image={require("../assets/portrait.png")}
                             alt="Portrait Layout"
                           />
                         </Card>
@@ -298,7 +333,7 @@ export default function SingleCertificate() {
                             component="img"
                             height="100"
                             width="100"
-                            image={require("../portrait.png")}
+                            image={require("../assets/portrait.png")}
                             alt="Portrait Layout"
                           />
                         </Card>
@@ -432,7 +467,15 @@ export default function SingleCertificate() {
             >
               <Document>
                 {formik.values.type === "puc" &&
-                formik.values.layout === "L1" ? (
+                formik.values.layout === "L0" ? (
+                  <Page 
+                  size="A4"
+                  orientation="landscape"
+                  style={styles.PUC_Layout_2_page}>
+                    <PucLayout0 student={details} />
+                  </Page>
+                ): formik.values.type === "puc" &&
+                 formik.values.layout === "L1" ? (
                   <Page size="A4" style={styles.PUC_Layout_1_page}>
                     <PucLayout1 student={details} />
                   </Page>

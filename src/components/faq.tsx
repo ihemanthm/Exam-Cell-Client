@@ -96,7 +96,7 @@ export default function Faq() {
         ))}
       </Box>
       {regulationCount &&
-        (<SimpleTreeView sx={{ marginTop: "-450px", marginLeft: "1100px", top: 20 }}>
+        (<SimpleTreeView sx={{marginTop:"10%", marginLeft: "82%", top: 20, position:"absolute" }}>
           <h4>Data Available</h4>
           {regulationCount && (
             <>
