@@ -29,6 +29,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/Store";
 import { navbarStatus } from "../store/features/navbar/navbar";
 import { setSnackBar } from "../store/features/snackbar/snackbar";
+
 const drawerWidth = 300;
 
 export default function DrawerAppBar() {
@@ -139,19 +140,21 @@ export default function DrawerAppBar() {
   ];
 
   const drawer = (
-    <Box sx={{ textAlign: "center", overflowY:"scroll" }}>
-      <Typography
-        variant="h6"
-        component="div"
-        sx={{
-          marginTop: "10%",
-          flexGrow: 1,
-          color: "black",
-          height: "10%",
-        }}
-      >
-        Examination Cell
-      </Typography>
+    <Box sx={{ textAlign: "center", overflowY: "scroll" }}>
+      <Link to="/home" className="link">
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
+            marginTop: "10%",
+            flexGrow: 1,
+            color: "black",
+            height: "10%",
+          }}
+        >
+          Examination Cell
+        </Typography>
+      </Link>
       <Divider />
       <List component="nav" aria-label="secondary mailbox folder">
         {drawerItems.map((item, index) => (
@@ -172,7 +175,7 @@ export default function DrawerAppBar() {
                         <ListItemButton
                           sx={{
                             pl: 6,
-                            fontWeight:"normal",
+                            fontWeight: "normal",
                           }}
                           selected={navIndex === linkIndex}
                           onClick={() => setNavbarIndex(linkIndex)}
@@ -223,7 +226,6 @@ export default function DrawerAppBar() {
               <MenuIcon />
             </IconButton>
             <Typography
-              onClick={() => { navigate("/home") }}
               variant="h6"
               component="div"
               sx={{
@@ -231,10 +233,12 @@ export default function DrawerAppBar() {
                 color: "black",
                 textAlign: "center",
                 marginLeft: 15,
-                cursor:""
+                cursor: ""
               }}
             >
+            <Link to="/home" className="link">
               Examination Cell RK Valley
+            </Link>
             </Typography>
             <Avatar
               alt="Logo"

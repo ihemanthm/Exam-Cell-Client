@@ -284,7 +284,7 @@ export default function AllBatchCertificate() {
                             component="img"
                             height="100"
                             width="100"
-                            image={require("../landscape.png")}
+                            image={require("../assets/landscape.png")}
                             alt="Landscape Layout"
                           />
                         </Card>
@@ -318,7 +318,7 @@ export default function AllBatchCertificate() {
                             component="img"
                             height="100"
                             width="100"
-                            image={require("../portrait.png")}
+                            image={require("../assets/portrait.png")}
                             alt="Portrait Layout"
                           />
                         </Card>
@@ -352,7 +352,7 @@ export default function AllBatchCertificate() {
                             component="img"
                             height="100"
                             width="100"
-                            image={require("../portrait.png")}
+                            image={require("../assets/portrait.png")}
                             alt="Portrait Layout"
                           />
                         </Card>

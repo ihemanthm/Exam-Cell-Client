@@ -35,7 +35,7 @@ const generateBarcodeBase64 = (text: string): string => {
   return canvas.toDataURL("image/png");
 };
 
-export default function PUC_Layout_2({ student }: any) {
+export default function PUC_Layout_0({ student }: any) {
   const [qrCodeBase64, setQrCodeBase64] = useState("");
   const [barcodeBase64, setBarcodeBase64] = useState("");
   
@@ -73,7 +73,7 @@ export default function PUC_Layout_2({ student }: any) {
       lineHeight: 1.5,
     },
     table: {
-      width: 772,
+      width: 771,
       display: "flex",
       flexDirection: "column",
       border: 2,
@@ -81,7 +81,7 @@ export default function PUC_Layout_2({ student }: any) {
     headingRow: {
       fontFamily:"RobotoBold",
       height: 60,
-      width: 770,
+      width: 769,
       display: "flex",
       flexDirection: "row",
       alignItems: "flex-start",
@@ -89,7 +89,7 @@ export default function PUC_Layout_2({ student }: any) {
       textAlign: "center",
     },
     subName: {
-      width: 130,
+      width: 100,
       height: 60,
       backgroundColor: "#ffe23e",
       justifyContent: "center",
@@ -99,12 +99,12 @@ export default function PUC_Layout_2({ student }: any) {
     semGroup: {
       display: "flex",
       flexDirection: "column",
-      width: 140,
+      width: 121,
       height: 60,
       alignItems: "flex-start",
     },
     sem: {
-      width: 140,
+      width: 121,
       height: 15,
       backgroundColor: "#a84702",
       color:"white",
@@ -114,14 +114,14 @@ export default function PUC_Layout_2({ student }: any) {
       borderBottom: 1,
     },
     semSubHeads: {
-      width: 140,
+      width: 121,
       height: 45,
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
     },
     subCode: {
-      width: 35,
+      width: 30,
       height: 45,
       justifyContent: "center",
       backgroundColor: "#ffe23e",
@@ -129,7 +129,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderBottom: 1,
     },
     credits: {
-      width: 30,
+      width: 32,
       height: 45,
       justifyContent: "center",
       backgroundColor: "#ffe23e",
@@ -137,7 +137,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderBottom: 1,
     },
     grades: {
-      width: 40,
+      width: 31,
       height: 45,
       justifyContent: "center",
       backgroundColor: "#ffe23e",
@@ -145,7 +145,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderBottom: 1,
     },
     creditPoints: {
-      width: 35,
+      width: 28,
       height: 45,
       justifyContent: "center",
       backgroundColor: "#ffe23e",
@@ -153,7 +153,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderBottom: 1,
     },
     totalMaxCredits:{
-      width: 40,
+      width: 32,
       height: 60,
       justifyContent: "center",
       backgroundColor: "#ffe23e",
@@ -161,7 +161,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderRight: 2,
     },
     maxCredits: {
-      width: 40,
+      width: 32,
       height: 60,
       justifyContent: "center",
       backgroundColor: "#ffe23e",
@@ -169,68 +169,69 @@ export default function PUC_Layout_2({ student }: any) {
       borderRight: 1,
     },
     dataRow: {
-      width: 770,
+      width: 769,
       height: 20,
-      fontSize: 9,
+      fontSize: 8,
       fontFamily:"RobotoRegular",
       display: "flex",
       flexDirection: "row",
     },
     subNameData: {
       fontFamily:"RobotoBold",
-      width: 130,
+      width: 100,
       height: 20,
       textAlign:"left",
       justifyContent:"center",
       borderRight: 1,
       paddingLeft: 5,
+      fontSize:9,
     },
     subCodeData: {
-      width: 35,
-      height: 20,
-      justifyContent: "center",
-      alignItems: "center",
-      borderRight: 1,
-    },
-    creditsData: {
       width: 30,
       height: 20,
       justifyContent: "center",
       alignItems: "center",
       borderRight: 1,
     },
+    creditsData: {
+      width: 32,
+      height: 20,
+      justifyContent: "center",
+      alignItems: "center",
+      borderRight: 1,
+    },
     gradesData: {
-      width: 40,
+      width: 31,
+      height: 20,
+      justifyContent: "center",
+      alignItems: "center",
+      borderRight: 1,
+    },
+    creditPointsData: {
+      width: 28,
       height: 20,
       justifyContent: "center",
       alignItems: "center",
       borderRight: 1,
     },
     maxCreditsData: {
-      width: 40,
+      width: 32,
       height: 20,
       fontFamily:"RobotoBold",
-      justifyContent: "center",
-      alignItems: "center",
-      borderRight: 1,
-    },
-    creditPointsData: {
-      width: 35,
-      height: 20,
       justifyContent: "center",
       alignItems: "center",
       borderRight: 1,
     },
     tcpRow: {
       fontFamily:"RobotoBold",
-      width: 770,
+      width: 769,
       height: 18,
       display: "flex",
       flexDirection: "row",
       fontSize: 8,
     },
     tcpName: {
-      width: 130,
+      width: 100,
       height: 18,
       justifyContent: "center",
       alignItems: "center",
@@ -238,7 +239,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderRight: 1,
     },
     tcpEmpty: {
-      width: 105,
+      width: 93,
       height: 18,
       justifyContent: "center",
       alignItems: "center",
@@ -246,7 +247,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderRight: 1,
     },
     tcpCrediPoints: {
-      width: 35,
+      width: 28,
       height: 18,
       justifyContent: "center",
       alignItems: "center",
@@ -254,7 +255,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderRight: 1,
     },
     tcpTotalMax: {
-      width: 40,
+      width: 32,
       height: 18,
       justifyContent: "center",
       alignItems: "center",
@@ -262,7 +263,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderRight: 1,
     },
     gpaData: {
-      width: 140,
+      width: 121,
       height: 18,
       justifyContent: "center",
       alignItems: "center",
@@ -270,7 +271,7 @@ export default function PUC_Layout_2({ student }: any) {
       borderRight: 1,
     },
     gpaTotal: {
-      width: 80,
+      width: 64,
       height: 18,
       justifyContent: "center",
       alignItems: "center",
@@ -327,13 +328,13 @@ export default function PUC_Layout_2({ student }: any) {
     return latest;
   }, null);
   const formattedCCMY = recentCCMY ? format(recentCCMY, "MMM, yyyy") : "N/A";
-  var tcp: number[] = Array(4).fill(0);
-  var tcpMax: number[] = Array(4).fill(0);
+  var tcp: number[] = Array(5).fill(0);
+  var tcpMax: number[] = Array(5).fill(0);
   var tcpTotalMax: number = 0;
   var tcpTotalCredits: number = 0;
 
-  var sgpa: string[] = Array(4).fill(0);
-  var cgpa: string[] = Array(4).fill(0);
+  var sgpa: string[] = Array(5).fill(0);
+  var cgpa: string[] = Array(5).fill(0);
   var creditsObtainedSoFar = 0;
   var maxCreditsSoFar = 0;
 
@@ -461,7 +462,7 @@ export default function PUC_Layout_2({ student }: any) {
             <Text>Total Credit Points</Text>
           </View>
 
-          {Array(4).fill(0).map((_, i) => {
+          {student.PUC_RECORDS.map((_:any, i:number) => {
             creditsObtainedSoFar += tcp[i];
             maxCreditsSoFar += tcpMax[i];
             sgpa[i] = ((tcp[i] / tcpMax[i]) * 10).toFixed(2);
@@ -488,7 +489,7 @@ export default function PUC_Layout_2({ student }: any) {
           <View style={styles.tcpName}>
             <Text>SGPA/CGPA</Text>
           </View>
-          {Array(4).fill(0).map((_, i) => {
+          {student.PUC_RECORDS.map((_:any, i:number) => {
             return (
               <>
                 <View style={styles.gpaData}>
@@ -498,7 +499,7 @@ export default function PUC_Layout_2({ student }: any) {
             )
           })}
           <View style={styles.gpaTotal}>
-            <Text>{cgpa[3]}</Text>
+            <Text>{cgpa[4]}</Text>
           </View>
         </View>
       </View>
@@ -516,7 +517,7 @@ export default function PUC_Layout_2({ student }: any) {
           </Text>{" "}
           and obtained the Cumulative Grade Point Average of :{" "}
           <Text style={styles.conclusionBold}>
-            {cgpa[3]}
+            {cgpa[4]}
           </Text>
         </Text>
         <Text style={{fontFamily:"RobotoRegular",fontSize:10,marginTop:-10}}>{"\n"}{"\n"}<Text style={styles.conclusionBold}>Date: </Text>{todayDate}</Text>
