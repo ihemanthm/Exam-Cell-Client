@@ -506,13 +506,16 @@ export default function PUC_Layout_2({ student }: any) {
         <Text>
           Passed with{" "}
           <Text style={styles.conclusionBold}>
-            {parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 7.5
-              ? "First Class with Distinction"
-              : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 6.5
-                ? "First Division"
-                : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 5.5
-                  ? "Second Division"
-                  : "Pass Division"}
+            {parseFloat(cgpa[3]) >= 8.0
+              ? "Distinction"
+              : parseFloat(cgpa[3]) >= 7.0
+                ? "First Class"
+                : parseFloat(cgpa[3]) >= 6.0
+                  ? "Second Class"
+                    : parseFloat(cgpa[3]) >= 5.0
+                    ? "Pass Class"
+                      : "Fail"
+            }
           </Text>{" "}
           and obtained the Cumulative Grade Point Average of :{" "}
           <Text style={styles.conclusionBold}>

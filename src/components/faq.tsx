@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Accordion, AccordionDetails, AccordionSummary, Box, CircularProgress, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { SimpleTreeView } from '@mui/x-tree-view';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import puc from '../assets/puc.png';
 import engg from '../assets/engg.png';
 import engg_sno from '../assets/engg_sno.png';
@@ -39,10 +38,8 @@ const faqs = [
 
 export default function Faq() {
   const [regulationCount, setRegulationCounts]: any = useState(null);
-  const [regulationLoading, setRegulationLoading] = useState(false);
   const regulationCountURI: string = process.env.REACT_APP_GET_REGULATION_COUNT || '';
   useEffect(() => {
-    setRegulationLoading(true);
     async function fetchRegulationCount() {
       try {
         const response = await axios.get(regulationCountURI);
@@ -52,8 +49,6 @@ export default function Faq() {
         }
       } catch (error) {
         console.log(error);
-      } finally {
-        setRegulationLoading(false);
       }
     }
     fetchRegulationCount();

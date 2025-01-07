@@ -192,6 +192,7 @@ export default function PUC_Layout_0({ student }: any) {
       justifyContent: "center",
       alignItems: "center",
       borderRight: 1,
+      fontFamily: "RobotoBold"
     },
     creditsData: {
       width: 32,
@@ -206,6 +207,7 @@ export default function PUC_Layout_0({ student }: any) {
       justifyContent: "center",
       alignItems: "center",
       borderRight: 1,
+      fontFamily: "RobotoBold"
     },
     creditPointsData: {
       width: 28,
@@ -315,8 +317,6 @@ export default function PUC_Layout_0({ student }: any) {
   const year = today.getFullYear();
   const todayDate = `${day}-${month}-${year}`;
 
-  let cumulativeTGRP = 0;
-  let cumulativeCR = 0;
 
   const recentCCMY = student.PUC_RECORDS.reduce((latest: Date | null, sem: any) => {
     sem.SUBJECTS.forEach((subject: any) => {
@@ -327,6 +327,7 @@ export default function PUC_Layout_0({ student }: any) {
     });
     return latest;
   }, null);
+
   const formattedCCMY = recentCCMY ? format(recentCCMY, "MMM, yyyy") : "N/A";
   var tcp: number[] = Array(5).fill(0);
   var tcpMax: number[] = Array(5).fill(0);
@@ -359,23 +360,23 @@ export default function PUC_Layout_0({ student }: any) {
       <Image style={styles.image} src={`http://localhost:8000/uploads/images/${student.ID}.jpg`} />
       <Text style={styles.textCard}>
         <Text style={styles.section1}>This is to certify that </Text>
-        <Text style={styles.highlight}> {student.SNAME} </Text>
+        <Text style={styles.highlight}> {student.SNAME}, </Text>
         <Text style={styles.section1}> Son/Daughter of </Text>
-        <Text style={styles.highlight}> {student.FNAME}</Text>
+        <Text style={styles.highlight}> {student.FNAME},</Text>
         <Text style={styles.section1}>
-          {"\n"}successfully completed the 4 Semester course of study of 2 - year
+          {"\n"}successfully completed the 5 Semester course of study of 2 - year
           duration fulfilling the pass requirement of the{" "}
         </Text>
-        <Text style={styles.highlight}> Pre University Course (PUC), </Text>
+        <Text style={styles.highlight}> Pre University Course, </Text>
         <Text style={styles.section1}>
-          as a part of the 6 - year Integrated B.Tech programme, at the
+          as a part of the 6 - year B.Tech programme, at the
           Examination held in{" "}
         </Text>
         <Text style={styles.highlight}> {formattedCCMY} </Text>
         <Text style={styles.section1}> with ID No: </Text>
         <Text style={styles.highlight}> {student.ID} </Text>
         <Text style={styles.section1}> in </Text>
-        <Text style={styles.highlight}> English </Text>
+        <Text style={styles.section1}> English </Text>
         <Text style={styles.section1}> Medium and with </Text>
         <Text style={styles.highlight}> {student.GRP} </Text>
         <Text style={styles.section1}>
@@ -507,20 +508,23 @@ export default function PUC_Layout_0({ student }: any) {
         <Text>
           Passed with{" "}
           <Text style={styles.conclusionBold}>
-            {parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 7.5
-              ? "First Class with Distinction"
-              : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 6.5
-                ? "First Division"
-                : parseFloat((cumulativeTGRP / cumulativeCR).toFixed(2)) >= 5.5
-                  ? "Second Division"
-                  : "Pass Division"}
+          {parseFloat(cgpa[3]) >= 8.0
+              ? "Distinction"
+              : parseFloat(cgpa[3]) >= 7.0
+                ? "First Class"
+                : parseFloat(cgpa[3]) >= 6.0
+                  ? "Second Class"
+                    : parseFloat(cgpa[3]) >= 5.0
+                    ? "Pass Class"
+                      : "Fail"
+          }
           </Text>{" "}
           and obtained the Cumulative Grade Point Average of :{" "}
           <Text style={styles.conclusionBold}>
             {cgpa[4]}
           </Text>
         </Text>
-        <Text style={{fontFamily:"RobotoRegular",fontSize:10,marginTop:-10}}>{"\n"}{"\n"}<Text style={styles.conclusionBold}>Date: </Text>{todayDate}</Text>
+        <Text style={styles.conclusionBold}>{"\n"}{"\n"}<Text>Date: </Text>{todayDate}</Text>
       </View>
       <View style={styles.footer}>
         <View>
