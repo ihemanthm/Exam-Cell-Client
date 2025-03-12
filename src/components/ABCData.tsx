@@ -1,63 +1,61 @@
-import  { useState } from "react";
-import { useFormik } from "formik";
-import axios from "axios";
-import { setSnackBar } from "../store/features/snackbar/snackbar";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from 'react';
+import { useFormik } from 'formik';
 import "../styles/FileSelection.css";
-import { useDispatch } from "react-redux";
-
-export default function RankListByBatch() {
+import { useDispatch } from 'react-redux';
+import { setSnackBar } from '../store/features/snackbar/snackbar';
+import { CircularProgress } from '@mui/material';
+import axios from 'axios';
+export default function ABCData() {
     const [loader, setLoader] = useState<boolean>(false);
     const dispatch = useDispatch();
-    const getRankList = process.env.REACT_APP_GET_RANKLIST_BATCH;
+
+    const getABCData = process.env.REACT_APP_GET_ABC_DATA;
 
     interface FormValues {
-        REGULATION: string;
+        batch: string,
     }
 
     const initialValues: FormValues = {
-        REGULATION: "",
-    };
+        batch: "",
+    }
 
     const formik = useFormik<FormValues>({
         initialValues,
         onSubmit: async (values) => {
-            const pattern = /^R\d{2}$/;
-            if (!pattern.test(values.REGULATION)) {
-                dispatch(setSnackBar({ message: "Invalid Regulation", variant: "error", }));
-                return;
-            }
-            await handleSubmit(values.REGULATION);
+            await handleSubmit(values.batch);
         }
     });
 
-    const handleSubmit = async (REGULATION: string) => {
+    const handleSubmit = async (batch: string) => {
         setLoader(true);
         try {
-            const fullUrl=`${getRankList}${REGULATION}`;
-            const response: Record<string, any> = await axios.get(fullUrl, {
-                responseType: 'blob', 
-            });
+
+            const response:any = await axios.get(`${getABCData}?batch=${batch}`, { responseType: 'blob' });
+            dispatch(
+                setSnackBar({
+                    message: `${formik.values.batch} ABC Data File is generating ,Please wait ....`,
+                    variant: "info",
+                })
+            );
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', `RankList_${REGULATION}.xlsx`);
+            link.setAttribute('download', `${batch}_ABC_DATA.xlsx`);
             document.body.appendChild(link);
             link.click();
             link.remove();
             window.URL.revokeObjectURL(url);
+            
         } catch (error) {
-            dispatch(setSnackBar({ message: "No Batch found", variant: "warning" }));
-            console.log(error);
+            dispatch(setSnackBar({ message: "Error Fetching Batch Data", variant: "warning" }));
         } finally {
             setLoader(false);
         }
-    };
-
+    }
     return (
         <>
             <div className="home-pdf-container">
-                <h1>Batch wise Rank List</h1>
+                <h1>ABC Students Data</h1>
                 <form
                     onSubmit={formik.handleSubmit}
                     className="search-form"
@@ -66,12 +64,11 @@ export default function RankListByBatch() {
                     <div className="input-box" style={{ marginBottom: "30px" }}>
                         <input
                             type="text"
-                            placeholder="Enter the Batch (RXX)"
-                            name="REGULATION"
+                            placeholder="Enter Batch No(RXX)"
+                            name="batch"
                             className="input-field"
-                            id="REGULATION"
+                            id="batch"
                             onChange={formik.handleChange}
-                            value={formik.values.REGULATION}
                             required
                         />
                         <button
@@ -81,15 +78,16 @@ export default function RankListByBatch() {
                             {loader ? (
                                 <CircularProgress size={27} sx={{ color: "white" }} />
                             ) : (
-                                "Download"
+                                "Generate"
                             )}
                         </button>
                     </div>
-                    {formik.errors.REGULATION && (
-                        <div style={{ color: "red" }}>{formik.errors.REGULATION}</div>
+                    {formik.errors.batch && (
+                        <div style={{ color: "red" }}>{formik.errors.batch}</div>
                     )}
                 </form>
             </div>
         </>
-    );
+    )
 }
+

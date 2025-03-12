@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import RobotoRegular from '../fonts/RobotoCondensed-Regular.ttf';
 import RobotoBold from '../fonts/RobotoCondensed-Bold.ttf';

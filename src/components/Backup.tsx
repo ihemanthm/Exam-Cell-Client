@@ -52,15 +52,15 @@ export default function Backup() {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
-      setLoader(false);
     } catch (error: any) {
-      setLoader(false);
       dispatch(
         setSnackBar({
           message: "Faied to Backup the data",
           variant: "error",
         })
       );
+    }finally{
+      setLoader(false);
     }
   };
   return (

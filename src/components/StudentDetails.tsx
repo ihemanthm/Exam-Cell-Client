@@ -46,9 +46,7 @@ const handleSubmit = async (id: string) => {
     }
 };
 
-// Component to render student data
 const StudentComponent = ({ data }: { data: any }) => {
-    // You can manage loading and student data state here
     return (
         <div>
             <h1>Student ID : {data.ID}</h1>

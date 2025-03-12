@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom"; // Import Navigate for redirection
-import AppNavbar from "./components/Navbar";
 import "./App.css";
+
+import AppNavbar from "./components/Navbar";
 import SnackbarListener from "./components/SnackBarListener";
 import { SnackbarProvider } from "notistack";
 import AllBatchCertificates from "./components/AllBatchCertificate";
@@ -17,13 +18,15 @@ import RankListByBatch from "./components/RankListByBatch";
 import StudentDetails from "./components/StudentDetails";
 import Backup from "./components/Backup";
 import ResultsPage from "./components/ResultsPage";
+import ABCData from "./components/ABCData";
+import Footer from "./components/footer";
+import Faq from "./components/faq";
+
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { loggedStatus } from "./store/features/user/user";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/Store";
-import Footer from "./components/footer";
-import Faq from "./components/faq";
 function App() {
   const dispatch = useDispatch();
   const logged = useSelector((state: RootState) => state.logStatus.logged);
@@ -125,6 +128,10 @@ function App() {
               <Route
                 path="/StudentDetails"
                 element={logged ? <StudentDetails /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/getABCData"
+                element={logged ? <ABCData /> : <Navigate to="/" />}
               />
               <Route
                 path="/Backup"
